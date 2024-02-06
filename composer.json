@@ -1,0 +1,30 @@
+{
+  "name": "onix-systems-php/hyperf-support",
+  "type": "extension",
+  "keywords": [
+    "php",
+    "hyperf",
+    "support"
+  ],
+  "description": "Support module for Hyperf web applications",
+  "autoload": {
+    "psr-4": {
+      "OnixSystemsPHP\\HyperfSupport\\": "src/"
+    }
+  },
+  "authors": [
+    {
+      "name": "Ihor Rud",
+      "email": "ihor.rud@onix-systems.com"
+    }
+  ],
+  "require-dev": {
+    "phpunit/phpunit": "^10.0"
+  },
+  "require": {
+    "hyperf/framework": "^3.1",
+    "onix-systems-php/hyperf-core": "*",
+    "hyperf/di": "*",
+    "symfony/var-dumper": "^7.0"
+  }
+}
