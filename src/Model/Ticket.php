@@ -1,6 +1,11 @@
 <?php
 
 declare(strict_types=1);
+/**
+ * This file is part of the extension library for Hyperf.
+ *
+ * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
+ */
 
 namespace OnixSystemsPHP\HyperfSupport\Model;
 
@@ -10,7 +15,8 @@ use Hyperf\Database\Model\SoftDeletes;
 use OnixSystemsPHP\HyperfCore\Model\AbstractModel;
 use OnixSystemsPHP\HyperfFileUpload\Model\Behaviour\FileRelations;
 use OnixSystemsPHP\HyperfSupport\Cast\CustomFieldCast;
-use OnixSystemsPHP\HyperfSupport\Misc\SupportUserInterface;
+
+use OnixSystemsPHP\HyperfSupport\Contract\SupportUserInterface;
 
 use function Hyperf\Config\config;
 
@@ -79,7 +85,6 @@ class Ticket extends AbstractModel
         'files',
     ];
 
-
     /**
      * The attributes that should be cast to native types.
      */
@@ -127,15 +132,5 @@ class Ticket extends AbstractModel
     public function getTrelloUrlAttribute(): ?string
     {
         return $this->trello_short_link ? 'https://trello.com/c/' . $this->trello_short_link : null;
-    }
-
-    /**
-     * Get ticket's url.
-     *
-     * @return string
-     */
-    public function getUrlAttribute(): string
-    {
-        return config('support.app.domain') . '/tickets' . '/' . $this->id;
     }
 }

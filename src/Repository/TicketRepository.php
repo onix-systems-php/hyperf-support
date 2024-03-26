@@ -1,5 +1,12 @@
 <?php
 
+declare(strict_types=1);
+/**
+ * This file is part of the extension library for Hyperf.
+ *
+ * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
+ */
+
 namespace OnixSystemsPHP\HyperfSupport\Repository;
 
 use Hyperf\Contract\LengthAwarePaginatorInterface;
@@ -21,7 +28,7 @@ class TicketRepository extends AbstractRepository
 {
     protected string $modelClass = Ticket::class;
 
-    public function getPaginated(int $perPage): LengthAwarePaginatorInterface
+    public function getPaginated(int $perPage = 15): LengthAwarePaginatorInterface
     {
         return $this->query()->paginate($perPage);
     }
