@@ -22,11 +22,11 @@ readonly class SupportAdapter
     public function __construct(private SourceConfiguratorInterface $sourceConfigurator) {}
 
     /**
-     * Run the Ticket or Comment transport.
+     * Create the transport for given event and entity and run it.
      *
      * @param string $event
      * @param Ticket|Comment $entity
-     * @param string $shouldBeSkipped
+     * @param array $shouldBeSkipped
      * @return void
      */
     public function run(string $event, Ticket|Comment $entity, array $shouldBeSkipped = []): void
