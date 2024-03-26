@@ -19,12 +19,16 @@
     }
   ],
   "require-dev": {
-    "phpunit/phpunit": "^10.0"
+    "phpunit/phpunit": "^10.0",
+    "symfony/var-dumper": "^7.0"
   },
   "require": {
     "hyperf/framework": "^3.1",
     "onix-systems-php/hyperf-core": "*",
     "hyperf/di": "*",
-    "symfony/var-dumper": "^7.0"
+    "onix-systems-php/hyperf-actions-log": "^1.2",
+    "hyperf/guzzle": "^3.1",
+    "friendsofhyperf/helpers": "^3.1",
+    "onix-systems-php/hyperf-file-upload": "^1.2"
   }
 }
