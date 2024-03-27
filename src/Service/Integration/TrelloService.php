@@ -90,12 +90,12 @@ readonly class TrelloService
     private function getTrelloEvent(array $data): TrelloEvent
     {
         return new TrelloEvent(
-            type: TrelloActionType::tryFrom($data['action']['type']),
-            commentId: $data['action']['data']['action']['id'] ?? $data['action']['id'],
-            cardId: $data['model']['id'],
-            creatorName: $data['action']['memberCreator']['fullName'] ?? '',
-            updatedTicketStatus: $data['action']['data']['listAfter']['name'] ?? null,
-            text: $data['action']['data']['text'] ?? $data['action']['data']['action']['text'] ?? '',
+            TrelloActionType::tryFrom($data['action']['type']),
+            $data['action']['data']['action']['id'] ?? $data['action']['id'],
+            $data['model']['id'],
+            $data['action']['memberCreator']['fullName'] ?? '',
+            $data['action']['data']['listAfter']['name'] ?? null,
+            $data['action']['data']['text'] ?? $data['action']['data']['action']['text'] ?? '',
         );
     }
 }
