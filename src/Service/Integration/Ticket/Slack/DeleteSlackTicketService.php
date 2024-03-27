@@ -9,6 +9,8 @@ declare(strict_types=1);
 
 namespace OnixSystemsPHP\HyperfSupport\Service\Integration\Ticket\Slack;
 
+use GuzzleHttp\Exception\GuzzleException;
+use OnixSystemsPHP\HyperfSupport\Integration\Exceptions\Slack\SlackException;
 use OnixSystemsPHP\HyperfSupport\Model\Ticket;
 
 readonly class DeleteSlackTicketService
@@ -20,6 +22,8 @@ readonly class DeleteSlackTicketService
      *
      * @param Ticket $ticket
      * @return Ticket
+     * @throws GuzzleException
+     * @throws SlackException
      */
     public function run(Ticket $ticket): Ticket
     {
