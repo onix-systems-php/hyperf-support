@@ -10,15 +10,13 @@ declare(strict_types=1);
 namespace OnixSystemsPHP\HyperfSupport\Model;
 
 use Carbon\Carbon;
-use Hyperf\Database\Model\Relations\{BelongsTo, MorphMany};
+use Hyperf\Database\Model\Relations\BelongsTo;
+use Hyperf\Database\Model\Relations\MorphMany;
 use Hyperf\Database\Model\SoftDeletes;
 use OnixSystemsPHP\HyperfCore\Model\AbstractModel;
 use OnixSystemsPHP\HyperfFileUpload\Model\Behaviour\FileRelations;
 use OnixSystemsPHP\HyperfSupport\Cast\CustomFieldCast;
-
 use OnixSystemsPHP\HyperfSupport\Contract\SupportUserInterface;
-
-use function Hyperf\Config\config;
 
 /**
  * Ticket
