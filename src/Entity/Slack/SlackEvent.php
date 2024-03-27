@@ -13,7 +13,7 @@ use GuzzleHttp\Exception\GuzzleException;
 use OnixSystemsPHP\HyperfSupport\Contract\SourceConfiguratorInterface;
 use OnixSystemsPHP\HyperfSupport\Entity\Event;
 use OnixSystemsPHP\HyperfSupport\Enum\Slack\SlackActionType;
-use OnixSystemsPHP\HyperfSupport\Integration\Slack\Slack;
+use OnixSystemsPHP\HyperfSupport\Integration\Slack\SlackApiService;
 
 use function Hyperf\Support\make;
 
@@ -37,8 +37,8 @@ class SlackEvent extends Event
         public array $message = [],
         public array $files = [],
     ) {
-        /** @var Slack $slack */
-        $slack = make(Slack::class);
+        /** @var SlackApiService $slack */
+        $slack = make(SlackApiService::class);
         /** @var SourceConfiguratorInterface $configurator */
         $configurator = make(SourceConfiguratorInterface::class);
         $source = $configurator->getSourceByIntegrationAndKey('slack', $this->channel);

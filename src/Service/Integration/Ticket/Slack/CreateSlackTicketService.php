@@ -11,11 +11,10 @@ namespace OnixSystemsPHP\HyperfSupport\Service\Integration\Ticket\Slack;
 
 use GuzzleHttp\Exception\GuzzleException;
 use Hyperf\Stringable\Str;
-
 use OnixSystemsPHP\HyperfSupport\Contract\SourceConfiguratorInterface;
 use OnixSystemsPHP\HyperfSupport\Contract\TicketDescriptionGeneratorBase;
 use OnixSystemsPHP\HyperfSupport\Integration\Exceptions\Slack\SlackException;
-use OnixSystemsPHP\HyperfSupport\Integration\Slack\Slack;
+use OnixSystemsPHP\HyperfSupport\Integration\Slack\SlackApiService;
 use OnixSystemsPHP\HyperfSupport\Integration\Slack\SlackMessage;
 use OnixSystemsPHP\HyperfSupport\Integration\Slack\SlackMessageContext;
 use OnixSystemsPHP\HyperfSupport\Integration\Slack\SlackMessageSection;
@@ -24,7 +23,7 @@ use OnixSystemsPHP\HyperfSupport\Model\Ticket;
 readonly class CreateSlackTicketService
 {
     public function __construct(
-        private Slack $slack,
+        private SlackApiService $slack,
         private SourceConfiguratorInterface $sourceConfigurator,
         private TicketDescriptionGeneratorBase $descriptionGenerator
     ) {}
@@ -42,14 +41,13 @@ readonly class CreateSlackTicketService
         $message = new SlackMessage($ticket->ticket_title);
         $message->setPlainText($ticket->ticket_title);
 
+        $context = new SlackMessageContext();
         if (!empty($ticket->trello_url)) {
-            $context = new SlackMessageContext();
             $context->addImage($this->sourceConfigurator->getApiConfig($ticket->source, 'slack', 'trello_icon'), 'Trello');
             $context->addText(sprintf("<%s|*Open Trello card*>", $ticket->trello_url));
             $message->addBlock($context);
         }
 
-        $context = new SlackMessageContext();
         $context->addImage(
             $this->sourceConfigurator->getApiConfig($ticket->source, 'app', 'icon'),
             $this->sourceConfigurator->getApiConfig($ticket->source, 'app', 'name')

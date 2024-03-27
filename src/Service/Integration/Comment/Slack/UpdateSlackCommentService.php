@@ -11,13 +11,13 @@ namespace OnixSystemsPHP\HyperfSupport\Service\Integration\Comment\Slack;
 
 use GuzzleHttp\Exception\GuzzleException;
 use OnixSystemsPHP\HyperfSupport\Integration\Exceptions\Slack\SlackException;
-use OnixSystemsPHP\HyperfSupport\Integration\Slack\Slack;
+use OnixSystemsPHP\HyperfSupport\Integration\Slack\SlackApiService;
 use OnixSystemsPHP\HyperfSupport\Integration\Slack\SlackMessage;
 use OnixSystemsPHP\HyperfSupport\Model\Comment;
 
 readonly class UpdateSlackCommentService
 {
-    public function __construct(private Slack $slack) {}
+    public function __construct(private SlackApiService $slack) {}
 
     /**
      * Update comment on Slack.
@@ -29,7 +29,7 @@ readonly class UpdateSlackCommentService
      */
     public function run(Comment $comment): Comment
     {
-        $message = new SlackMessage();
+        $message = new SlackMessage($comment->ticket->source);
         $message->setPlainText($comment->content);
         $message->setTs($comment->slack_comment_id);
         $this->slack->updateMessage($comment->ticket->source, $message);

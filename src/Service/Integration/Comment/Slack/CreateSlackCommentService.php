@@ -11,7 +11,7 @@ namespace OnixSystemsPHP\HyperfSupport\Service\Integration\Comment\Slack;
 
 use GuzzleHttp\Exception\GuzzleException;
 use OnixSystemsPHP\HyperfSupport\Integration\Exceptions\Slack\SlackException;
-use OnixSystemsPHP\HyperfSupport\Integration\Slack\Slack;
+use OnixSystemsPHP\HyperfSupport\Integration\Slack\SlackApiService;
 use OnixSystemsPHP\HyperfSupport\Integration\Slack\SlackMessage;
 use OnixSystemsPHP\HyperfSupport\Model\Comment;
 use OnixSystemsPHP\HyperfSupport\Repository\CommentRepository;
@@ -22,7 +22,7 @@ readonly class CreateSlackCommentService
     use FormatHelper;
 
     public function __construct(
-        private Slack $slack,
+        private SlackApiService $slack,
         private CommentRepository $commentRepository,
     ) {}
 
@@ -36,7 +36,7 @@ readonly class CreateSlackCommentService
      */
     public function run(Comment $comment): Comment
     {
-        $message = new SlackMessage();
+        $message = new SlackMessage($comment->ticket->source);
         $message->addTextSection($this->getCommentMessage($comment));
         $message->setThreadTs($comment->ticket->slack_id);
         foreach ($comment->files as $file) {

@@ -11,12 +11,12 @@ namespace OnixSystemsPHP\HyperfSupport\Service\Integration\Comment\Slack;
 
 use GuzzleHttp\Exception\GuzzleException;
 use OnixSystemsPHP\HyperfSupport\Integration\Exceptions\Slack\SlackException;
-use OnixSystemsPHP\HyperfSupport\Integration\Slack\Slack;
+use OnixSystemsPHP\HyperfSupport\Integration\Slack\SlackApiService;
 use OnixSystemsPHP\HyperfSupport\Model\Comment;
 
 readonly class DeleteSlackCommentService
 {
-    public function __construct(private Slack $slack) {}
+    public function __construct(private SlackApiService $slack) {}
 
     /**
      * Delete a comment on Slack.
