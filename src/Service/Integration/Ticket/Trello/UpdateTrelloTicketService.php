@@ -64,11 +64,11 @@ readonly class UpdateTrelloTicketService
                         /** @var Option $option */
                         $option = current(
                             array_filter($customField->options, fn(Option $option) => $value === $option->value->text)
-                        );
+                        ) ?: null;
                         $this->trelloCardService->updateCustomFieldOnCard($ticket->source, UpdateCustomFieldDTO::make([
                             'cardId' => $ticket->trello_id,
                             'fieldId' => $customField->id,
-                            'optionId' => $option->id
+                            'optionId' => $option?->id
                         ]));
                     }
                 }

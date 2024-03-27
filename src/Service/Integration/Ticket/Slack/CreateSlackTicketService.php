@@ -38,16 +38,20 @@ readonly class CreateSlackTicketService
      */
     public function run(Ticket $ticket): Ticket
     {
-        $message = new SlackMessage($ticket->ticket_title);
+        $message = new SlackMessage($ticket->source, $ticket->ticket_title);
         $message->setPlainText($ticket->ticket_title);
 
-        $context = new SlackMessageContext();
         if (!empty($ticket->trello_url)) {
-            $context->addImage($this->sourceConfigurator->getApiConfig($ticket->source, 'slack', 'trello_icon'), 'Trello');
+            $context = new SlackMessageContext();
+            $context->addImage(
+                $this->sourceConfigurator->getApiConfig($ticket->source, 'slack', 'trello_icon'),
+                'Trello'
+            );
             $context->addText(sprintf("<%s|*Open Trello card*>", $ticket->trello_url));
             $message->addBlock($context);
         }
 
+        $context = new SlackMessageContext();
         $context->addImage(
             $this->sourceConfigurator->getApiConfig($ticket->source, 'app', 'icon'),
             $this->sourceConfigurator->getApiConfig($ticket->source, 'app', 'name')
@@ -82,7 +86,7 @@ readonly class CreateSlackTicketService
         $context->addText(sprintf("*Ticket body:*\n%s", $ticket->content));
         $message->addBlock($context);
 
-        $message->addColorNotice(
+        $message->addNotice(
             $this->descriptionGenerator->color($ticket),
             $this->descriptionGenerator->label($ticket),
             $this->descriptionGenerator->description($ticket),
@@ -93,7 +97,7 @@ readonly class CreateSlackTicketService
             $message->setTs($ticket->slack_id);
         }
 
-        array_map(fn($file) => $message->addImage($file->url, 'body_image'), (array)$ticket->files);
+        array_map(fn($file) => $message->addImage($file['url'], 'body_image'), (array)$ticket->files);
 
         $result = match (empty($message->getTs())) {
             true => $this->slack->postMessage($ticket->source, $message),

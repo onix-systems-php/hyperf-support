@@ -139,7 +139,7 @@ class SlackMessage
      * @param string $alt
      * @return void
      */
-    public function addImage(string $url, string $alt = ''): void
+    public function addImage(?string $url, string $alt = ''): void
     {
         if (!$url) {
             return;
@@ -210,7 +210,7 @@ class SlackMessage
      * @param string $text
      * @return void
      */
-    public function addColorNotice(string $color, string $title, string $text = ''): void
+    public function addNotice(string $color, string $title, string $text = ''): void
     {
         $this->attachments[] = [
             'color' => $color,

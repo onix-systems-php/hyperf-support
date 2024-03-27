@@ -40,7 +40,7 @@ trait ProcessFiles
         }
         foreach ($entity->files as $file) {
             $cardAttachments = array_filter($card->attachments, fn($attachment) => $attachment->url === $file->url);
-            if (!empty($cardAttachments)) {
+            if (empty($cardAttachments)) {
                 if ($entity instanceof Ticket) {
                     $this->trelloCardService->createAttachment($entity->source, $trelloId, new Attachment($file->name, $file->url));
                 } else {

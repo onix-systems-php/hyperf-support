@@ -29,9 +29,9 @@ class SlackMessageContext extends SlackScope
      * @param string $alt
      * @return void
      */
-    public function addImage(string $url, string $alt = ''): void
+    public function addImage(?string $url, string $alt = ''): void
     {
-        if (!empty($url)) {
+        if ($url) {
             $this->fields[] = [
                 'type' => 'image',
                 'image_url' => $url,
