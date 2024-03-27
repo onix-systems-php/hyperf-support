@@ -12,12 +12,12 @@ namespace OnixSystemsPHP\HyperfSupport\Service\Integration\Comment\Trello;
 use GuzzleHttp\Exception\GuzzleException;
 use OnixSystemsPHP\HyperfSupport\DTO\Trello\Comment\UpdateCommentDTO;
 use OnixSystemsPHP\HyperfSupport\Integration\Exceptions\Trello\TrelloException;
-use OnixSystemsPHP\HyperfSupport\Integration\Trello\TrelloCommentService;
+use OnixSystemsPHP\HyperfSupport\Integration\Trello\TrelloCommentApiService;
 use OnixSystemsPHP\HyperfSupport\Model\Comment;
 
 readonly class UpdateTrelloCommentService
 {
-    public function __construct(private TrelloCommentService $trelloComment) {}
+    public function __construct(private TrelloCommentApiService $trelloComment) {}
 
     /**
      * Update a comment on Trello card.

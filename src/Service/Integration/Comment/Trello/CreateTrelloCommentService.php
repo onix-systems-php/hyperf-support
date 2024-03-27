@@ -13,8 +13,8 @@ use GuzzleHttp\Exception\GuzzleException;
 use OnixSystemsPHP\HyperfSupport\DTO\Trello\Comment\CreateCommentDTO;
 use OnixSystemsPHP\HyperfSupport\Integration\Exceptions\Trello\TrelloException;
 use OnixSystemsPHP\HyperfSupport\Integration\Trello\ProcessFiles;
-use OnixSystemsPHP\HyperfSupport\Integration\Trello\TrelloCardService;
-use OnixSystemsPHP\HyperfSupport\Integration\Trello\TrelloCommentService;
+use OnixSystemsPHP\HyperfSupport\Integration\Trello\TrelloCardApiService;
+use OnixSystemsPHP\HyperfSupport\Integration\Trello\TrelloCommentApiService;
 use OnixSystemsPHP\HyperfSupport\Model\Comment;
 use OnixSystemsPHP\HyperfSupport\Repository\CommentRepository;
 use OnixSystemsPHP\HyperfSupport\Service\Integration\Traits\FormatHelper;
@@ -26,9 +26,9 @@ readonly class CreateTrelloCommentService
     use FormatHelper;
 
     public function __construct(
-        private TrelloCommentService $trelloComment,
+        private TrelloCommentApiService $trelloComment,
         private CommentRepository $commentRepository,
-        private TrelloCardService $trelloCardService,
+        private TrelloCardApiService $trelloCardService,
         private TrelloService $trello,
     ) {}
 

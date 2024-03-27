@@ -11,12 +11,12 @@ namespace OnixSystemsPHP\HyperfSupport\Service\Integration\Ticket\Trello;
 
 use GuzzleHttp\Exception\GuzzleException;
 use OnixSystemsPHP\HyperfSupport\Integration\Exceptions\Trello\TrelloException;
-use OnixSystemsPHP\HyperfSupport\Integration\Trello\TrelloCardService;
+use OnixSystemsPHP\HyperfSupport\Integration\Trello\TrelloCardApiService;
 use OnixSystemsPHP\HyperfSupport\Model\Ticket;
 
 readonly class DeleteTrelloTicketService
 {
-    public function __construct(private TrelloCardService $trelloCardService) {}
+    public function __construct(private TrelloCardApiService $trelloCardService) {}
 
     /**
      * Archive a card.

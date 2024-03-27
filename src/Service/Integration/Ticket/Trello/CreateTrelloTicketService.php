@@ -19,8 +19,8 @@ use OnixSystemsPHP\HyperfSupport\DTO\Trello\CustomField\CreateCustomFieldDTO;
 use OnixSystemsPHP\HyperfSupport\Entity\Trello\Attachment;
 use OnixSystemsPHP\HyperfSupport\Integration\Exceptions\Trello\TrelloException;
 use OnixSystemsPHP\HyperfSupport\Integration\Trello\ProcessFiles;
-use OnixSystemsPHP\HyperfSupport\Integration\Trello\TrelloCardService;
-use OnixSystemsPHP\HyperfSupport\Integration\Trello\TrelloService;
+use OnixSystemsPHP\HyperfSupport\Integration\Trello\TrelloCardApiService;
+use OnixSystemsPHP\HyperfSupport\Integration\Trello\TrelloApiService;
 use OnixSystemsPHP\HyperfSupport\Model\Ticket;
 
 readonly class CreateTrelloTicketService
@@ -28,8 +28,8 @@ readonly class CreateTrelloTicketService
     use ProcessFiles;
 
     public function __construct(
-        private TrelloService $trello,
-        private TrelloCardService $trelloCardService,
+        private TrelloApiService $trello,
+        private TrelloCardApiService $trelloCardService,
         private TicketDescriptionGeneratorBase $descriptionGenerator,
         private SourceConfiguratorInterface $sourceConfigurator,
     ) {}
