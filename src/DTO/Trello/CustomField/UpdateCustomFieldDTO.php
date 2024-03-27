@@ -13,7 +13,7 @@ use OnixSystemsPHP\HyperfCore\DTO\AbstractDTO;
 
 class UpdateCustomFieldDTO extends AbstractDTO
 {
-    public string $card_id;
-    public ?string $field_id;
-    public ?string $option_id;
+    public string $cardId;
+    public ?string $fieldId;
+    public ?string $optionId;
 }

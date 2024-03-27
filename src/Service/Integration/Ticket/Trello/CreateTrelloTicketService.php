@@ -48,6 +48,7 @@ readonly class CreateTrelloTicketService
             'name' => $ticket->ticket_title,
             'desc' => $ticket->content,
             'pos' => 'top',
+            'listName' => $this->descriptionGenerator->getTrelloList($ticket),
         ]);
 
         if (!empty($members = $this->descriptionGenerator->trelloMembers($ticket))) {
@@ -56,11 +57,7 @@ readonly class CreateTrelloTicketService
             }
         }
 
-        $card = $this->trelloCardService->create(
-            $ticket->source,
-            $createCardDTO,
-            $this->descriptionGenerator->trelloLists($ticket)
-        );
+        $card = $this->trelloCardService->create($ticket->source, $createCardDTO);
         $this->trello->registerWebhook(
             $ticket->source,
             $card->id,

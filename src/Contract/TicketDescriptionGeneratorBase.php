@@ -83,7 +83,7 @@ abstract class TicketDescriptionGeneratorBase
      * @param Ticket $ticket
      * @return string|null
      */
-    public function trelloLists(Ticket $ticket): ?string
+    public function getTrelloList(Ticket $ticket): ?string
     {
         $columns = $this->sourceConfigurator->getApiConfig($ticket->source, 'trello', 'lists') ?? [];
 

@@ -16,6 +16,7 @@ class CreateCardDTO extends AbstractDTO
     public string $name;
     public string $desc;
     public string $pos;
+    public string $listName;
     public string $idMembers;
     public string $idList;
 }

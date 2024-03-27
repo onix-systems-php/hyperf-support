@@ -65,10 +65,10 @@ readonly class UpdateTrelloTicketService
                         $option = current(
                             array_filter($customField->options, fn(Option $option) => $value === $option->value->text)
                         );
-                        $this->trelloCardService->updateCustomField($ticket->source, UpdateCustomFieldDTO::make([
-                            'card_id' => $ticket->trello_id,
-                            'field_id' => $customField->id,
-                            'option_id' => $option->id
+                        $this->trelloCardService->updateCustomFieldOnCard($ticket->source, UpdateCustomFieldDTO::make([
+                            'cardId' => $ticket->trello_id,
+                            'fieldId' => $customField->id,
+                            'optionId' => $option->id
                         ]));
                     }
                 }
