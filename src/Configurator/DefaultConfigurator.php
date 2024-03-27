@@ -36,15 +36,12 @@ readonly class DefaultConfigurator implements SourceConfiguratorInterface
     public function getSourceByIntegrationAndKey(string $integration, string $key): ?string
     {
         if ($integration === 'trello') {
-            if ($this->config->get('support.trello.board_name')) {
-                return 'local';
-            }
+            return $this->config->get('support.keys_to_source.trello.' . $key);
         }
         if ($integration === 'slack') {
-            if ($this->config->get('support.slack.channel_id')) {
-                return 'local';
-            }
+            return $this->config->get('support.keys_to_source.slack.' . $key);
         }
+
         return null;
     }
 }
