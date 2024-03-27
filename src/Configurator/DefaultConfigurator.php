@@ -14,9 +14,7 @@ use OnixSystemsPHP\HyperfSupport\Contract\SourceConfiguratorInterface;
 
 readonly class DefaultConfigurator implements SourceConfiguratorInterface
 {
-    public function __construct(private ConfigInterface $config)
-    {
-    }
+    public function __construct(private ConfigInterface $config) {}
 
     /**
      * @inheritDoc
