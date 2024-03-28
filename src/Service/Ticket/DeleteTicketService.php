@@ -51,6 +51,10 @@ readonly class DeleteTicketService
         return $result;
     }
 
+    /**
+     * @param DeleteTicketDTO $deleteTicketDTO
+     * @return void
+     */
     public function validate(DeleteTicketDTO $deleteTicketDTO): void
     {
         $this->validatorFactory->make($deleteTicketDTO->toArray(), [
