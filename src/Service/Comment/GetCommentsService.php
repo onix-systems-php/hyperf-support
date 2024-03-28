@@ -9,7 +9,8 @@ declare(strict_types=1);
 
 namespace OnixSystemsPHP\HyperfSupport\Service\Comment;
 
-use Hyperf\Contract\LengthAwarePaginatorInterface;
+use OnixSystemsPHP\HyperfCore\DTO\Common\PaginationRequestDTO;
+use OnixSystemsPHP\HyperfCore\DTO\Common\PaginationResultDTO;
 use OnixSystemsPHP\HyperfSupport\Repository\CommentRepository;
 
 readonly class GetCommentsService
@@ -19,10 +20,12 @@ readonly class GetCommentsService
     /**
      * Get paginated comments.
      *
-     * @return LengthAwarePaginatorInterface
+     * @param array $filters
+     * @param PaginationRequestDTO $paginationRequestDTO
+     * @return PaginationResultDTO
      */
-    public function run(): LengthAwarePaginatorInterface
+    public function run(array $filters, PaginationRequestDTO $paginationRequestDTO): PaginationResultDTO
     {
-        return $this->commentRepository->getPaginated();
+        return $this->commentRepository->getPaginated($filters, $paginationRequestDTO);
     }
 }

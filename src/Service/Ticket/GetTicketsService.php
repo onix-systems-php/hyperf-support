@@ -10,6 +10,8 @@ declare(strict_types=1);
 namespace OnixSystemsPHP\HyperfSupport\Service\Ticket;
 
 use Hyperf\Contract\LengthAwarePaginatorInterface;
+use OnixSystemsPHP\HyperfCore\DTO\Common\PaginationRequestDTO;
+use OnixSystemsPHP\HyperfCore\DTO\Common\PaginationResultDTO;
 use OnixSystemsPHP\HyperfSupport\Repository\TicketRepository;
 
 readonly class GetTicketsService
@@ -19,10 +21,17 @@ readonly class GetTicketsService
     /**
      * Get paginated tickets.
      *
-     * @return LengthAwarePaginatorInterface
+     * @param array $filters
+     * @param PaginationRequestDTO $paginationRequestDTO
+     * @param array $contain
+     * @return PaginationResultDTO
      */
-    public function run(): LengthAwarePaginatorInterface
+    public function run(
+        array $filters,
+        PaginationRequestDTO $paginationRequestDTO,
+        array $contain = []
+    ): PaginationResultDTO
     {
-        return $this->ticketRepository->getPaginated();
+        return $this->ticketRepository->getPaginated($filters, $paginationRequestDTO, $contain);
     }
 }
