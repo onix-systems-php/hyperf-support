@@ -60,7 +60,7 @@ readonly class CreateSlackTicketService
         $message->addBlock($context);
 
         $section = new SlackMessageSection();
-        foreach ($this->sourceConfigurator->getApiConfig($ticket->source, 'slack', 'customFields') as $name) {
+        foreach ($this->sourceConfigurator->getApiConfig($ticket->source, 'slack', 'custom_fields') as $name) {
             $section->addText(
                 sprintf(
                     "*%s:*\n%s",

@@ -61,14 +61,14 @@ readonly class CreateTrelloTicketService
         $this->trello->registerWebhook(
             $ticket->source,
             $card->id,
-            $this->sourceConfigurator->getApiConfig($ticket->source, 'app', 'domain') . '/support/trello/webhook'
+            $this->sourceConfigurator->getApiConfig($ticket->source, 'trello', 'webhook_url'),
         );
         $ticket->trello_id = $card->id;
         $trelloCardBuilder = new TrelloCardBuilder($card->id, $ticket->source);
         $ticket->trello_short_link = $card->shortLink;
 
         try {
-            foreach ($this->sourceConfigurator->getApiConfig($ticket->source, 'trello', 'customFields') as $name) {
+            foreach ($this->sourceConfigurator->getApiConfig($ticket->source, 'trello', 'custom_fields') as $name) {
                 $trelloCardBuilder->addCustomField(
                     CreateCustomFieldDTO::make([
                         'card_id' => $card->id,
