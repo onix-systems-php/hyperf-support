@@ -27,5 +27,5 @@ interface SourceConfiguratorInterface
      * @param string $key
      * @return string|null
      */
-    public function getSourceByIntegrationAndKey(string $integration, string $key): ?string;
+    public function getConfigValueByIntegrationAndKey(string $integration, string $key): ?string;
 }

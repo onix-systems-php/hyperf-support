@@ -99,6 +99,6 @@ abstract class TicketDescriptionGeneratorBase
      */
     public function inTriggerLists(string $source, string $column): bool
     {
-        return in_array($column, $this->sourceConfigurator->getApiConfig($source, 'trello', 'triggerLists'));
+        return in_array($column, $this->sourceConfigurator->getApiConfig($source, 'trello', 'trigger_lists'));
     }
 }
