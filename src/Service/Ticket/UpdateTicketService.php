@@ -24,9 +24,22 @@ use OnixSystemsPHP\HyperfSupport\Repository\TicketRepository;
 use OnixSystemsPHP\HyperfSupport\Service\Comment\CreateCommentService;
 use OnixSystemsPHP\HyperfSupport\Transport\Comment\CommentTrelloTransport;
 use Psr\EventDispatcher\EventDispatcherInterface;
+use OpenApi\Attributes as OA;
 
 use function FriendsOfHyperf\Helpers\now;
 
+#[OA\Schema(
+    schema: 'UpdateTicketRequest',
+    properties: [
+        new OA\Property(property: 'title', type: 'string'),
+        new OA\Property(property: 'content', type: 'string'),
+        new OA\Property(property: 'source', type: 'string'),
+        new OA\Property(property: 'custom_fields', type: 'object', example: '{"type": "Feature Request"}'),
+        new OA\Property(property: 'page_url', type: 'string'),
+        new OA\Property(property: 'modified_by', type: 'integer'),
+    ],
+    type: 'object',
+)]
 readonly class UpdateTicketService
 {
     public function __construct(
@@ -38,12 +51,12 @@ readonly class UpdateTicketService
         private CreateCommentService $createCommentService,
         private TicketDescriptionGeneratorBase $descriptionGenerator,
         private SourceConfiguratorInterface $sourceConfigurator,
-    ) {
-    }
+    ) {}
 
     /**
      * Update a ticket.
      *
+     * @param int $id
      * @param UpdateTicketDTO $updateTicketDTO
      * @return Ticket|null
      */
@@ -69,6 +82,10 @@ readonly class UpdateTicketService
         return $ticket;
     }
 
+    /**
+     * @param UpdateTicketDTO $updateTicketDTO
+     * @return void
+     */
     public function validate(UpdateTicketDTO $updateTicketDTO): void
     {
         $this->validatorFactory->make($updateTicketDTO->toArray(), ['source' => 'required'])->validate();

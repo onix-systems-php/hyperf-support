@@ -18,7 +18,17 @@ use OnixSystemsPHP\HyperfSupport\DTO\Comments\CreateCommentDTO;
 use OnixSystemsPHP\HyperfSupport\Model\Comment;
 use OnixSystemsPHP\HyperfSupport\Repository\CommentRepository;
 use Psr\EventDispatcher\EventDispatcherInterface;
+use OpenApi\Attributes as OA;
 
+#[OA\Schema(
+    schema: 'CreateCommentRequest',
+    properties: [
+        new OA\Property(property: 'ticket_id', type: 'integer'),
+        new OA\Property(property: 'content', type: 'string'),
+        new OA\Property(property: 'creator_name', type: 'string'),
+    ],
+    type: 'object',
+)]
 readonly class CreateCommentService
 {
     public function __construct(

@@ -18,7 +18,15 @@ use OnixSystemsPHP\HyperfSupport\DTO\Comments\UpdateCommentDTO;
 use OnixSystemsPHP\HyperfSupport\Model\Comment;
 use OnixSystemsPHP\HyperfSupport\Repository\CommentRepository;
 use Psr\EventDispatcher\EventDispatcherInterface;
+use OpenApi\Attributes as OA;
 
+#[OA\Schema(
+    schema: 'UpdateCommentRequest',
+    properties: [
+        new OA\Property(property: 'content', type: 'string'),
+    ],
+    type: 'object',
+)]
 readonly class UpdateCommentService
 {
     public function __construct(

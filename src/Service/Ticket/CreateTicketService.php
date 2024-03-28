@@ -20,7 +20,20 @@ use OnixSystemsPHP\HyperfSupport\DTO\Tickets\CreateTicketDTO;
 use OnixSystemsPHP\HyperfSupport\Model\Ticket;
 use OnixSystemsPHP\HyperfSupport\Repository\TicketRepository;
 use Psr\EventDispatcher\EventDispatcherInterface;
+use OpenApi\Attributes as OA;
 
+#[OA\Schema(
+    schema: 'CreateTicketRequest',
+    properties: [
+        new OA\Property(property: 'title', type: 'string'),
+        new OA\Property(property: 'content', type: 'string'),
+        new OA\Property(property: 'source', type: 'string'),
+        new OA\Property(property: 'custom_fields', type: 'object', example: '{"type": "Feature Request"}'),
+        new OA\Property(property: 'page_url', type: 'string'),
+        new OA\Property(property: 'created_by', type: 'integer'),
+    ],
+    type: 'object',
+)]
 readonly class CreateTicketService
 {
     public function __construct(
@@ -68,7 +81,7 @@ readonly class CreateTicketService
             'created_by' => ['required', 'integer'],
         ];
 
-        $configValues = $this->sourceConfigurator->getApiConfig($createTicketDTO->source, 'ticket', 'customFields');
+        $configValues = $this->sourceConfigurator->getApiConfig($createTicketDTO->source, 'ticket', 'custom_fields');
         foreach ($configValues as $key => $value) {
             $validationRules['custom_fields.' . $key] = [
                 'required',
