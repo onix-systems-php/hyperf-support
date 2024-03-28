@@ -23,7 +23,6 @@ use OnixSystemsPHP\HyperfSupport\Service\Comment\DeleteCommentService;
 use OnixSystemsPHP\HyperfSupport\Service\Comment\GetCommentService;
 use OnixSystemsPHP\HyperfSupport\Service\Comment\GetCommentsService;
 use OnixSystemsPHP\HyperfSupport\Service\Comment\UpdateCommentService;
-use Psr\Http\Message\ResponseInterface;
 use OpenApi\Attributes as OA;
 
 #[Controller]
