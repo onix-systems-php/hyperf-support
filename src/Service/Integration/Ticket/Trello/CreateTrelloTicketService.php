@@ -50,8 +50,7 @@ readonly class CreateTrelloTicketService
             'pos' => 'top',
             'listName' => $this->descriptionGenerator->getTrelloList($ticket),
         ]);
-
-        if (!empty($members = $this->descriptionGenerator->trelloMembers($ticket))) {
+        if (!empty($members = $this->descriptionGenerator->getMentionsByIntegration('trello', $ticket))) {
             if ($idMembers = $this->trello->getMembers($ticket->source)->getIdMembers($members)) {
                 $createCardDTO->idMembers = $idMembers;
             }
@@ -61,14 +60,14 @@ readonly class CreateTrelloTicketService
         $this->trello->registerWebhook(
             $ticket->source,
             $card->id,
-            $this->sourceConfigurator->getApiConfig($ticket->source, 'trello', 'webhook_url'),
+            $this->sourceConfigurator->getApiConfig($ticket->source, 'integrations', 'trello', 'webhook_url'),
         );
         $ticket->trello_id = $card->id;
         $trelloCardBuilder = new TrelloCardBuilder($card->id, $ticket->source);
         $ticket->trello_short_link = $card->shortLink;
 
         try {
-            foreach ($this->sourceConfigurator->getApiConfig($ticket->source, 'trello', 'custom_fields') as $name) {
+            foreach ($this->sourceConfigurator->getApiConfig($ticket->source, 'integrations', 'trello', 'custom_fields') as $name) {
                 $trelloCardBuilder->addCustomField(
                     CreateCustomFieldDTO::make([
                         'card_id' => $card->id,

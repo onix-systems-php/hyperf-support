@@ -92,7 +92,7 @@ readonly class DefaultTicketDescriptionGenerator implements TicketDescriptionGen
      */
     public function getMentionsByIntegration(string $integration, Ticket $ticket): array
     {
-        $members = $this->sourceConfigurator->getApiConfig($ticket->source, strtolower($integration), 'members') ?? [];
+        $members = $this->sourceConfigurator->getApiConfig($ticket->source, 'integrations', strtolower($integration), 'members') ?? [];
 
         if (strtolower($integration) === 'trello') {
             return $members[$ticket->custom_fields['status']] ?? $members['default'] ?? [];
@@ -110,7 +110,7 @@ readonly class DefaultTicketDescriptionGenerator implements TicketDescriptionGen
      */
     public function getTrelloList(Ticket $ticket): ?string
     {
-        $columns = $this->sourceConfigurator->getApiConfig($ticket->source, 'trello', 'lists') ?? [];
+        $columns = $this->sourceConfigurator->getApiConfig($ticket->source, 'integrations', 'trello', 'lists') ?? [];
 
         return $columns[$ticket->custom_fields['status']] ?? $columns['default'] ?? null;
     }
@@ -120,7 +120,7 @@ readonly class DefaultTicketDescriptionGenerator implements TicketDescriptionGen
      */
     public function inTriggerLists(string $source, string $column): bool
     {
-        return in_array($column, $this->sourceConfigurator->getApiConfig($source, 'trello', 'trigger_lists'));
+        return in_array($column, $this->sourceConfigurator->getApiConfig($source, 'integrations', 'trello', 'trigger_lists'));
     }
 
     /**

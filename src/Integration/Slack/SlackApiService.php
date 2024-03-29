@@ -107,7 +107,7 @@ class SlackApiService
     public function delete(string $source, string $ts): bool
     {
         $client = $this->getClientInstance($source);
-        $channelId = $this->sourceConfigurator->getApiConfig($source, 'slack', 'channel_id');
+        $channelId = $this->sourceConfigurator->getApiConfig($source, 'integrations', 'slack', 'channel_id');
         $response = $client->post('chat.delete', [
             'json' => ['channel' => $channelId, 'ts' => $ts],
         ]);
@@ -150,7 +150,7 @@ class SlackApiService
     {
         if (empty($this->clients[$source])) {
             $this->clients[$source] = $this->createClient(
-                $this->sourceConfigurator->getApiConfig($source, 'slack', 'token')
+                $this->sourceConfigurator->getApiConfig($source, 'integrations', 'slack', 'token')
             );
         }
 

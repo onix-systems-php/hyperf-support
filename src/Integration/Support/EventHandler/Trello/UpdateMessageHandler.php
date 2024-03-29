@@ -38,8 +38,8 @@ readonly class UpdateMessageHandler implements EventHandlerInterface
     {
         /** @var SourceConfiguratorInterface $sourceConfigurator */
         $sourceConfigurator = make(SourceConfiguratorInterface::class);
-        $key = $sourceConfigurator->getApiConfig($entity->ticket->source, 'trello', 'key');
-        $token = $sourceConfigurator->getApiConfig($entity->ticket->source, 'trello', 'token');
+        $key = $sourceConfigurator->getApiConfig($entity->ticket->source, 'integrations', 'trello', 'key');
+        $token = $sourceConfigurator->getApiConfig($entity->ticket->source, 'integrations', 'trello', 'token');
 
         $files = collect($event->getFileLinks())->map(
             fn($link) => $this->addExternalFileService->run($link, $this->coreAuthenticatable, [

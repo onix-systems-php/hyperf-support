@@ -52,6 +52,7 @@ readonly class UpdateTrelloTicketService
                     'idList' => $this->trello->getBoard($ticket->source)->getListIdByName(
                         $this->sourceConfigurator->getApiConfig(
                             $ticket->source,
+                            'integrations',
                             'trello',
                             'lists',
                             $ticket->custom_fields['status'],

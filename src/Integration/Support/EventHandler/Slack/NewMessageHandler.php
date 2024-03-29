@@ -38,7 +38,7 @@ readonly class NewMessageHandler implements EventHandlerInterface
     {
         /** @var SourceConfiguratorInterface $sourceConfigurator */
         $sourceConfigurator = make(SourceConfiguratorInterface::class);
-        $bearer = 'Bearer ' . $sourceConfigurator->getApiConfig($entity->source, 'slack', 'token');
+        $bearer = 'Bearer ' . $sourceConfigurator->getApiConfig($entity->source, 'integrations', 'slack', 'token');
         $files = collect($event->getFileLinks())->map(
             fn($file) => $this->addExternalFileService->run($file['url_private_download'], $this->coreAuthenticatable, [
                 'headers' => ['Authorization' => $bearer],

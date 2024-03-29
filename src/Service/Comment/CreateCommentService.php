@@ -59,6 +59,7 @@ readonly class CreateCommentService
         if (!is_null($createCommentDTO->source) && !is_null($createCommentDTO->from)) {
             if ($sourceConfigurator->getApiConfig(
                 $createCommentDTO->source,
+                'integrations',
                 $createCommentDTO->from,
                 'is_private_discussion'
             )) {

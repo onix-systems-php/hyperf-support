@@ -44,7 +44,7 @@ readonly class CreateSlackTicketService
         if (!empty($ticket->trello_url)) {
             $context = new SlackMessageContext();
             $context->addImage(
-                $this->sourceConfigurator->getApiConfig($ticket->source, 'slack', 'trello_icon'),
+                $this->sourceConfigurator->getApiConfig($ticket->source, 'integrations', 'slack', 'trello_icon'),
                 'Trello'
             );
             $context->addText(sprintf("<%s|*Open Trello card*>", $ticket->trello_url));
@@ -60,7 +60,7 @@ readonly class CreateSlackTicketService
         $message->addBlock($context);
 
         $section = new SlackMessageSection();
-        foreach ($this->sourceConfigurator->getApiConfig($ticket->source, 'slack', 'custom_fields') as $name) {
+        foreach ($this->sourceConfigurator->getApiConfig($ticket->source, 'integrations', 'slack', 'custom_fields') as $name) {
             $section->addText(
                 sprintf(
                     "*%s:*\n%s",
@@ -91,7 +91,7 @@ readonly class CreateSlackTicketService
             $this->descriptionGenerator->label($ticket),
             $this->descriptionGenerator->description($ticket),
         );
-        $message->addMentions($this->descriptionGenerator->slackMentions($ticket));
+        $message->addMentions($this->descriptionGenerator->getMentionsByIntegration('slack', $ticket));
 
         if ($ticket->slack_id) {
             $message->setTs($ticket->slack_id);

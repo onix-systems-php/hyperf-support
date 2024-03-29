@@ -28,7 +28,7 @@ class SlackMessage
     {
         /** @var SourceConfiguratorInterface $sourceConfigurator */
         $this->sourceConfigurator = make(SourceConfiguratorInterface::class);
-        $this->channelId = $this->sourceConfigurator->getApiConfig($this->source, 'slack', 'channel_id');
+        $this->channelId = $this->sourceConfigurator->getApiConfig($this->source, 'integrations', 'slack', 'channel_id');
         if ($header) {
             $this->addHeader($header);
         }

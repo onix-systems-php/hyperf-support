@@ -21,7 +21,6 @@ readonly class DefaultConfigurator implements SourceConfiguratorInterface
      */
     public function getApiConfig(string $source, string ...$keys): mixed
     {
-        // TODO: add 'integrations' where this method is used for integrations
         if ($source) {
             return $this->config->get('support.' . implode('.', $keys));
         }

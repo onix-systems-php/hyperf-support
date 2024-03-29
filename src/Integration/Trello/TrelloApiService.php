@@ -112,8 +112,8 @@ class TrelloApiService
      */
     protected function signUrl(string $source, string $url, array $options = []): string
     {
-        $key = $this->sourceConfigurator->getApiConfig($source, 'trello', 'key');
-        $token = $this->sourceConfigurator->getApiConfig($source, 'trello', 'token');
+        $key = $this->sourceConfigurator->getApiConfig($source, 'integrations', 'trello', 'key');
+        $token = $this->sourceConfigurator->getApiConfig($source, 'integrations', 'trello', 'token');
 
         return self::API_URL . $url . '?' . http_build_query(array_merge(['key' => $key, 'token' => $token], $options));
     }
@@ -140,9 +140,9 @@ class TrelloApiService
      */
     private function setBoard(string $source): Board
     {
-        $boardName = $this->sourceConfigurator->getApiConfig($source, 'trello', 'boardName');
-        $token = $this->sourceConfigurator->getApiConfig($source, 'trello', 'token');
-        $key = $this->sourceConfigurator->getApiConfig($source, 'trello', 'key');
+        $boardName = $this->sourceConfigurator->getApiConfig($source, 'integrations', 'trello', 'boardName');
+        $token = $this->sourceConfigurator->getApiConfig($source, 'integrations', 'trello', 'token');
+        $key = $this->sourceConfigurator->getApiConfig($source, 'integrations', 'trello', 'key');
         if (!$key || !$token) {
             throw new BusinessException(message: 'Trello API key is not set.');
         }
