@@ -9,12 +9,20 @@ declare(strict_types=1);
 
 namespace OnixSystemsPHP\HyperfSupport;
 
+use OnixSystemsPHP\HyperfSupport\Configurator\DefaultConfigurator;
+use OnixSystemsPHP\HyperfSupport\Contract\SourceConfiguratorInterface;
+use OnixSystemsPHP\HyperfSupport\Contract\TicketDescriptionGeneratorBase;
+use OnixSystemsPHP\HyperfSupport\Generator\DefaultTicketDescriptionGenerator;
+
 class ConfigProvider
 {
     public function __invoke(): array
     {
         return [
-            'dependencies' => [],
+            'dependencies' => [
+                SourceConfiguratorInterface::class => DefaultConfigurator::class,
+                TicketDescriptionGeneratorBase::class => DefaultTicketDescriptionGenerator::class,
+            ],
             'commands' => [],
             'annotations' => [
                 'scan' => [
