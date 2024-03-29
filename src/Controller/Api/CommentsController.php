@@ -45,7 +45,6 @@ class CommentsController extends AbstractController
             new OA\Parameter(ref: '#/components/parameters/Pagination_page'),
             new OA\Parameter(ref: '#/components/parameters/Pagination_per_page'),
             new OA\Parameter(ref: '#/components/parameters/Pagination_order'),
-            new OA\Parameter(ref: '#/components/parameters/CommentFilter__creator_name'),
         ],
         responses: [
             new OA\Response(response: 200, description: '', content: new OA\JsonContent(properties: [
@@ -60,7 +59,7 @@ class CommentsController extends AbstractController
     public function index(): CommentsPaginatedResource
     {
         $paginationDTO = PaginationRequestDTO::make($this->request);
-        $commentsPaginationResult = $this->getCommentsService->run($this->request->getQueryParams(), $paginationDTO);
+        $commentsPaginationResult = $this->getCommentsService->run($paginationDTO);
 
         return CommentsPaginatedResource::make($commentsPaginationResult);
     }

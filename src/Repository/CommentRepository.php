@@ -9,7 +9,6 @@ declare(strict_types=1);
 
 namespace OnixSystemsPHP\HyperfSupport\Repository;
 
-use Hyperf\Contract\LengthAwarePaginatorInterface;
 use Hyperf\Database\Model\Collection;
 use Hyperf\Database\Model\Model;
 use OnixSystemsPHP\HyperfCore\DTO\Common\PaginationRequestDTO;
@@ -17,7 +16,6 @@ use OnixSystemsPHP\HyperfCore\DTO\Common\PaginationResultDTO;
 use OnixSystemsPHP\HyperfCore\Model\Builder;
 use OnixSystemsPHP\HyperfCore\Repository\AbstractRepository;
 use OnixSystemsPHP\HyperfSupport\Model\Comment;
-use OnixSystemsPHP\HyperfSupport\Model\Filter\CommentFilter;
 
 /**
  * @method Comment create(array $data)
@@ -33,14 +31,13 @@ class CommentRepository extends AbstractRepository
     protected string $modelClass = Comment::class;
 
     /**
-     * @param array $filters
      * @param PaginationRequestDTO $paginationRequestDTO
      * @param array $contain
      * @return PaginationResultDTO
      */
-    public function getPaginated(array $filters, PaginationRequestDTO $paginationRequestDTO, array $contain = []): PaginationResultDTO
+    public function getPaginated(PaginationRequestDTO $paginationRequestDTO, array $contain = []): PaginationResultDTO
     {
-        $query = $this->query()->filter(new CommentFilter($filters));
+        $query = $this->query();
         if (!empty($contain)) {
             $query->with($contain);
         }
