@@ -7,7 +7,7 @@ declare(strict_types=1);
  * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
  */
 
-namespace OnixSystemsPHP\HyperfSupport\Transport;
+namespace OnixSystemsPHP\HyperfSupport\Contract;
 
 use OnixSystemsPHP\HyperfSupport\Model\Comment;
 use OnixSystemsPHP\HyperfSupport\Model\Ticket;
