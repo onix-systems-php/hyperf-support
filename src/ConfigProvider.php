@@ -45,10 +45,10 @@ class ConfigProvider
                     'destination' => BASE_PATH . '/migrations/2024_02_07_105947_create_comments_table.php',
                 ],
                 [
-                    'id' => 'feature_flag_config',
-                    'description' => 'The config for onix-systems-php/hyperf-feature-flags.',
-                    'source' => __DIR__ . '/../publish/config/feature_flags.php',
-                    'destination' => BASE_PATH . '/config/autoload/feature_flags.php',
+                    'id' => 'support_config',
+                    'description' => 'The config for onix-systems-php/hyperf-support.',
+                    'source' => __DIR__ . '/../publish/config/support.php',
+                    'destination' => BASE_PATH . '/config/autoload/support.php',
                 ],
             ],
         ];
