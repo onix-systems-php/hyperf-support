@@ -37,7 +37,7 @@ class TrelloController extends AbstractController
             return $this->response->json([]);
         }
         if (!empty($data['action']['memberCreator']['username']) &&
-            $this->sourceConfigurator->getConfigValueByIntegrationAndKey(
+            $this->sourceConfigurator->isValidApiKey(
                 'trello',
                 $data['action']['memberCreator']['username']
             )

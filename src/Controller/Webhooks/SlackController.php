@@ -31,7 +31,7 @@ class SlackController extends AbstractController
         }
         $event = $data['event'];
         $channelId = $event['channel'];
-        if (!empty($channelId) && !$this->sourceConfigurator->getConfigValueByIntegrationAndKey('slack', $channelId)) {
+        if (!empty($channelId) && !$this->sourceConfigurator->isValidApiKey('slack', $channelId)) {
             return $this->response->json([]);
         }
         if (!empty($event['bot_profile']) || !empty($event['message']['bot_profile'])) {
