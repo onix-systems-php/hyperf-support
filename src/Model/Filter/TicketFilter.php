@@ -18,19 +18,19 @@ class TicketFilter extends AbstractFilter
 {
     public function title(string $param): void
     {
-        $this->builder->where('title', 'like', "%$param%");
+        $this->builder->where('title', 'ilike', "%$param%");
     }
 
     public function source(string $param): void
     {
-        $this->builder->where('source', 'like', "%$param%");
+        $this->builder->where('source', $param);
     }
 
     public function user(int $param): void
     {
         $this->builder
-            ->where('created_by', 'like', "%$param%")
-            ->orWhere('modified_by', 'like', "%$param%")
-            ->orWhere('deleted_by', 'like', "%$param%");
+            ->where('created_by', $param)
+            ->orWhere('modified_by', $param)
+            ->orWhere('deleted_by', $param);
     }
 }

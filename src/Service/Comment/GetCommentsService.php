@@ -20,12 +20,11 @@ readonly class GetCommentsService
     /**
      * Get paginated comments.
      *
-     * @param array $filters
      * @param PaginationRequestDTO $paginationRequestDTO
      * @return PaginationResultDTO
      */
-    public function run(array $filters, PaginationRequestDTO $paginationRequestDTO): PaginationResultDTO
+    public function run(PaginationRequestDTO $paginationRequestDTO): PaginationResultDTO
     {
-        return $this->commentRepository->getPaginated($filters, $paginationRequestDTO);
+        return $this->commentRepository->getPaginated($paginationRequestDTO);
     }
 }

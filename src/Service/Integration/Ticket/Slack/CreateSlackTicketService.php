@@ -12,7 +12,7 @@ namespace OnixSystemsPHP\HyperfSupport\Service\Integration\Ticket\Slack;
 use GuzzleHttp\Exception\GuzzleException;
 use Hyperf\Stringable\Str;
 use OnixSystemsPHP\HyperfSupport\Contract\SourceConfiguratorInterface;
-use OnixSystemsPHP\HyperfSupport\Contract\TicketDescriptionGeneratorBase;
+use OnixSystemsPHP\HyperfSupport\Contract\TicketDescriptionGeneratorContract;
 use OnixSystemsPHP\HyperfSupport\Integration\Exceptions\Slack\SlackException;
 use OnixSystemsPHP\HyperfSupport\Integration\Slack\SlackApiService;
 use OnixSystemsPHP\HyperfSupport\Integration\Slack\SlackMessage;
@@ -25,7 +25,7 @@ readonly class CreateSlackTicketService
     public function __construct(
         private SlackApiService $slack,
         private SourceConfiguratorInterface $sourceConfigurator,
-        private TicketDescriptionGeneratorBase $descriptionGenerator
+        private TicketDescriptionGeneratorContract $descriptionGenerator
     ) {}
 
     /**

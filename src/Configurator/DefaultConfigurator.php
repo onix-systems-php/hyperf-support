@@ -21,6 +21,7 @@ readonly class DefaultConfigurator implements SourceConfiguratorInterface
      */
     public function getApiConfig(string $source, string ...$keys): mixed
     {
+        // TODO: add 'integrations' where this method is used for integrations
         if ($source) {
             return $this->config->get('support.' . implode('.', $keys));
         }
@@ -41,5 +42,19 @@ readonly class DefaultConfigurator implements SourceConfiguratorInterface
         }
 
         return null;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function isValidApiKey(string $integration, string $key): bool
+    {
+        $source = match($integration) {
+            'trello' => $this->config->get('support.integrations.trello' . '.keys_to_source.' . $key),
+            'slack' => $this->config->get('support.integrations.slack' . '.keys_to_source.' . $key),
+            default => null,
+        };
+
+        return !is_null($source);
     }
 }

@@ -9,12 +9,12 @@ declare(strict_types=1);
 
 namespace OnixSystemsPHP\HyperfSupport\Transport\Comment;
 
+use OnixSystemsPHP\HyperfSupport\Contract\TransportInterface;
 use OnixSystemsPHP\HyperfSupport\Model\Comment;
 use OnixSystemsPHP\HyperfSupport\Model\Ticket;
 use OnixSystemsPHP\HyperfSupport\Service\Integration\Comment\Slack\CreateSlackCommentService;
 use OnixSystemsPHP\HyperfSupport\Service\Integration\Comment\Slack\DeleteSlackCommentService;
 use OnixSystemsPHP\HyperfSupport\Service\Integration\Comment\Slack\UpdateSlackCommentService;
-use OnixSystemsPHP\HyperfSupport\Transport\TransportInterface;
 
 readonly class CommentSlackTransport implements TransportInterface
 {

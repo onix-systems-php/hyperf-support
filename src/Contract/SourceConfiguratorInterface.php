@@ -28,4 +28,13 @@ interface SourceConfiguratorInterface
      * @return string|null
      */
     public function getConfigValueByIntegrationAndKey(string $integration, string $key): ?string;
+
+    /**
+     * Check if the given integration key is valid or not.
+     *
+     * @param string $integration
+     * @param string $key
+     * @return bool
+     */
+    public function isValidApiKey(string $integration, string $key): bool;
 }

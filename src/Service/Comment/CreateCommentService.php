@@ -60,7 +60,7 @@ readonly class CreateCommentService
             if ($sourceConfigurator->getApiConfig(
                 $createCommentDTO->source,
                 $createCommentDTO->from,
-                'private_discussion'
+                'is_private_discussion'
             )) {
                 return $emptyComment;
             }

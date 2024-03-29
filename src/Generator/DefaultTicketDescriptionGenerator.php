@@ -9,11 +9,14 @@ declare(strict_types=1);
 
 namespace OnixSystemsPHP\HyperfSupport\Generator;
 
-use OnixSystemsPHP\HyperfSupport\Contract\TicketDescriptionGeneratorBase;
+use OnixSystemsPHP\HyperfSupport\Contract\SourceConfiguratorInterface;
+use OnixSystemsPHP\HyperfSupport\Contract\TicketDescriptionGeneratorContract;
 use OnixSystemsPHP\HyperfSupport\Model\Ticket;
 
-class DefaultTicketDescriptionGenerator extends TicketDescriptionGeneratorBase
+readonly class DefaultTicketDescriptionGenerator implements TicketDescriptionGeneratorContract
 {
+    public function __construct(private SourceConfiguratorInterface $sourceConfigurator) {}
+
     /**
      * @inheritDoc
      */
@@ -82,6 +85,42 @@ class DefaultTicketDescriptionGenerator extends TicketDescriptionGeneratorBase
             'Bug' => sprintf("Bug Level %d: %s", $level, $this->human($level)),
             default => $type,
         };
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getMentionsByIntegration(string $integration, Ticket $ticket): array
+    {
+        $members = $this->sourceConfigurator->getApiConfig($ticket->source, strtolower($integration), 'members') ?? [];
+
+        if (strtolower($integration) === 'trello') {
+            return $members[$ticket->custom_fields['status']] ?? $members['default'] ?? [];
+        }
+
+        return match ($ticket->custom_fields['type']) {
+            'Tweak', 'Feature Request' => $members[$ticket->custom_fields['type']] ?? [],
+            'Bug' => $members['Bug'][$ticket->custom_fields['level']] ?? [],
+            default => [],
+        };
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getTrelloList(Ticket $ticket): ?string
+    {
+        $columns = $this->sourceConfigurator->getApiConfig($ticket->source, 'trello', 'lists') ?? [];
+
+        return $columns[$ticket->custom_fields['status']] ?? $columns['default'] ?? null;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function inTriggerLists(string $source, string $column): bool
+    {
+        return in_array($column, $this->sourceConfigurator->getApiConfig($source, 'trello', 'trigger_lists'));
     }
 
     /**

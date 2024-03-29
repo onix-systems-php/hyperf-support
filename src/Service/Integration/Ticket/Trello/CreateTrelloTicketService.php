@@ -12,7 +12,7 @@ namespace OnixSystemsPHP\HyperfSupport\Service\Integration\Ticket\Trello;
 use GuzzleHttp\Exception\GuzzleException;
 use OnixSystemsPHP\HyperfSupport\Builder\TrelloCardBuilder;
 use OnixSystemsPHP\HyperfSupport\Contract\SourceConfiguratorInterface;
-use OnixSystemsPHP\HyperfSupport\Contract\TicketDescriptionGeneratorBase;
+use OnixSystemsPHP\HyperfSupport\Contract\TicketDescriptionGeneratorContract;
 use OnixSystemsPHP\HyperfSupport\DTO\Trello\Card\CreateCardDTO;
 use OnixSystemsPHP\HyperfSupport\DTO\Trello\Cover\CreateCardCoverDTO;
 use OnixSystemsPHP\HyperfSupport\DTO\Trello\CustomField\CreateCustomFieldDTO;
@@ -30,7 +30,7 @@ readonly class CreateTrelloTicketService
     public function __construct(
         private TrelloApiService $trello,
         private TrelloCardApiService $trelloCardService,
-        private TicketDescriptionGeneratorBase $descriptionGenerator,
+        private TicketDescriptionGeneratorContract $descriptionGenerator,
         private SourceConfiguratorInterface $sourceConfigurator,
     ) {}
 

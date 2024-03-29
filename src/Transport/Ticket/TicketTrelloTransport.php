@@ -10,13 +10,13 @@ declare(strict_types=1);
 namespace OnixSystemsPHP\HyperfSupport\Transport\Ticket;
 
 use GuzzleHttp\Exception\GuzzleException;
+use OnixSystemsPHP\HyperfSupport\Contract\TransportInterface;
 use OnixSystemsPHP\HyperfSupport\Integration\Exceptions\Trello\TrelloException;
 use OnixSystemsPHP\HyperfSupport\Model\Comment;
 use OnixSystemsPHP\HyperfSupport\Model\Ticket;
 use OnixSystemsPHP\HyperfSupport\Service\Integration\Ticket\Trello\CreateTrelloTicketService;
 use OnixSystemsPHP\HyperfSupport\Service\Integration\Ticket\Trello\DeleteTrelloTicketService;
 use OnixSystemsPHP\HyperfSupport\Service\Integration\Ticket\Trello\UpdateTrelloTicketService;
-use OnixSystemsPHP\HyperfSupport\Transport\TransportInterface;
 
 readonly class TicketTrelloTransport implements TransportInterface
 {

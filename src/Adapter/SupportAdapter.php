@@ -10,9 +10,9 @@ declare(strict_types=1);
 namespace OnixSystemsPHP\HyperfSupport\Adapter;
 
 use OnixSystemsPHP\HyperfSupport\Contract\SourceConfiguratorInterface;
+use OnixSystemsPHP\HyperfSupport\Contract\TransportInterface;
 use OnixSystemsPHP\HyperfSupport\Model\Comment;
 use OnixSystemsPHP\HyperfSupport\Model\Ticket;
-use OnixSystemsPHP\HyperfSupport\Transport\TransportInterface;
 use RuntimeException;
 
 use function Hyperf\Support\make;

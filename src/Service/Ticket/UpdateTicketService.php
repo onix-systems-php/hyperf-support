@@ -15,7 +15,7 @@ use OnixSystemsPHP\HyperfCore\Contract\CorePolicyGuard;
 use OnixSystemsPHP\HyperfSupport\Adapter\SupportAdapter;
 use OnixSystemsPHP\HyperfSupport\Constant\Actions;
 use OnixSystemsPHP\HyperfSupport\Contract\SourceConfiguratorInterface;
-use OnixSystemsPHP\HyperfSupport\Contract\TicketDescriptionGeneratorBase;
+use OnixSystemsPHP\HyperfSupport\Contract\TicketDescriptionGeneratorContract;
 use OnixSystemsPHP\HyperfSupport\DTO\Comments\CreateCommentDTO;
 use OnixSystemsPHP\HyperfSupport\DTO\Tickets\UpdateTicketDTO;
 use OnixSystemsPHP\HyperfSupport\Enum\TicketCreator;
@@ -49,7 +49,7 @@ readonly class UpdateTicketService
         private SupportAdapter $supportAdapter,
         private EventDispatcherInterface $eventDispatcher,
         private CreateCommentService $createCommentService,
-        private TicketDescriptionGeneratorBase $descriptionGenerator,
+        private TicketDescriptionGeneratorContract $descriptionGenerator,
         private SourceConfiguratorInterface $sourceConfigurator,
     ) {}
 

@@ -11,7 +11,7 @@ namespace OnixSystemsPHP\HyperfSupport;
 
 use OnixSystemsPHP\HyperfSupport\Configurator\DefaultConfigurator;
 use OnixSystemsPHP\HyperfSupport\Contract\SourceConfiguratorInterface;
-use OnixSystemsPHP\HyperfSupport\Contract\TicketDescriptionGeneratorBase;
+use OnixSystemsPHP\HyperfSupport\Contract\TicketDescriptionGeneratorContract;
 use OnixSystemsPHP\HyperfSupport\Generator\DefaultTicketDescriptionGenerator;
 
 class ConfigProvider
@@ -21,7 +21,7 @@ class ConfigProvider
         return [
             'dependencies' => [
                 SourceConfiguratorInterface::class => DefaultConfigurator::class,
-                TicketDescriptionGeneratorBase::class => DefaultTicketDescriptionGenerator::class,
+                TicketDescriptionGeneratorContract::class => DefaultTicketDescriptionGenerator::class,
             ],
             'commands' => [],
             'annotations' => [
