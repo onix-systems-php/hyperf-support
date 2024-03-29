@@ -45,6 +45,8 @@ readonly class NewMessageHandler implements EventHandlerInterface
             ])
         );
         $this->createCommentService->run(CreateCommentDTO::make([
+            'from' => 'slack',
+            'source' => $entity->source,
             'ticket_id' => $entity->id,
             'content' => $event->getText(),
             'creator_name' => $event->getUsername(),

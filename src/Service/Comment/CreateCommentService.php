@@ -14,11 +14,14 @@ use OnixSystemsPHP\HyperfActionsLog\Event\Action;
 use OnixSystemsPHP\HyperfCore\Contract\CorePolicyGuard;
 use OnixSystemsPHP\HyperfSupport\Adapter\SupportAdapter;
 use OnixSystemsPHP\HyperfSupport\Constant\Actions;
+use OnixSystemsPHP\HyperfSupport\Contract\SourceConfiguratorInterface;
 use OnixSystemsPHP\HyperfSupport\DTO\Comments\CreateCommentDTO;
 use OnixSystemsPHP\HyperfSupport\Model\Comment;
 use OnixSystemsPHP\HyperfSupport\Repository\CommentRepository;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use OpenApi\Attributes as OA;
+
+use function Hyperf\Support\make;
 
 #[OA\Schema(
     schema: 'CreateCommentRequest',
@@ -49,6 +52,19 @@ readonly class CreateCommentService
     public function run(CreateCommentDTO $createCommentDTO, array $shouldBeSkipped = []): Comment
     {
         $this->validate($createCommentDTO);
+
+        /** @var SourceConfiguratorInterface $sourceConfigurator */
+        $sourceConfigurator = make(SourceConfiguratorInterface::class);
+        $emptyComment = new Comment();
+        if (!is_null($createCommentDTO->source) && !is_null($createCommentDTO->from)) {
+            if ($sourceConfigurator->getApiConfig(
+                $createCommentDTO->source,
+                $createCommentDTO->from,
+                'private_discussion'
+            )) {
+                return $emptyComment;
+            }
+        }
 
         $this->policyGuard?->check('create', new Comment());
         $comment = $this->commentRepository->create($createCommentDTO->toArray());

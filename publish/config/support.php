@@ -37,7 +37,7 @@ return [
         'mentions' => [
             // 'Tweak' => [],
             // 'Feature Request' => [''],
-            //'Bug' => [
+            // 'Bug' => [
             //    1 => [''],
             //    2 => [''],
             //    3 => [''],
@@ -45,7 +45,9 @@ return [
             //],
             'default' => [],
         ],
-        'custom_fields' => ['type', 'status']
+        'custom_fields' => ['type', 'status'],
+        // Is discussion in Slack under the ticket should be private or not.
+        // 'private_discussions' =>
     ],
     'trello' => [
         // Fulfill with your API keys and board name.
@@ -72,6 +74,8 @@ return [
             // 'In Progress',
             // 'Done',
         ],
+        // Is discussion in Trello under the ticket should be private or not.
+        // 'private_discussions' =>
     ],
     'ticket' => [
         'done_status' => 'Done',
