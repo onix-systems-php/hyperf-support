@@ -32,11 +32,11 @@ readonly class SupportAdapter
     public function run(string $event, Ticket|Comment $entity, array $shouldBeSkipped = []): void
     {
         [$action, $type] = explode('-', $event);
-        if ($entity instanceof Ticket) {
-            $transports = $this->sourceConfigurator->getApiConfig($entity->source, 'transports', $type);
-        } else {
-            $transports = $this->sourceConfigurator->getApiConfig($entity->ticket->source, 'transports', $type);
-        }
+        $transports = match(true) {
+            $entity instanceof Ticket => $this->sourceConfigurator->getApiConfig($entity->source, 'transports', $type),
+            $entity instanceof Comment => $this->sourceConfigurator->getApiConfig($entity->ticket->source, 'transports', $type),
+            default => [],
+        };
         foreach ($transports as $transport) {
             if (in_array($transport, $shouldBeSkipped)) {
                 continue;
