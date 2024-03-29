@@ -8,7 +8,9 @@
   ],
   "description": "Support module for Hyperf web applications",
   "extra": {
-    "config-files": ["publish/config/support.php"]
+    "hyperf": {
+      "config": "OnixSystemsPHP\\HyperfSupport\\ConfigProvider"
+    }
   },
   "autoload": {
     "psr-4": {
