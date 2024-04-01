@@ -98,7 +98,7 @@ class TrelloCardBuilder
             return;
         }
         $this->trelloCardService->update($this->source, $card->id, UpdateCardDTO::make([
-            'desc' => $card->desc . "\n\n" . implode("\n\n", $this->failedCustomFieldsText)
+            'desc' => $card->desc . "\n\n" . implode("\n\n", $this->failedCustomFieldsText),
         ]));
     }
 
@@ -109,7 +109,7 @@ class TrelloCardBuilder
      * @param string $value
      * @return void
      */
-    public function addFailedCustomField(string $name, string $value): void
+    public function addFailedCustomField(string $name, string|int $value): void
     {
         $this->failedCustomFieldsText[] = sprintf('**%s: %s**', $name, $value);
     }
