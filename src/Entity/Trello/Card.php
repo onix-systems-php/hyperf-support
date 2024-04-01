@@ -12,8 +12,8 @@ readonly class Card
     public function __construct(
         public string $id,
         public string $desc,
-        public string $shortLink,
-        public string $shortUrl,
+        public string $shortLink = '',
+        public string $shortUrl = '',
         array $attachments = []
     ) {
         $this->attachments = array_map(function ($attachment) {

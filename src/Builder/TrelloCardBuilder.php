@@ -26,7 +26,7 @@ class TrelloCardBuilder
 {
     private TrelloCardApiService $trelloCardService;
     private TrelloCustomFieldApiService $trelloCustomFieldService;
-    public array $failedCustomFieldsText = [];
+    private array $failedCustomFieldsText = [];
 
     public function __construct(private readonly string $cardId, private readonly string $source)
     {
@@ -79,7 +79,7 @@ class TrelloCardBuilder
     {
         $result = $this->trelloCustomFieldService->create($this->source, $createCustomFieldDTO);
         if (is_null($result)) {
-            $this->failedCustomFieldsText[] = sprintf('**%s: %s**', $createCustomFieldDTO->field_name, $createCustomFieldDTO->value);
+            $this->addFailedCustomField($createCustomFieldDTO->field_name, $createCustomFieldDTO->value);
         }
 
         return $this;
@@ -92,10 +92,25 @@ class TrelloCardBuilder
      * @throws TrelloException
      * @throws TrelloCardNotFoundException
      */
-    public function writeFailedCustomFieldToCard(Card $card): void
+    public function writeFailedCustomFieldsToCard(Card $card): void
     {
+        if (empty($this->failedCustomFieldsText)) {
+            return;
+        }
         $this->trelloCardService->update($this->source, $card->id, UpdateCardDTO::make([
             'desc' => $card->desc . "\n\n" . implode("\n\n", $this->failedCustomFieldsText)
         ]));
+    }
+
+    /**
+     * Add failed custom fields.
+     *
+     * @param string $name
+     * @param string $value
+     * @return void
+     */
+    public function addFailedCustomField(string $name, string $value): void
+    {
+        $this->failedCustomFieldsText[] = sprintf('**%s: %s**', $name, $value);
     }
 }

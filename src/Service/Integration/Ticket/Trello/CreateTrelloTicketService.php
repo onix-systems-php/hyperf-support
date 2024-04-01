@@ -19,8 +19,8 @@ use OnixSystemsPHP\HyperfSupport\DTO\Trello\CustomField\CreateCustomFieldDTO;
 use OnixSystemsPHP\HyperfSupport\Entity\Trello\Attachment;
 use OnixSystemsPHP\HyperfSupport\Integration\Exceptions\Trello\TrelloException;
 use OnixSystemsPHP\HyperfSupport\Integration\Trello\ProcessFiles;
-use OnixSystemsPHP\HyperfSupport\Integration\Trello\TrelloCardApiService;
 use OnixSystemsPHP\HyperfSupport\Integration\Trello\TrelloApiService;
+use OnixSystemsPHP\HyperfSupport\Integration\Trello\TrelloCardApiService;
 use OnixSystemsPHP\HyperfSupport\Model\Ticket;
 
 readonly class CreateTrelloTicketService
@@ -84,9 +84,7 @@ readonly class CreateTrelloTicketService
             if ($ticket->page_url) {
                 $trelloCardBuilder->addAttachment(new Attachment('Page With an Issue', url: $ticket->page_url));
             }
-            if (!empty($trelloCardBuilder->failedCustomFieldsText)) {
-                $trelloCardBuilder->writeFailedCustomFieldToCard($card);
-            }
+            $trelloCardBuilder->writeFailedCustomFieldsToCard($card);
             $ticket = $this->processFiles($ticket);
         } catch (TrelloException $e) {
             $this->trelloCardService->delete($ticket->source, $card->id);
