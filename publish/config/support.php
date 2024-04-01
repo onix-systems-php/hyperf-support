@@ -18,6 +18,7 @@ return [
         // 'icon' => '',
         // 'name' => '',
         // 'team_name' => ''
+        // 'user_model_namespace' => 'App\\Model\\User'
     ],
     'transports' => [
         'ticket' => [

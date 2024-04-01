@@ -16,7 +16,10 @@ use Hyperf\Database\Model\SoftDeletes;
 use OnixSystemsPHP\HyperfCore\Model\AbstractModel;
 use OnixSystemsPHP\HyperfFileUpload\Model\Behaviour\FileRelations;
 use OnixSystemsPHP\HyperfSupport\Cast\CustomFieldCast;
+use OnixSystemsPHP\HyperfSupport\Contract\SourceConfiguratorInterface;
 use OnixSystemsPHP\HyperfSupport\Contract\SupportUserInterface;
+
+use function Hyperf\Support\make;
 
 /**
  * Ticket
@@ -95,7 +98,14 @@ class Ticket extends AbstractModel
      */
     public function creator(): BelongsTo
     {
-        return $this->belongsTo('App\\Model\\User', 'created_by', 'id');
+        /** @var SourceConfiguratorInterface $sourceConfigurator */
+        $sourceConfigurator = make(SourceConfiguratorInterface::class);
+
+        return $this->belongsTo(
+            $sourceConfigurator->getApiConfig($this->source, 'app', 'user_model_namespace'),
+            'created_by',
+            'id',
+        );
     }
 
     /**
@@ -103,7 +113,14 @@ class Ticket extends AbstractModel
      */
     public function editor(): BelongsTo
     {
-        return $this->belongsTo('App\\Model\\User', 'modified_by', 'id');
+        /** @var SourceConfiguratorInterface $sourceConfigurator */
+        $sourceConfigurator = make(SourceConfiguratorInterface::class);
+
+        return $this->belongsTo(
+            $sourceConfigurator->getApiConfig($this->source, 'app', 'user_model_namespace'),
+            'modified_by',
+            'id',
+        );
     }
 
     /**
@@ -111,7 +128,14 @@ class Ticket extends AbstractModel
      */
     public function archiver(): BelongsTo
     {
-        return $this->belongsTo('App\\Model\\User', 'deleted_by', 'id');
+        /** @var SourceConfiguratorInterface $sourceConfigurator */
+        $sourceConfigurator = make(SourceConfiguratorInterface::class);
+
+        return $this->belongsTo(
+            $sourceConfigurator->getApiConfig($this->source, 'app', 'user_model_namespace'),
+            'deleted_by',
+            'id',
+        );
     }
 
     /**
