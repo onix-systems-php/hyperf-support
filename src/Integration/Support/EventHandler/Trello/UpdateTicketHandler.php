@@ -34,8 +34,8 @@ readonly class UpdateTicketHandler implements EventHandlerInterface
             $this->updateTicketService->run($entity->id, UpdateTicketDTO::make([
                 'custom_fields' => [
                     'status' => array_flip(
-                        $sourceConfigurator->getApiConfig($entity->source, 'integrations', 'trello', 'columns')
-                    )[$event->getTicketStatus()]
+                        $sourceConfigurator->getApiConfig($entity->source, 'integrations', 'trello', 'lists')
+                    )[$event->getTicketStatus()],
                 ],
             ]));
         }
