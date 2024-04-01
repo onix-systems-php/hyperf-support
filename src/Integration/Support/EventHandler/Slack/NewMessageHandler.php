@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 namespace OnixSystemsPHP\HyperfSupport\Integration\Support\EventHandler\Slack;
 
-use OnixSystemsPHP\HyperfCore\Contract\CoreAuthenticatable;
+use OnixSystemsPHP\HyperfCore\Contract\CoreAuthenticatableProvider;
 use OnixSystemsPHP\HyperfFileUpload\Service\AddExternalFileService;
 use OnixSystemsPHP\HyperfSupport\Contract\SourceConfiguratorInterface;
 use OnixSystemsPHP\HyperfSupport\DTO\Comments\CreateCommentDTO;
@@ -28,7 +28,7 @@ readonly class NewMessageHandler implements EventHandlerInterface
     public function __construct(
         private AddExternalFileService $addExternalFileService,
         private CreateCommentService $createCommentService,
-        private ?CoreAuthenticatable $coreAuthenticatable
+        private ?CoreAuthenticatableProvider $user
     ) {}
 
     /**
@@ -40,7 +40,7 @@ readonly class NewMessageHandler implements EventHandlerInterface
         $sourceConfigurator = make(SourceConfiguratorInterface::class);
         $bearer = 'Bearer ' . $sourceConfigurator->getApiConfig($entity->source, 'integrations', 'slack', 'token');
         $files = collect($event->getFileLinks())->map(
-            fn($file) => $this->addExternalFileService->run($file['url_private_download'], $this->coreAuthenticatable, [
+            fn($file) => $this->addExternalFileService->run($file['url_private_download'], $this->user, [
                 'headers' => ['Authorization' => $bearer],
             ])
         );

@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 namespace OnixSystemsPHP\HyperfSupport\Integration\Support\EventHandler\Trello;
 
-use OnixSystemsPHP\HyperfCore\Contract\CoreAuthenticatable;
+use OnixSystemsPHP\HyperfCore\Contract\CoreAuthenticatableProvider;
 use OnixSystemsPHP\HyperfFileUpload\Service\AddExternalFileService;
 use OnixSystemsPHP\HyperfSupport\Contract\SourceConfiguratorInterface;
 use OnixSystemsPHP\HyperfSupport\DTO\Comments\UpdateCommentDTO;
@@ -28,7 +28,7 @@ readonly class UpdateMessageHandler implements EventHandlerInterface
     public function __construct(
         private AddExternalFileService $addExternalFileService,
         private UpdateCommentService $updateCommentService,
-        private ?CoreAuthenticatable $coreAuthenticatable
+        private ?CoreAuthenticatableProvider $userProvider
     ) {}
 
     /**
@@ -42,7 +42,7 @@ readonly class UpdateMessageHandler implements EventHandlerInterface
         $token = $sourceConfigurator->getApiConfig($entity->ticket->source, 'integrations', 'trello', 'token');
 
         $files = collect($event->getFileLinks())->map(
-            fn($link) => $this->addExternalFileService->run($link, $this->coreAuthenticatable, [
+            fn($link) => $this->addExternalFileService->run($link, $this->userProvider?->user(), [
                 'headers' => [
                     'Authorization' => "OAuth oauth_consumer_key=\"$key\", oauth_token=\"$token\""
                 ]
