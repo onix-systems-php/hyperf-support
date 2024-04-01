@@ -15,7 +15,6 @@ use Hyperf\Database\Model\Relations\MorphMany;
 use Hyperf\Database\Model\SoftDeletes;
 use OnixSystemsPHP\HyperfCore\Model\AbstractModel;
 use OnixSystemsPHP\HyperfFileUpload\Model\Behaviour\FileRelations;
-use OnixSystemsPHP\HyperfSupport\Service\Integration\Traits\FormatHelper;
 
 /**
  * Comment
@@ -38,7 +37,6 @@ use OnixSystemsPHP\HyperfSupport\Service\Integration\Traits\FormatHelper;
 class Comment extends AbstractModel
 {
     use FileRelations;
-    use FormatHelper;
     use SoftDeletes;
 
     public $fileRelations = [
@@ -76,14 +74,5 @@ class Comment extends AbstractModel
     public function ticket(): BelongsTo
     {
         return $this->belongsTo(Ticket::class);
-    }
-
-    /**
-     * @param string $value
-     * @return void
-     */
-    public function setContentAttribute(string $value): void
-    {
-        $this->attributes['content'] = $this->formatComment($value);
     }
 }
