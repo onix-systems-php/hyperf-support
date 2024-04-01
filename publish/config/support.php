@@ -48,7 +48,8 @@ return [
             // Fulfill with your API keys and board name.
             // 'key' => '',
             // 'token' => '',
-            // 'boardName' => '',
+            // 'webhook_url' => '' . '/v1/support/webhooks/trello',
+            // 'board_name' => '',
             'members' => [
                 // Fulfill with trello usernames
                 // 'Bug' => [''],

@@ -84,7 +84,7 @@ readonly class CreateTrelloTicketService
             if ($ticket->page_url) {
                 $trelloCardBuilder->addAttachment(new Attachment('Page With an Issue', url: $ticket->page_url));
             }
-            if (!empty($trelloCardBuilder->customFieldToString)) {
+            if (!empty($trelloCardBuilder->failedCustomFieldsText)) {
                 $trelloCardBuilder->writeFailedCustomFieldToCard($card);
             }
             $ticket = $this->processFiles($ticket);

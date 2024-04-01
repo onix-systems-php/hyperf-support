@@ -26,7 +26,7 @@ class TrelloCardBuilder
 {
     private TrelloCardApiService $trelloCardService;
     private TrelloCustomFieldApiService $trelloCustomFieldService;
-    private array $failedCustomFieldsText = [];
+    public array $failedCustomFieldsText = [];
 
     public function __construct(private readonly string $cardId, private readonly string $source)
     {
@@ -70,10 +70,10 @@ class TrelloCardBuilder
     /**
      * Add custom field on card.
      *
-     * @param CustomField $customField
+     * @param CreateCustomFieldDTO $createCustomFieldDTO
      * @return $this
-     * @throws TrelloException
      * @throws GuzzleException
+     * @throws TrelloException
      */
     public function addCustomField(CreateCustomFieldDTO $createCustomFieldDTO): self
     {

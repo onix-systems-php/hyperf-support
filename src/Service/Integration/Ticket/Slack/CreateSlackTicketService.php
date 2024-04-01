@@ -97,7 +97,9 @@ readonly class CreateSlackTicketService
             $message->setTs($ticket->slack_id);
         }
 
-        array_map(fn($file) => $message->addImage($file['url'], 'body_image'), (array)$ticket->files);
+        foreach ($ticket->files as $file) {
+            $message->addImage($file->url, 'body_image');
+        }
 
         $result = match (empty($message->getTs())) {
             true => $this->slack->postMessage($ticket->source, $message),

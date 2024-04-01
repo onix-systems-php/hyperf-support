@@ -140,7 +140,7 @@ class TrelloApiService
      */
     private function setBoard(string $source): Board
     {
-        $boardName = $this->sourceConfigurator->getApiConfig($source, 'integrations', 'trello', 'boardName');
+        $boardName = $this->sourceConfigurator->getApiConfig($source, 'integrations', 'trello', 'board_name');
         $token = $this->sourceConfigurator->getApiConfig($source, 'integrations', 'trello', 'token');
         $key = $this->sourceConfigurator->getApiConfig($source, 'integrations', 'trello', 'key');
         if (!$key || !$token) {
