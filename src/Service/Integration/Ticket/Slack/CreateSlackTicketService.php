@@ -56,7 +56,6 @@ readonly class CreateSlackTicketService
             $this->sourceConfigurator->getApiConfig($ticket->source, 'app', 'icon'),
             $this->sourceConfigurator->getApiConfig($ticket->source, 'app', 'name')
         );
-        $context->addText(sprintf("<%s|*Open Ticket*>", $ticket->page_url));
         $message->addBlock($context);
 
         $section = new SlackMessageSection();
