@@ -120,7 +120,7 @@ readonly class CreateSlackTicketService
     public function getTextForModifier(Ticket $ticket): ?string
     {
         $format = match (true) {
-            !empty($ticket->destroyer) => sprintf("*Archived by:*\n%s", $ticket->destroyer->getUsername()),
+            !empty($ticket->archiver) => sprintf("*Archived by:*\n%s", $ticket->archiver->getUsername()),
             !empty($ticket->editor) => sprintf("*Modified by:*\n%s", $ticket->editor->getUsername()),
             default => null,
         };

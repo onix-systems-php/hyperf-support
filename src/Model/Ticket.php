@@ -42,7 +42,7 @@ use OnixSystemsPHP\HyperfSupport\Contract\SupportUserInterface;
  * @property string $url
  * @property-read SupportUserInterface $creator
  * @property-read SupportUserInterface $editor
- * @property-read SupportUserInterface $destroyer
+ * @property-read SupportUserInterface $archiver
  * @property-read MorphMany $files
  */
 class Ticket extends AbstractModel
@@ -109,7 +109,7 @@ class Ticket extends AbstractModel
     /**
      * @return BelongsTo
      */
-    public function destroyer(): BelongsTo
+    public function archiver(): BelongsTo
     {
         return $this->belongsTo('App\\Model\\User', 'deleted_by', 'id');
     }
