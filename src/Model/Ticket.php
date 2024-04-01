@@ -102,7 +102,7 @@ class Ticket extends AbstractModel
         $sourceConfigurator = make(SourceConfiguratorInterface::class);
 
         return $this->belongsTo(
-            $sourceConfigurator->getApiConfig($this->source, 'app', 'user_model_namespace'),
+            $sourceConfigurator->getApiConfig($this->source, 'app', 'user_model_class'),
             'created_by',
             'id',
         );
@@ -117,7 +117,7 @@ class Ticket extends AbstractModel
         $sourceConfigurator = make(SourceConfiguratorInterface::class);
 
         return $this->belongsTo(
-            $sourceConfigurator->getApiConfig($this->source, 'app', 'user_model_namespace'),
+            $sourceConfigurator->getApiConfig($this->source, 'app', 'user_model_class'),
             'modified_by',
             'id',
         );
@@ -132,7 +132,7 @@ class Ticket extends AbstractModel
         $sourceConfigurator = make(SourceConfiguratorInterface::class);
 
         return $this->belongsTo(
-            $sourceConfigurator->getApiConfig($this->source, 'app', 'user_model_namespace'),
+            $sourceConfigurator->getApiConfig($this->source, 'app', 'user_model_class'),
             'deleted_by',
             'id',
         );
