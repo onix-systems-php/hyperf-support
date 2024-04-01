@@ -195,7 +195,7 @@ class SlackMessage
         $mention = '';
         array_map(function ($username) use (&$mention) {
             $mention .= "<@$username> ";
-        }, $usernames);
+        }, array_filter($usernames));
         if (!empty($mention)) {
             $section->addText($mention);
             $this->addBlock($section);

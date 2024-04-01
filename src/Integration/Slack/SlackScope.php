@@ -11,7 +11,7 @@ namespace OnixSystemsPHP\HyperfSupport\Integration\Slack;
 
 abstract class SlackScope
 {
-    protected array $fields = [];
+    protected array $fields;
 
     /**
      * Get options.
