@@ -34,7 +34,6 @@ readonly class UpdateTrelloTicketService
         private TrelloCustomFieldApiService $trelloCustomField,
         private TrelloApiService $trello,
         private SourceConfiguratorInterface $sourceConfigurator,
-        private TrelloCardBuilder $trelloCardBuilder,
     ) {}
 
     /**
@@ -84,6 +83,7 @@ readonly class UpdateTrelloTicketService
      */
     private function updateCustomFields(Ticket $ticket): void
     {
+        $trelloCardBuilder = new TrelloCardBuilder($ticket->trello_id, $ticket->source);
         foreach ($ticket->custom_fields as $name => $value) {
             $customField = $this->trelloCustomField->getCustomFieldByName($ticket->source, ucfirst($name));
             if (!is_null($customField)) {
@@ -97,9 +97,9 @@ readonly class UpdateTrelloTicketService
                     'optionId' => $option?->id,
                 ]));
             } else {
-                $this->trelloCardBuilder->addFailedCustomField($name, $value);
+                $trelloCardBuilder->addFailedCustomField($name, $value);
             }
         }
-        $this->trelloCardBuilder->writeFailedCustomFieldsToCard(new Card($ticket->trello_id, $ticket->content));
+        $trelloCardBuilder->writeFailedCustomFieldsToCard(new Card($ticket->trello_id, $ticket->content));
     }
 }
