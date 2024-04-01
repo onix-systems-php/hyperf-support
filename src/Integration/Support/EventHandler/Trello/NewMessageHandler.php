@@ -44,12 +44,12 @@ readonly class NewMessageHandler implements EventHandlerInterface
         $files = collect($event->getFileLinks())->map(
             fn($link) => $this->addExternalFileService->run($link, $this->userProvider->user(), [
                 'headers' => [
-                    'Authorization' => "OAuth oauth_consumer_key=\"$key\", oauth_token=\"$token\""
-                ]
+                    'Authorization' => "OAuth oauth_consumer_key=\"$key\", oauth_token=\"$token\"",
+                ],
             ])
         );
         $this->createCommentService->run(CreateCommentDTO::make([
-            'from' => 'slack',
+            'from' => 'trello',
             'source' => $entity->source,
             'ticket_id' => $entity->id,
             'content' => $event->getText(),
