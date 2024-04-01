@@ -13,9 +13,9 @@ use Exception;
 use GuzzleHttp\Exception\GuzzleException;
 use OnixSystemsPHP\HyperfSupport\DTO\Trello\Comment\CreateCommentDTO;
 use OnixSystemsPHP\HyperfSupport\DTO\Trello\Comment\UpdateCommentDTO;
+use OnixSystemsPHP\HyperfSupport\Entity\Trello\Comment;
 use OnixSystemsPHP\HyperfSupport\Integration\Exceptions\Trello\TrelloCardNotFoundException;
 use OnixSystemsPHP\HyperfSupport\Integration\Exceptions\Trello\TrelloException;
-use OnixSystemsPHP\HyperfSupport\Model\Comment;
 use Symfony\Component\HttpFoundation\Response;
 
 use function Hyperf\Collection\collect;
@@ -26,9 +26,11 @@ class TrelloCommentApiService extends TrelloApiService
      * Create a comment on a card.
      * https://developer.atlassian.com/cloud/trello/rest/api-group-cards/#api-cards-id-actions-comments-post
      *
+     * @param string $source
      * @param CreateCommentDTO $createCommentDTO
      * @return Comment|null
      * @throws GuzzleException
+     * @throws TrelloCardNotFoundException
      * @throws TrelloException
      */
     public function create(string $source, CreateCommentDTO $createCommentDTO): ?Comment
