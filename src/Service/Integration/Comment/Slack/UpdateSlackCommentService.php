@@ -14,9 +14,12 @@ use OnixSystemsPHP\HyperfSupport\Integration\Exceptions\Slack\SlackException;
 use OnixSystemsPHP\HyperfSupport\Integration\Slack\SlackApiService;
 use OnixSystemsPHP\HyperfSupport\Integration\Slack\SlackMessage;
 use OnixSystemsPHP\HyperfSupport\Model\Comment;
+use OnixSystemsPHP\HyperfSupport\Service\Integration\Traits\FormatHelper;
 
 readonly class UpdateSlackCommentService
 {
+    use FormatHelper;
+
     public function __construct(private SlackApiService $slack) {}
 
     /**
@@ -30,7 +33,7 @@ readonly class UpdateSlackCommentService
     public function run(Comment $comment): Comment
     {
         $message = new SlackMessage($comment->ticket->source);
-        $message->setPlainText($comment->content);
+        $message->setPlainText($this->getCommentMessage($comment));
         $message->setTs($comment->slack_comment_id);
         $this->slack->updateMessage($comment->ticket->source, $message);
 

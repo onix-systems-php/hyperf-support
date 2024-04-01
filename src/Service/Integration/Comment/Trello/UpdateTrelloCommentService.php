@@ -14,9 +14,12 @@ use OnixSystemsPHP\HyperfSupport\DTO\Trello\Comment\UpdateCommentDTO;
 use OnixSystemsPHP\HyperfSupport\Integration\Exceptions\Trello\TrelloException;
 use OnixSystemsPHP\HyperfSupport\Integration\Trello\TrelloCommentApiService;
 use OnixSystemsPHP\HyperfSupport\Model\Comment;
+use OnixSystemsPHP\HyperfSupport\Service\Integration\Traits\FormatHelper;
 
 readonly class UpdateTrelloCommentService
 {
+    use FormatHelper;
+
     public function __construct(private TrelloCommentApiService $trelloComment) {}
 
     /**
@@ -32,7 +35,7 @@ readonly class UpdateTrelloCommentService
         $this->trelloComment->update($comment->ticket->source, UpdateCommentDTO::make([
             'id' => $comment->trello_comment_id,
             'card_id' => $comment->ticket->trello_id,
-            'text' => $comment->content,
+            'text' => $this->getCommentMessage($comment),
         ]));
 
         return $comment;
