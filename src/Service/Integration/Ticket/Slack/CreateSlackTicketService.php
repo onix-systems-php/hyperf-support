@@ -56,7 +56,6 @@ readonly class CreateSlackTicketService
             $this->sourceConfigurator->getApiConfig($ticket->source, 'app', 'icon'),
             $this->sourceConfigurator->getApiConfig($ticket->source, 'app', 'name')
         );
-        $message->addBlock($context);
 
         $section = new SlackMessageSection();
         foreach ($this->sourceConfigurator->getApiConfig($ticket->source, 'integrations', 'slack', 'custom_fields') as $name) {
