@@ -80,7 +80,7 @@ readonly class CreateCommentService
     {
         $this->validatorFactory->make($createCommentDTO->toArray(), [
             'ticket_id' => ['required', 'integer', 'exists:tickets,id'],
-            'content' => ['required', 'string', 'min:5'],
+            'content' => ['required', 'string'],
             'creator_name' => ['required', 'string'],
         ])->validate();
     }

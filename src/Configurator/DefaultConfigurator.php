@@ -49,8 +49,8 @@ readonly class DefaultConfigurator implements SourceConfiguratorInterface
     public function isValidApiKey(string $integration, string $key): bool
     {
         $source = match($integration) {
-            'trello' => $this->config->get('support.integrations.trello' . '.keys_to_source.' . $key),
-            'slack' => $this->config->get('support.integrations.slack' . '.keys_to_source.' . $key),
+            'trello' => $this->config->get('support.integrations.trello.keys_to_source.' . $key),
+            'slack' => $this->config->get('support.integrations.slack.keys_to_source.' . $key),
             default => null,
         };
 
