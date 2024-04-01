@@ -106,11 +106,11 @@ class TrelloCardBuilder
      * Add failed custom fields.
      *
      * @param string $name
-     * @param string $value
+     * @param string|int $value
      * @return void
      */
     public function addFailedCustomField(string $name, string|int $value): void
     {
-        $this->failedCustomFieldsText[] = sprintf('**%s: %s**', $name, $value);
+        $this->failedCustomFieldsText[] = sprintf('**%s: %s**', ucfirst($name), $value);
     }
 }

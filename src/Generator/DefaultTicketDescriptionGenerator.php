@@ -118,9 +118,11 @@ readonly class DefaultTicketDescriptionGenerator implements TicketDescriptionGen
     /**
      * @inheritDoc
      */
-    public function inTriggerLists(string $source, string $column): bool
+    public function inTriggerLists(string $source, string $status): bool
     {
-        return in_array($column, $this->sourceConfigurator->getApiConfig($source, 'integrations', 'trello', 'trigger_lists'));
+        $list = $this->sourceConfigurator->getApiConfig($source, 'integrations', 'trello', 'lists')[$status];
+
+        return in_array($list, $this->sourceConfigurator->getApiConfig($source, 'integrations', 'trello', 'trigger_lists'));
     }
 
     /**

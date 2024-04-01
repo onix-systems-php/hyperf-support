@@ -66,8 +66,8 @@ interface TicketDescriptionGeneratorContract
      * Check whether new ticket status is in trigger columns or not.
      *
      * @param string $source
-     * @param string $column
+     * @param string $status
      * @return bool
      */
-    public function inTriggerLists(string $source, string $column): bool;
+    public function inTriggerLists(string $source, string $status): bool;
 }
