@@ -41,7 +41,7 @@ class SlackEvent extends Event
         $slack = make(SlackApiService::class);
         /** @var SourceConfiguratorInterface $configurator */
         $configurator = make(SourceConfiguratorInterface::class);
-        $source = $configurator->getSourceByIntegrationAndKey('slack', $this->channel);
+        $source = $configurator->getConfigValueByIntegrationAndKey('slack', $this->channel);
 
         $this->type = SlackActionType::from($type);
         $this->username = $slack->getUser($source, $user)?->getRealName();
