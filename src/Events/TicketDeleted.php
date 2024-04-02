@@ -9,9 +9,10 @@ declare(strict_types=1);
 
 namespace OnixSystemsPHP\HyperfSupport\Events;
 
+use OnixSystemsPHP\HyperfSupport\Contract\TicketEvent;
 use OnixSystemsPHP\HyperfSupport\Model\Ticket;
 
-class TicketDeleted
+class TicketDeleted implements TicketEvent
 {
     public function __construct(public Ticket $ticket) {}
 }

@@ -9,9 +9,10 @@ declare(strict_types=1);
 
 namespace OnixSystemsPHP\HyperfSupport\Events;
 
+use OnixSystemsPHP\HyperfSupport\Contract\CommentEvent;
 use OnixSystemsPHP\HyperfSupport\Model\Comment;
 
-class CommentCreated
+class CommentCreated implements CommentEvent
 {
     public function __construct(public Comment $comment) {}
 }
