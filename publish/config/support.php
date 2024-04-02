@@ -17,7 +17,7 @@ return [
         // 'domain' => '',
         // 'icon' => '',
         // 'name' => '',
-        // 'team_name' => ''
+        // 'team_name' => '' . ' ' . 'Development Support',
         // 'user_model_class' => 'App\\Model\\User'
     ],
     'transports' => [

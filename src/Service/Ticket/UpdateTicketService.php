@@ -26,7 +26,7 @@ use OnixSystemsPHP\HyperfSupport\Transport\Comment\CommentTrelloTransport;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use OpenApi\Attributes as OA;
 
-use function FriendsOfHyperf\Helpers\now;
+use function Hyperf\Support\now;
 
 #[OA\Schema(
     schema: 'UpdateTicketRequest',
@@ -69,7 +69,7 @@ readonly class UpdateTicketService
         $this->ticketRepository->update($ticket, $updateTicketDTO->toArray());
         $this->ticketRepository->save($ticket);
 
-        if (!$this->isTicketCompleted($ticket)) {
+        if ($this->shouldTicketBeCompleted($ticket)) {
             $this->completeTicket($ticket);
         }
         if ($this->descriptionGenerator->inTriggerLists($ticket->source, $ticket->custom_fields['status'])) {
@@ -134,10 +134,10 @@ readonly class UpdateTicketService
      * @param Ticket $ticket
      * @return bool
      */
-    private function isTicketCompleted(Ticket $ticket): bool
+    private function shouldTicketBeCompleted(Ticket $ticket): bool
     {
-        return !empty($ticket->custom_fields->status)
-            && $ticket->custom_fields->status->getValue() === $this->sourceConfigurator->getApiConfig(
+        return !empty($ticket->custom_fields['status'])
+            && $ticket->custom_fields['status'] === $this->sourceConfigurator->getApiConfig(
                 $ticket->source,
                 'ticket',
                 'done_status'
