@@ -11,12 +11,12 @@ namespace OnixSystemsPHP\HyperfSupport\Service\Ticket;
 
 use Hyperf\Validation\Contract\ValidatorFactoryInterface;
 use Hyperf\Validation\Rule;
-use OnixSystemsPHP\HyperfActionsLog\Event\Action;
 use OnixSystemsPHP\HyperfCore\Contract\CorePolicyGuard;
 use OnixSystemsPHP\HyperfSupport\Adapter\SupportAdapter;
 use OnixSystemsPHP\HyperfSupport\Constant\Actions;
 use OnixSystemsPHP\HyperfSupport\Contract\SourceConfiguratorInterface;
 use OnixSystemsPHP\HyperfSupport\DTO\Tickets\CreateTicketDTO;
+use OnixSystemsPHP\HyperfSupport\Events\TicketCreated;
 use OnixSystemsPHP\HyperfSupport\Model\Ticket;
 use OnixSystemsPHP\HyperfSupport\Repository\TicketRepository;
 use Psr\EventDispatcher\EventDispatcherInterface;
@@ -59,7 +59,7 @@ readonly class CreateTicketService
         $ticket = $this->ticketRepository->create($createTicketDTO->toArray());
         $this->ticketRepository->save($ticket);
 
-        $this->eventDispatcher->dispatch(new Action(Actions::CREATE_TICKET, $ticket, $createTicketDTO->toArray()));
+        $this->eventDispatcher->dispatch(new TicketCreated($ticket));
         $this->supportAdapter->run(Actions::CREATE_TICKET, $ticket);
 
         return $ticket;

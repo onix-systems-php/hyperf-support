@@ -19,6 +19,7 @@ use OnixSystemsPHP\HyperfSupport\Contract\TicketDescriptionGeneratorContract;
 use OnixSystemsPHP\HyperfSupport\DTO\Comments\CreateCommentDTO;
 use OnixSystemsPHP\HyperfSupport\DTO\Tickets\UpdateTicketDTO;
 use OnixSystemsPHP\HyperfSupport\Enum\TicketCreator;
+use OnixSystemsPHP\HyperfSupport\Events\TicketStatusHasChanged;
 use OnixSystemsPHP\HyperfSupport\Model\Ticket;
 use OnixSystemsPHP\HyperfSupport\Repository\TicketRepository;
 use OnixSystemsPHP\HyperfSupport\Service\Comment\CreateCommentService;
@@ -74,6 +75,7 @@ readonly class UpdateTicketService
         }
         if ($this->descriptionGenerator->inTriggerLists($ticket->source, $ticket->custom_fields['status'])) {
             $this->createNewCommentOnNewTicketStatus($ticket);
+            $this->eventDispatcher->dispatch(new TicketStatusHasChanged($ticket));
         }
 
         $this->eventDispatcher->dispatch(new Action(Actions::UPDATE_TICKET, $ticket, $updateTicketDTO->toArray()));

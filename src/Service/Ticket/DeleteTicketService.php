@@ -11,11 +11,11 @@ namespace OnixSystemsPHP\HyperfSupport\Service\Ticket;
 
 use Exception;
 use Hyperf\Validation\Contract\ValidatorFactoryInterface;
-use OnixSystemsPHP\HyperfActionsLog\Event\Action;
 use OnixSystemsPHP\HyperfCore\Contract\CorePolicyGuard;
 use OnixSystemsPHP\HyperfSupport\Adapter\SupportAdapter;
 use OnixSystemsPHP\HyperfSupport\Constant\Actions;
 use OnixSystemsPHP\HyperfSupport\DTO\Tickets\DeleteTicketDTO;
+use OnixSystemsPHP\HyperfSupport\Events\TicketDeleted;
 use OnixSystemsPHP\HyperfSupport\Repository\TicketRepository;
 use Psr\EventDispatcher\EventDispatcherInterface;
 
@@ -45,7 +45,7 @@ readonly class DeleteTicketService
 
         $result = $this->ticketRepository->delete($ticket);
 
-        $this->eventDispatcher->dispatch(new Action(Actions::DELETE_TICKET, $ticket, $ticket->toArray()));
+        $this->eventDispatcher->dispatch(new TicketDeleted($ticket));
         $this->supportAdapter->run(Actions::DELETE_TICKET, $ticket);
 
         return $result;
