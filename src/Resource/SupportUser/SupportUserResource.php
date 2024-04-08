@@ -10,7 +10,7 @@ use OpenApi\Attributes as OA;
     new OA\Property(property: 'id', type: 'string'),
     new OA\Property(property: 'first_name', type: 'string'),
     new OA\Property(property: 'last_name', type: 'string'),
-    new OA\Property(property: 'full_name', type: 'string'),
+    new OA\Property(property: 'username', type: 'string'),
     new OA\Property(property: 'email', type: 'string'),
 ], type: 'object')]
 
@@ -27,7 +27,7 @@ class SupportUserResource extends AbstractResource
             'email' => $this->resource->getEmail(),
             'first_name' => $this->resource->getFirstName(),
             'last_name' => $this->resource->getLastName(),
-            'full_name' => $this->resource->getUsername(),
+            'username' => $this->resource->getUsername(),
         ];
     }
 }
