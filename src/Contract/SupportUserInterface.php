@@ -12,7 +12,35 @@ namespace OnixSystemsPHP\HyperfSupport\Contract;
 interface SupportUserInterface
 {
     /**
+     * Get user's username.
+     *
      * @return string
      */
     public function getUsername(): string;
+
+    /**
+     * Get user's id.
+     */
+    public function getId();
+
+    /**
+     * Get user's email.
+     *
+     * @return string
+     */
+    public function getEmail(): string;
+
+    /**
+     * Get user's first name.
+     *
+     * @return string
+     */
+    public function getFirstName(): string;
+
+    /**
+     * Get user's last name.
+     *
+     * @return string
+     */
+    public function getLastName(): string;
 }
