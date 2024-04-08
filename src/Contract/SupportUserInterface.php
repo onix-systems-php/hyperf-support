@@ -9,6 +9,12 @@ declare(strict_types=1);
 
 namespace OnixSystemsPHP\HyperfSupport\Contract;
 
+/**
+ * @property string $email
+ * @property string $first_name
+ * @property string $last_name
+ * @property string $role
+ */
 interface SupportUserInterface
 {
     /**

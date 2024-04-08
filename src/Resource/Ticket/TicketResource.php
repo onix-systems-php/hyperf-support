@@ -4,6 +4,7 @@ namespace OnixSystemsPHP\HyperfSupport\Resource\Ticket;
 
 use OnixSystemsPHP\HyperfCore\Resource\AbstractResource;
 use OnixSystemsPHP\HyperfSupport\Model\Ticket;
+use OnixSystemsPHP\HyperfSupport\Resource\User\UserResource;
 use OpenApi\Attributes as OA;
 
 #[OA\Schema(schema: 'TicketResource', properties: [
@@ -12,13 +13,11 @@ use OpenApi\Attributes as OA;
     new OA\Property(property: 'content', type: 'string'),
     new OA\Property(property: 'source', type: 'string'),
     new OA\Property(property: 'custom_fields', type: 'object'),
-    new OA\Property(property: 'created_by', type: 'integer'),
-    new OA\Property(property: 'modified_by', type: 'integer'),
-    new OA\Property(property: 'deleted_by', type: 'integer'),
+    new OA\Property(property: 'creator', schema: '#/components/schemas/UserResource'),
+    new OA\Property(property: 'modifier', schema: '#/components/schemas/UserResource'),
+    new OA\Property(property: 'archiver', schema: '#/components/schemas/UserResource'),
     new OA\Property(property: 'completed_at', type: 'string'),
-    new OA\Property(property: 'trello_id', type: 'string'),
-    new OA\Property(property: 'slack_id', type: 'string'),
-    new OA\Property(property: 'trello_short_link', type: 'string'),
+    new OA\Property(property: 'trello_url', type: 'string'),
     new OA\Property(property: 'page_url', type: 'string'),
     new OA\Property(property: 'created_at', type: 'string'),
     new OA\Property(property: 'updated_at', type: 'string'),
@@ -38,13 +37,11 @@ class TicketResource extends AbstractResource
             'content' => $this->resource->content,
             'source' => $this->resource->source,
             'custom_fields' => $this->resource->custom_fields,
-            'created_by' => $this->resource->created_by,
-            'modified_by' => $this->resource->modified_by,
-            'deleted_by' => $this->resource->deleted_by,
+            'creator' => UserResource::make($this->resource->creator),
+            'editor' => UserResource::make($this->resource->editor),
+            'archiver' => UserResource::make($this->resource->archiver),
             'completed_at' => $this->resource->completed_at,
-            'trello_id' => $this->resource->trello_id,
-            'slack_id' => $this->resource->slack_id,
-            'trello_short_link' => $this->resource->trello_short_link,
+            'trello_url' => $this->resource->trello_url,
             'page_url' => $this->resource->page_url,
             'created_at' => $this->resource->created_at,
             'updated_at' => $this->resource->modified_at,
