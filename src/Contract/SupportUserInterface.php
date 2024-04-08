@@ -20,10 +20,8 @@ interface SupportUserInterface
 
     /**
      * Get user's id.
-     *
-     * @return int
      */
-    public function getId(): int;
+    public function getId();
 
     /**
      * Get user's email.

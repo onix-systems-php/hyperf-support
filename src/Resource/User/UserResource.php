@@ -11,7 +11,7 @@ use OpenApi\Attributes as OA;
     new OA\Property(property: 'first_name', type: 'string'),
     new OA\Property(property: 'last_name', type: 'string'),
     new OA\Property(property: 'full_name', type: 'string'),
-    new OA\Property(property: 'role', type: 'string'),
+    new OA\Property(property: 'id', type: 'string'),
 ], type: 'object')]
 
 /**
