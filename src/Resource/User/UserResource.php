@@ -23,11 +23,11 @@ class UserResource extends AbstractResource
     public function toArray(): array
     {
         return [
-            'email' => $this->resource->email,
-            'first_name' => $this->resource->first_name,
-            'last_name' => $this->resource->last_name,
+            'id' => $this->resource->getId(),
+            'email' => $this->resource->getEmail(),
+            'first_name' => $this->resource->getFirstName(),
+            'last_name' => $this->resource->getLastName(),
             'full_name' => $this->resource->getUsername(),
-            'role' => $this->resource->role,
         ];
     }
 }
