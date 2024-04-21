@@ -2,10 +2,10 @@
 
 namespace OnixSystemsPHP\HyperfSupport\Entity\Trello;
 
-readonly class Comment
+class Comment
 {
-    public string $card_id;
-    public string $text;
+    public readonly string $card_id;
+    public readonly string $text;
 
     public function __construct(public string $id, array $data)
     {

@@ -17,14 +17,15 @@ use OnixSystemsPHP\HyperfSupport\Model\Comment;
 use OnixSystemsPHP\HyperfSupport\Repository\CommentRepository;
 use OnixSystemsPHP\HyperfSupport\Service\Integration\Traits\FormatHelper;
 
-readonly class CreateSlackCommentService
+class CreateSlackCommentService
 {
     use FormatHelper;
 
     public function __construct(
-        private SlackApiService $slack,
-        private CommentRepository $commentRepository,
-    ) {}
+        private readonly SlackApiService $slack,
+        private readonly CommentRepository $commentRepository,
+    ) {
+    }
 
     /**
      * Create comment on Slack.

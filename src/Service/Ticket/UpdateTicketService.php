@@ -42,18 +42,19 @@ use function Hyperf\Support\now;
     ],
     type: 'object',
 )]
-readonly class UpdateTicketService
+class UpdateTicketService
 {
     public function __construct(
-        private ValidatorFactoryInterface $validatorFactory,
-        private TicketRepository $ticketRepository,
-        private ?CorePolicyGuard $policyGuard,
-        private SupportAdapter $supportAdapter,
-        private EventDispatcherInterface $eventDispatcher,
-        private CreateCommentService $createCommentService,
-        private TicketDescriptionGeneratorContract $descriptionGenerator,
-        private SourceConfiguratorInterface $sourceConfigurator,
-    ) {}
+        private readonly ValidatorFactoryInterface $validatorFactory,
+        private readonly TicketRepository $ticketRepository,
+        private readonly ?CorePolicyGuard $policyGuard,
+        private readonly SupportAdapter $supportAdapter,
+        private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly CreateCommentService $createCommentService,
+        private readonly TicketDescriptionGeneratorContract $descriptionGenerator,
+        private readonly SourceConfiguratorInterface $sourceConfigurator,
+    ) {
+    }
 
     /**
      * Update a ticket.
@@ -90,7 +91,7 @@ readonly class UpdateTicketService
      * @param UpdateTicketDTO $updateTicketDTO
      * @return void
      */
-    public function validate(UpdateTicketDTO $updateTicketDTO): void
+    private function validate(UpdateTicketDTO $updateTicketDTO): void
     {
         $this->validatorFactory->make($updateTicketDTO->toArray(), ['source' => 'required'])->validate();
 

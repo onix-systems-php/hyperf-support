@@ -20,17 +20,18 @@ use OnixSystemsPHP\HyperfSupport\Repository\CommentRepository;
 use OnixSystemsPHP\HyperfSupport\Service\Integration\Traits\FormatHelper;
 use OnixSystemsPHP\HyperfSupport\Service\Integration\TrelloService;
 
-readonly class CreateTrelloCommentService
+class CreateTrelloCommentService
 {
     use ProcessFiles;
     use FormatHelper;
 
     public function __construct(
-        private TrelloCommentApiService $trelloComment,
-        private CommentRepository $commentRepository,
-        private TrelloCardApiService $trelloCardService,
-        private TrelloService $trello,
-    ) {}
+        private readonly TrelloCommentApiService $trelloComment,
+        private readonly CommentRepository $commentRepository,
+        private readonly TrelloCardApiService $trelloCardService,
+        private readonly TrelloService $trello,
+    ) {
+    }
 
     /**
      * Create a comment on Trello card.

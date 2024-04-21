@@ -20,15 +20,16 @@ use OnixSystemsPHP\HyperfSupport\Events\TicketDeleted;
 use OnixSystemsPHP\HyperfSupport\Repository\TicketRepository;
 use Psr\EventDispatcher\EventDispatcherInterface;
 
-readonly class DeleteTicketService
+class DeleteTicketService
 {
     public function __construct(
-        private TicketRepository $ticketRepository,
-        private ?CorePolicyGuard $policyGuard,
-        private EventDispatcherInterface $eventDispatcher,
-        private SupportAdapter $supportAdapter,
-        private ValidatorFactoryInterface $validatorFactory
-    ) {}
+        private readonly TicketRepository $ticketRepository,
+        private readonly ?CorePolicyGuard $policyGuard,
+        private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly SupportAdapter $supportAdapter,
+        private readonly ValidatorFactoryInterface $validatorFactory
+    ) {
+    }
 
     /**
      * Delete the given ticket.

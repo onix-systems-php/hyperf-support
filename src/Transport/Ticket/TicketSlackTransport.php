@@ -16,13 +16,14 @@ use OnixSystemsPHP\HyperfSupport\Service\Integration\Ticket\Slack\CreateSlackTic
 use OnixSystemsPHP\HyperfSupport\Service\Integration\Ticket\Slack\DeleteSlackTicketService;
 use OnixSystemsPHP\HyperfSupport\Service\Integration\Ticket\Slack\UpdateSlackTicketService;
 
-readonly class TicketSlackTransport implements TransportInterface
+class TicketSlackTransport implements TransportInterface
 {
     public function __construct(
-        private CreateSlackTicketService $createTicketSlackService,
-        private UpdateSlackTicketService $updateTicketSlackService,
-        private DeleteSlackTicketService $deleteTicketSlackService,
-    ) {}
+        private readonly CreateSlackTicketService $createTicketSlackService,
+        private readonly UpdateSlackTicketService $updateTicketSlackService,
+        private readonly DeleteSlackTicketService $deleteTicketSlackService,
+    ) {
+    }
 
     /**
      * @inheritDoc

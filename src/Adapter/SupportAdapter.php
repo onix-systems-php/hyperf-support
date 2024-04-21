@@ -17,9 +17,11 @@ use RuntimeException;
 
 use function Hyperf\Support\make;
 
-readonly class SupportAdapter
+class SupportAdapter
 {
-    public function __construct(private SourceConfiguratorInterface $sourceConfigurator) {}
+    public function __construct(private readonly SourceConfiguratorInterface $sourceConfigurator)
+    {
+    }
 
     /**
      * Create the transport for given event and entity and run it.
@@ -32,9 +34,17 @@ readonly class SupportAdapter
     public function run(string $event, Ticket|Comment $entity, array $shouldBeSkipped = []): void
     {
         [$action, $type] = explode('-', $event);
-        $transports = match(true) {
-            $entity instanceof Ticket => $this->sourceConfigurator->getApiConfig($entity->source, 'transports', $type),
-            $entity instanceof Comment => $this->sourceConfigurator->getApiConfig($entity->ticket->source, 'transports', $type),
+        $transports = match (true) {
+            $entity instanceof Ticket => $this->sourceConfigurator->getApiConfig(
+                $entity->source,
+                'transports',
+                $type
+            ),
+            $entity instanceof Comment => $this->sourceConfigurator->getApiConfig(
+                $entity->ticket->source,
+                'transports',
+                $type
+            ),
             default => [],
         };
         foreach ($transports as $transport) {

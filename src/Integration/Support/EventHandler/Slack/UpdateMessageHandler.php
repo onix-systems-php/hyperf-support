@@ -17,9 +17,11 @@ use OnixSystemsPHP\HyperfSupport\Model\Ticket;
 use OnixSystemsPHP\HyperfSupport\Service\Comment\UpdateCommentService;
 use OnixSystemsPHP\HyperfSupport\Transport\Comment\CommentSlackTransport;
 
-readonly class UpdateMessageHandler implements EventHandlerInterface
+class UpdateMessageHandler implements EventHandlerInterface
 {
-    public function __construct(private UpdateCommentService $updateCommentService) {}
+    public function __construct(private readonly UpdateCommentService $updateCommentService)
+    {
+    }
 
     /**
      * @inheritDoc

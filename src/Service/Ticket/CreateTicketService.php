@@ -35,16 +35,17 @@ use OpenApi\Attributes as OA;
     ],
     type: 'object',
 )]
-readonly class CreateTicketService
+class CreateTicketService
 {
     public function __construct(
-        private TicketRepository $ticketRepository,
-        private ValidatorFactoryInterface $validatorFactory,
-        private EventDispatcherInterface $eventDispatcher,
-        private ?CorePolicyGuard $policyGuard,
-        private SupportAdapter $supportAdapter,
-        private SourceConfiguratorInterface $sourceConfigurator,
-    ) {}
+        private readonly TicketRepository $ticketRepository,
+        private readonly ValidatorFactoryInterface $validatorFactory,
+        private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly ?CorePolicyGuard $policyGuard,
+        private readonly SupportAdapter $supportAdapter,
+        private readonly SourceConfiguratorInterface $sourceConfigurator,
+    ) {
+    }
 
     /**
      * Create a ticket.

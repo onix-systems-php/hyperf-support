@@ -16,13 +16,14 @@ use OnixSystemsPHP\HyperfSupport\Service\Integration\Comment\Slack\CreateSlackCo
 use OnixSystemsPHP\HyperfSupport\Service\Integration\Comment\Slack\DeleteSlackCommentService;
 use OnixSystemsPHP\HyperfSupport\Service\Integration\Comment\Slack\UpdateSlackCommentService;
 
-readonly class CommentSlackTransport implements TransportInterface
+class CommentSlackTransport implements TransportInterface
 {
     public function __construct(
-        private CreateSlackCommentService $createCommentSlackService,
-        private UpdateSlackCommentService $updateCommentSlackService,
-        private DeleteSlackCommentService $deleteCommentSlackService
-    ) {}
+        private readonly CreateSlackCommentService $createCommentSlackService,
+        private readonly UpdateSlackCommentService $updateCommentSlackService,
+        private readonly DeleteSlackCommentService $deleteCommentSlackService
+    ) {
+    }
 
     /**
      * @inheritDoc

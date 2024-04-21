@@ -13,9 +13,11 @@ use OnixSystemsPHP\HyperfCore\DTO\Common\PaginationRequestDTO;
 use OnixSystemsPHP\HyperfCore\DTO\Common\PaginationResultDTO;
 use OnixSystemsPHP\HyperfSupport\Repository\CommentRepository;
 
-readonly class GetCommentsService
+class GetCommentsService
 {
-    public function __construct(private CommentRepository $commentRepository) {}
+    public function __construct(private readonly CommentRepository $commentRepository)
+    {
+    }
 
     /**
      * Get paginated comments.

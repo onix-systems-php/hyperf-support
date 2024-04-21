@@ -4,16 +4,16 @@ namespace OnixSystemsPHP\HyperfSupport\Entity\Trello;
 
 use function Hyperf\Collection\collect;
 
-readonly class Card
+class Card
 {
     /** @var Attachment[] */
-    public array $attachments;
+    public readonly array $attachments;
 
     public function __construct(
-        public string $id,
-        public string $desc,
-        public string $shortLink = '',
-        public string $shortUrl = '',
+        public readonly string $id,
+        public readonly string $desc,
+        public readonly string $shortLink = '',
+        public readonly string $shortUrl = '',
         array $attachments = []
     ) {
         $this->attachments = array_map(function ($attachment) {

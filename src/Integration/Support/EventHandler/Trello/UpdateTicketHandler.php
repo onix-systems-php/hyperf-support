@@ -19,9 +19,11 @@ use OnixSystemsPHP\HyperfSupport\Service\Ticket\UpdateTicketService;
 
 use function Hyperf\Support\make;
 
-readonly class UpdateTicketHandler implements EventHandlerInterface
+class UpdateTicketHandler implements EventHandlerInterface
 {
-    public function __construct(private UpdateTicketService $updateTicketService) {}
+    public function __construct(private readonly UpdateTicketService $updateTicketService)
+    {
+    }
 
     /**
      * @inheritDoc

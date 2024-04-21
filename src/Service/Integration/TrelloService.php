@@ -23,12 +23,13 @@ use OnixSystemsPHP\HyperfSupport\Repository\TicketRepository;
 
 use function Hyperf\Support\make;
 
-readonly class TrelloService
+class TrelloService
 {
     public function __construct(
-        private TicketRepository $ticketRepository,
-        private CommentRepository $commentRepository
-    ) {}
+        private readonly TicketRepository $ticketRepository,
+        private readonly CommentRepository $commentRepository
+    ) {
+    }
 
     /**
      * Handle the webhook.
