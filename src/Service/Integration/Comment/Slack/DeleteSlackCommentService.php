@@ -14,9 +14,11 @@ use OnixSystemsPHP\HyperfSupport\Integration\Exceptions\Slack\SlackException;
 use OnixSystemsPHP\HyperfSupport\Integration\Slack\SlackApiService;
 use OnixSystemsPHP\HyperfSupport\Model\Comment;
 
-readonly class DeleteSlackCommentService
+class DeleteSlackCommentService
 {
-    public function __construct(private SlackApiService $slack) {}
+    public function __construct(private readonly SlackApiService $slack)
+    {
+    }
 
     /**
      * Delete a comment on Slack.

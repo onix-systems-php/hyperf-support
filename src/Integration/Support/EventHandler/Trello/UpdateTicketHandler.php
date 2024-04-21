@@ -19,9 +19,11 @@ use OnixSystemsPHP\HyperfSupport\Service\Ticket\UpdateTicketService;
 
 use function Hyperf\Support\make;
 
-readonly class UpdateTicketHandler implements EventHandlerInterface
+class UpdateTicketHandler implements EventHandlerInterface
 {
-    public function __construct(private UpdateTicketService $updateTicketService) {}
+    public function __construct(private readonly UpdateTicketService $updateTicketService)
+    {
+    }
 
     /**
      * @inheritDoc
@@ -32,7 +34,6 @@ readonly class UpdateTicketHandler implements EventHandlerInterface
         $sourceConfigurator = make(SourceConfiguratorInterface::class);
         if (!is_null($event->getTicketStatus())) {
             $this->updateTicketService->run($entity->id, UpdateTicketDTO::make([
-                'source' => $entity->source,
                 'custom_fields' => [
                     'status' => array_flip(
                         $sourceConfigurator->getApiConfig($entity->source, 'integrations', 'trello', 'lists')

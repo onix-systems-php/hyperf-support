@@ -14,8 +14,10 @@ use OnixSystemsPHP\HyperfCore\DTO\AbstractDTO;
 class UpdateCommentDTO extends AbstractDTO
 {
     public string $content;
-    public int|string|null $modified_by;
+
     public ?string $trello_id;
+
     public ?string $slack_id;
+
     public array $files;
 }

@@ -23,13 +23,14 @@ use OnixSystemsPHP\HyperfSupport\Transport\Comment\CommentTrelloTransport;
 use function Hyperf\Collection\collect;
 use function Hyperf\Support\make;
 
-readonly class NewMessageHandler implements EventHandlerInterface
+class NewMessageHandler implements EventHandlerInterface
 {
     public function __construct(
-        private AddExternalFileService $addExternalFileService,
-        private CreateCommentService $createCommentService,
-        private ?CoreAuthenticatableProvider $userProvider,
-    ) {}
+        private readonly AddExternalFileService $addExternalFileService,
+        private readonly CreateCommentService $createCommentService,
+        private readonly ?CoreAuthenticatableProvider $userProvider,
+    ) {
+    }
 
     /**
      * @inheritDoc

@@ -14,9 +14,11 @@ use OnixSystemsPHP\HyperfSupport\Integration\Exceptions\Trello\TrelloException;
 use OnixSystemsPHP\HyperfSupport\Integration\Trello\TrelloCardApiService;
 use OnixSystemsPHP\HyperfSupport\Model\Ticket;
 
-readonly class DeleteTrelloTicketService
+class DeleteTrelloTicketService
 {
-    public function __construct(private TrelloCardApiService $trelloCardService) {}
+    public function __construct(private readonly TrelloCardApiService $trelloCardService)
+    {
+    }
 
     /**
      * Archive a card.

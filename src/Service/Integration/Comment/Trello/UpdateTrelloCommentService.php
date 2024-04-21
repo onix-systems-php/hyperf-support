@@ -16,11 +16,13 @@ use OnixSystemsPHP\HyperfSupport\Integration\Trello\TrelloCommentApiService;
 use OnixSystemsPHP\HyperfSupport\Model\Comment;
 use OnixSystemsPHP\HyperfSupport\Service\Integration\Traits\FormatHelper;
 
-readonly class UpdateTrelloCommentService
+class UpdateTrelloCommentService
 {
     use FormatHelper;
 
-    public function __construct(private TrelloCommentApiService $trelloComment) {}
+    public function __construct(private readonly TrelloCommentApiService $trelloComment)
+    {
+    }
 
     /**
      * Update a comment on Trello card.

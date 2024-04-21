@@ -2,16 +2,16 @@
 
 namespace OnixSystemsPHP\HyperfSupport\Entity\Trello;
 
-readonly class Board
+class Board
 {
     public function __construct(
-        public string $id,
-        public string $name,
-        public string $desc,
-        public string $url,
-        public string $shortLink,
-        public string $shortUrl,
-        public array $lists
+        public readonly string $id,
+        public readonly string $name,
+        public readonly string $desc,
+        public readonly string $url,
+        public readonly string $shortLink,
+        public readonly string $shortUrl,
+        public readonly array $lists
     ) {}
 
     /**

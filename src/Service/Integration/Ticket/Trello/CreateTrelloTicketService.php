@@ -23,16 +23,17 @@ use OnixSystemsPHP\HyperfSupport\Integration\Trello\TrelloApiService;
 use OnixSystemsPHP\HyperfSupport\Integration\Trello\TrelloCardApiService;
 use OnixSystemsPHP\HyperfSupport\Model\Ticket;
 
-readonly class CreateTrelloTicketService
+class CreateTrelloTicketService
 {
     use ProcessFiles;
 
     public function __construct(
-        private TrelloApiService $trello,
-        private TrelloCardApiService $trelloCardService,
-        private TicketDescriptionGeneratorContract $descriptionGenerator,
-        private SourceConfiguratorInterface $sourceConfigurator,
-    ) {}
+        private readonly TrelloApiService $trello,
+        private readonly TrelloCardApiService $trelloCardService,
+        private readonly TicketDescriptionGeneratorContract $descriptionGenerator,
+        private readonly SourceConfiguratorInterface $sourceConfigurator,
+    ) {
+    }
 
     /**
      * Create Ticket on Trello.
@@ -67,7 +68,14 @@ readonly class CreateTrelloTicketService
         $ticket->trello_short_link = $card->shortLink;
 
         try {
-            foreach ($this->sourceConfigurator->getApiConfig($ticket->source, 'integrations', 'trello', 'custom_fields') as $name) {
+            foreach (
+                $this->sourceConfigurator->getApiConfig(
+                    $ticket->source,
+                    'integrations',
+                    'trello',
+                    'custom_fields'
+                ) as $name
+            ) {
                 $trelloCardBuilder->addCustomField(
                     CreateCustomFieldDTO::make([
                         'card_id' => $card->id,
@@ -76,7 +84,9 @@ readonly class CreateTrelloTicketService
                     ])
                 );
             }
-            $trelloCardBuilder->addCover(CreateCardCoverDTO::make(['color' => $this->descriptionGenerator->cover($ticket)]));
+            $trelloCardBuilder->addCover(
+                CreateCardCoverDTO::make(['color' => $this->descriptionGenerator->cover($ticket)])
+            );
             if (!empty($ticket->user)) {
                 $ticketUrl = $this->sourceConfigurator->getApiConfig($ticket->source, 'app', 'domain');
                 $trelloCardBuilder->addAttachment(new Attachment('Open Ticket', url: $ticketUrl));

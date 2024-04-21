@@ -16,9 +16,11 @@ use OnixSystemsPHP\HyperfSupport\Model\Ticket;
 use OnixSystemsPHP\HyperfSupport\Service\Comment\DeleteCommentService;
 use OnixSystemsPHP\HyperfSupport\Transport\Comment\CommentSlackTransport;
 
-readonly class DeleteMessageHandler implements EventHandlerInterface
+class DeleteMessageHandler implements EventHandlerInterface
 {
-    public function __construct(private DeleteCommentService $deleteCommentService) {}
+    public function __construct(private readonly DeleteCommentService $deleteCommentService)
+    {
+    }
 
     /**
      * @inheritDoc

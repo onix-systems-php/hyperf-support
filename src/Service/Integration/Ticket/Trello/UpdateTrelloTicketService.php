@@ -25,16 +25,17 @@ use OnixSystemsPHP\HyperfSupport\Integration\Trello\TrelloCardApiService;
 use OnixSystemsPHP\HyperfSupport\Integration\Trello\TrelloCustomFieldApiService;
 use OnixSystemsPHP\HyperfSupport\Model\Ticket;
 
-readonly class UpdateTrelloTicketService
+class UpdateTrelloTicketService
 {
     use ProcessFiles;
 
     public function __construct(
-        private TrelloCardApiService $trelloCardService,
-        private TrelloCustomFieldApiService $trelloCustomField,
-        private TrelloApiService $trello,
-        private SourceConfiguratorInterface $sourceConfigurator,
-    ) {}
+        private readonly TrelloCardApiService $trelloCardService,
+        private readonly TrelloCustomFieldApiService $trelloCustomField,
+        private readonly TrelloApiService $trello,
+        private readonly SourceConfiguratorInterface $sourceConfigurator,
+    ) {
+    }
 
     /**
      * Update ticket on Trello.

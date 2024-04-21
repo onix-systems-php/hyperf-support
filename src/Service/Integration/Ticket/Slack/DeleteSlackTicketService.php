@@ -13,9 +13,11 @@ use GuzzleHttp\Exception\GuzzleException;
 use OnixSystemsPHP\HyperfSupport\Integration\Exceptions\Slack\SlackException;
 use OnixSystemsPHP\HyperfSupport\Model\Ticket;
 
-readonly class DeleteSlackTicketService
+class DeleteSlackTicketService
 {
-    public function __construct(private CreateSlackTicketService $createTicketSlackService) {}
+    public function __construct(private readonly CreateSlackTicketService $createTicketSlackService)
+    {
+    }
 
     /**
      * Archive a ticket on Slack.

@@ -11,6 +11,7 @@ namespace OnixSystemsPHP\HyperfSupport\Service\Comment;
 
 use Hyperf\Validation\Contract\ValidatorFactoryInterface;
 use OnixSystemsPHP\HyperfActionsLog\Event\Action;
+use OnixSystemsPHP\HyperfCore\Contract\CoreAuthenticatableProvider;
 use OnixSystemsPHP\HyperfCore\Contract\CorePolicyGuard;
 use OnixSystemsPHP\HyperfSupport\Adapter\SupportAdapter;
 use OnixSystemsPHP\HyperfSupport\Constant\Actions;
@@ -19,28 +20,19 @@ use OnixSystemsPHP\HyperfSupport\DTO\Comments\CreateCommentDTO;
 use OnixSystemsPHP\HyperfSupport\Model\Comment;
 use OnixSystemsPHP\HyperfSupport\Repository\CommentRepository;
 use Psr\EventDispatcher\EventDispatcherInterface;
-use OpenApi\Attributes as OA;
 
-use function Hyperf\Support\make;
-
-#[OA\Schema(
-    schema: 'CreateCommentRequest',
-    properties: [
-        new OA\Property(property: 'ticket_id', type: 'integer'),
-        new OA\Property(property: 'content', type: 'string'),
-        new OA\Property(property: 'creator_name', type: 'string'),
-    ],
-    type: 'object',
-)]
-readonly class CreateCommentService
+class CreateCommentService
 {
     public function __construct(
-        private ValidatorFactoryInterface $validatorFactory,
-        private ?CorePolicyGuard $policyGuard,
-        private CommentRepository $commentRepository,
-        private EventDispatcherInterface $eventDispatcher,
-        private SupportAdapter $supportAdapter
-    ) {}
+        private readonly ValidatorFactoryInterface $validatorFactory,
+        private readonly CommentRepository $commentRepository,
+        private readonly SupportAdapter $supportAdapter,
+        private readonly CoreAuthenticatableProvider $coreAuthenticatableProvider,
+        private readonly SourceConfiguratorInterface $sourceConfigurator,
+        private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly ?CorePolicyGuard $policyGuard,
+    ) {
+    }
 
     /**
      * Create a comment.
@@ -53,30 +45,34 @@ readonly class CreateCommentService
     {
         $this->validate($createCommentDTO);
 
-        /** @var SourceConfiguratorInterface $sourceConfigurator */
-        $sourceConfigurator = make(SourceConfiguratorInterface::class);
-        $emptyComment = new Comment();
         if (!is_null($createCommentDTO->source) && !is_null($createCommentDTO->from)) {
-            if ($sourceConfigurator->getApiConfig(
+            if ($this->sourceConfigurator->getApiConfig(
                 $createCommentDTO->source,
                 'integrations',
                 $createCommentDTO->from,
                 'is_private_discussion'
             )) {
-                return $emptyComment;
+                return new Comment();
             }
         }
 
-        $this->policyGuard?->check('create', new Comment());
-        $comment = $this->commentRepository->create($createCommentDTO->toArray());
+        $commentData = array_merge(
+            $createCommentDTO->toArray(),
+            [
+                'created_by' => $this->coreAuthenticatableProvider->user()->getId()
+            ]
+        );
+
+        $comment = $this->commentRepository->create($commentData);
+        $this->policyGuard?->check('create', $comment);
         $this->commentRepository->save($comment);
-        $this->eventDispatcher->dispatch(new Action(Actions::CREATE_COMMENT, $comment, $createCommentDTO->toArray()));
+        $this->eventDispatcher->dispatch(new Action(Actions::CREATE_COMMENT, $comment, $commentData));
         $this->supportAdapter->run(Actions::CREATE_COMMENT, $comment, $shouldBeSkipped);
 
         return $comment;
     }
 
-    public function validate(CreateCommentDTO $createCommentDTO): void
+    private function validate(CreateCommentDTO $createCommentDTO): void
     {
         $this->validatorFactory->make($createCommentDTO->toArray(), [
             'ticket_id' => ['required', 'integer', 'exists:tickets,id'],

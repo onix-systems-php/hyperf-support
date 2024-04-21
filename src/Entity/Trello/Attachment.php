@@ -2,7 +2,12 @@
 
 namespace OnixSystemsPHP\HyperfSupport\Entity\Trello;
 
-readonly class Attachment
+class Attachment
 {
-    public function __construct(public ?string $name, public string $url, public string $id = '', public string $idMember = '') {}
+    public function __construct(
+        public readonly ?string $name,
+        public readonly string $url,
+        public readonly string $id = '',
+        public readonly string $idMember = ''
+    ) {}
 }

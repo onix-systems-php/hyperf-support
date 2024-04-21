@@ -20,13 +20,14 @@ use OnixSystemsPHP\HyperfSupport\Integration\Slack\SlackMessageContext;
 use OnixSystemsPHP\HyperfSupport\Integration\Slack\SlackMessageSection;
 use OnixSystemsPHP\HyperfSupport\Model\Ticket;
 
-readonly class CreateSlackTicketService
+class CreateSlackTicketService
 {
     public function __construct(
-        private SlackApiService $slack,
-        private SourceConfiguratorInterface $sourceConfigurator,
-        private TicketDescriptionGeneratorContract $descriptionGenerator
-    ) {}
+        private readonly SlackApiService $slack,
+        private readonly SourceConfiguratorInterface $sourceConfigurator,
+        private readonly TicketDescriptionGeneratorContract $descriptionGenerator
+    ) {
+    }
 
     /**
      * Create a ticket on Slack.
@@ -58,7 +59,14 @@ readonly class CreateSlackTicketService
         );
 
         $section = new SlackMessageSection();
-        foreach ($this->sourceConfigurator->getApiConfig($ticket->source, 'integrations', 'slack', 'custom_fields') as $name) {
+        foreach (
+            $this->sourceConfigurator->getApiConfig(
+                $ticket->source,
+                'integrations',
+                'slack',
+                'custom_fields'
+            ) as $name
+        ) {
             $section->addText(
                 sprintf(
                     "*%s:*\n%s",

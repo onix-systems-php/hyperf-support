@@ -18,13 +18,14 @@ use OnixSystemsPHP\HyperfSupport\Service\Integration\Comment\Trello\CreateTrello
 use OnixSystemsPHP\HyperfSupport\Service\Integration\Comment\Trello\DeleteTrelloCommentService;
 use OnixSystemsPHP\HyperfSupport\Service\Integration\Comment\Trello\UpdateTrelloCommentService;
 
-readonly class CommentTrelloTransport implements TransportInterface
+class CommentTrelloTransport implements TransportInterface
 {
     public function __construct(
-        private CreateTrelloCommentService $createCommentTrelloService,
-        private UpdateTrelloCommentService $updateCommentTrelloService,
-        private DeleteTrelloCommentService $deleteCommentTrelloService
-    ) {}
+        private readonly CreateTrelloCommentService $createCommentTrelloService,
+        private readonly UpdateTrelloCommentService $updateCommentTrelloService,
+        private readonly DeleteTrelloCommentService $deleteCommentTrelloService
+    ) {
+    }
 
     /**
      * @inheritDoc
