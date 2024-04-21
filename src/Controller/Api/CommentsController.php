@@ -9,13 +9,14 @@ declare(strict_types=1);
 
 namespace OnixSystemsPHP\HyperfSupport\Controller\Api;
 
-use Hyperf\HttpServer\Annotation\Controller;
+use Hyperf\HttpServer\Contract\RequestInterface;
 use OnixSystemsPHP\HyperfCore\Controller\AbstractController;
 use OnixSystemsPHP\HyperfCore\DTO\Common\PaginationRequestDTO;
 use OnixSystemsPHP\HyperfCore\Resource\ResourceSuccess;
 use OnixSystemsPHP\HyperfSupport\DTO\Comments\CreateCommentDTO;
 use OnixSystemsPHP\HyperfSupport\DTO\Comments\UpdateCommentDTO;
-use OnixSystemsPHP\HyperfSupport\Model\Comment;
+use OnixSystemsPHP\HyperfSupport\Request\CreateCommentRequest;
+use OnixSystemsPHP\HyperfSupport\Request\UpdateCommentRequest;
 use OnixSystemsPHP\HyperfSupport\Resource\Comment\CommentResource;
 use OnixSystemsPHP\HyperfSupport\Resource\Comment\CommentsPaginatedResource;
 use OnixSystemsPHP\HyperfSupport\Service\Comment\CreateCommentService;
@@ -25,16 +26,11 @@ use OnixSystemsPHP\HyperfSupport\Service\Comment\GetCommentsService;
 use OnixSystemsPHP\HyperfSupport\Service\Comment\UpdateCommentService;
 use OpenApi\Attributes as OA;
 
-#[Controller]
 class CommentsController extends AbstractController
 {
-    public function __construct(
-        private readonly GetCommentsService $getCommentsService,
-        private readonly GetCommentService $getCommentService,
-        private readonly CreateCommentService $createCommentService,
-        private readonly UpdateCommentService $updateCommentService,
-        private readonly DeleteCommentService $deleteCommentService,
-    ) {}
+    public function __construct()
+    {
+    }
 
     #[OA\Get(
         path: '/v1/support/comments',
@@ -56,10 +52,10 @@ class CommentsController extends AbstractController
             new OA\Response(ref: '#/components/responses/500', response: 500),
         ],
     )]
-    public function index(): CommentsPaginatedResource
+    public function index(RequestInterface $request, GetCommentsService $getCommentsService): CommentsPaginatedResource
     {
-        $paginationDTO = PaginationRequestDTO::make($this->request);
-        $commentsPaginationResult = $this->getCommentsService->run($paginationDTO);
+        $paginationDTO = PaginationRequestDTO::make($request);
+        $commentsPaginationResult = $getCommentsService->run($paginationDTO);
 
         return CommentsPaginatedResource::make($commentsPaginationResult);
     }
@@ -85,9 +81,11 @@ class CommentsController extends AbstractController
             new OA\Response(ref: '#/components/responses/500', response: 500),
         ],
     )]
-    public function store(): Comment
+    public function store(CreateCommentRequest $request, CreateCommentService $createCommentService): CommentResource
     {
-        return $this->createCommentService->run(CreateCommentDTO::make($this->request->all()));
+        $comment = $createCommentService->run(CreateCommentDTO::make($request));
+
+        return CommentResource::make($comment);
     }
 
     #[OA\Get(
@@ -115,9 +113,11 @@ class CommentsController extends AbstractController
             new OA\Response(ref: '#/components/responses/500', response: 500),
         ],
     )]
-    public function show(int $id): CommentResource
+    public function show(int $id, GetCommentService $getCommentService): CommentResource
     {
-        return CommentResource::make($this->getCommentService->run($id));
+        $comment = $getCommentService->run($id);
+
+        return CommentResource::make($comment);
     }
 
     #[OA\Put(
@@ -148,9 +148,14 @@ class CommentsController extends AbstractController
             new OA\Response(ref: '#/components/responses/500', response: 500),
         ],
     )]
-    public function update(int $id): ?Comment
-    {
-        return $this->updateCommentService->run($id, UpdateCommentDTO::make($this->request->all()));
+    public function update(
+        int $id,
+        UpdateCommentRequest $request,
+        UpdateCommentService $updateCommentService
+    ): CommentResource {
+        $commentUpdated = $updateCommentService->run($id, UpdateCommentDTO::make($request));
+
+        return CommentResource::make($commentUpdated);
     }
 
     #[OA\Delete(
@@ -179,9 +184,9 @@ class CommentsController extends AbstractController
             new OA\Response(ref: '#/components/responses/500', response: 500),
         ],
     )]
-    public function destroy(int $id): ResourceSuccess
+    public function destroy(int $id, DeleteCommentService $deleteCommentService): ResourceSuccess
     {
-        $this->deleteCommentService->run($id);
+        $deleteCommentService->run($id);
 
         return new ResourceSuccess([]);
     }
