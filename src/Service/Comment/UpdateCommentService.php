@@ -47,7 +47,7 @@ class UpdateCommentService
         $commentData = array_merge(
             $updateCommentDTO->toArray(),
             [
-                'modified_by' => $this->coreAuthenticatableProvider->user()->getId()
+                'modified_by' => $this->coreAuthenticatableProvider->user()?->getId()
             ]
         );
 

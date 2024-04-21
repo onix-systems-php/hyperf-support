@@ -60,7 +60,7 @@ class UpdateTicketService
         $ticketData = array_merge(
             $updateTicketDTO->toArray(),
             [
-                'modified_by' => $this->coreAuthenticatableProvider->user()->getId()
+                'modified_by' => $this->coreAuthenticatableProvider->user()?->getId()
             ]
         );
 

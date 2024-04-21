@@ -59,7 +59,7 @@ class CreateCommentService
         $commentData = array_merge(
             $createCommentDTO->toArray(),
             [
-                'created_by' => $this->coreAuthenticatableProvider->user()->getId()
+                'created_by' => $this->coreAuthenticatableProvider->user()?->getId()
             ]
         );
 

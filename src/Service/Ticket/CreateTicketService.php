@@ -49,7 +49,7 @@ class CreateTicketService
         $ticketData = array_merge(
             $createTicketDTO->toArray(),
             [
-                'created_by' => $this->coreAuthenticatableProvider->user()->getId(),
+                'created_by' => $this->coreAuthenticatableProvider->user()?->getId(),
             ]
         );
 
