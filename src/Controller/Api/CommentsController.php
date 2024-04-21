@@ -113,11 +113,11 @@ class CommentsController extends AbstractController
             new OA\Response(ref: '#/components/responses/500', response: 500),
         ],
     )]
-    public function show(int $id, GetCommentService $getCommentService): CommentResource
+    public function show(int $id, GetCommentService $getCommentService): ?CommentResource
     {
         $comment = $getCommentService->run($id);
 
-        return CommentResource::make($comment);
+        return isset($comment) ? CommentResource::make($comment) : null;
     }
 
     #[OA\Put(
@@ -152,10 +152,10 @@ class CommentsController extends AbstractController
         int $id,
         UpdateCommentRequest $request,
         UpdateCommentService $updateCommentService
-    ): CommentResource {
+    ): ?CommentResource {
         $commentUpdated = $updateCommentService->run($id, UpdateCommentDTO::make($request));
 
-        return CommentResource::make($commentUpdated);
+        return isset($commentUpdated) ? CommentResource::make($commentUpdated) : null;
     }
 
     #[OA\Delete(
