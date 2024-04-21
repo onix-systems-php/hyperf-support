@@ -19,28 +19,19 @@ use OnixSystemsPHP\HyperfSupport\DTO\Comments\CreateCommentDTO;
 use OnixSystemsPHP\HyperfSupport\Model\Comment;
 use OnixSystemsPHP\HyperfSupport\Repository\CommentRepository;
 use Psr\EventDispatcher\EventDispatcherInterface;
-use OpenApi\Attributes as OA;
 
 use function Hyperf\Support\make;
 
-#[OA\Schema(
-    schema: 'CreateCommentRequest',
-    properties: [
-        new OA\Property(property: 'ticket_id', type: 'integer'),
-        new OA\Property(property: 'content', type: 'string'),
-        new OA\Property(property: 'creator_name', type: 'string'),
-    ],
-    type: 'object',
-)]
-readonly class CreateCommentService
+class CreateCommentService
 {
     public function __construct(
-        private ValidatorFactoryInterface $validatorFactory,
-        private ?CorePolicyGuard $policyGuard,
-        private CommentRepository $commentRepository,
-        private EventDispatcherInterface $eventDispatcher,
-        private SupportAdapter $supportAdapter
-    ) {}
+        private readonly ValidatorFactoryInterface $validatorFactory,
+        private readonly ?CorePolicyGuard $policyGuard,
+        private readonly CommentRepository $commentRepository,
+        private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly SupportAdapter $supportAdapter
+    ) {
+    }
 
     /**
      * Create a comment.
@@ -76,7 +67,7 @@ readonly class CreateCommentService
         return $comment;
     }
 
-    public function validate(CreateCommentDTO $createCommentDTO): void
+    private function validate(CreateCommentDTO $createCommentDTO): void
     {
         $this->validatorFactory->make($createCommentDTO->toArray(), [
             'ticket_id' => ['required', 'integer', 'exists:tickets,id'],

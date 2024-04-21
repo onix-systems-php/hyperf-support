@@ -18,23 +18,15 @@ use OnixSystemsPHP\HyperfSupport\DTO\Comments\UpdateCommentDTO;
 use OnixSystemsPHP\HyperfSupport\Model\Comment;
 use OnixSystemsPHP\HyperfSupport\Repository\CommentRepository;
 use Psr\EventDispatcher\EventDispatcherInterface;
-use OpenApi\Attributes as OA;
 
-#[OA\Schema(
-    schema: 'UpdateCommentRequest',
-    properties: [
-        new OA\Property(property: 'content', type: 'string'),
-    ],
-    type: 'object',
-)]
-readonly class UpdateCommentService
+class UpdateCommentService
 {
     public function __construct(
-        private ValidatorFactoryInterface $validatorFactory,
-        private CommentRepository $commentRepository,
-        private ?CorePolicyGuard $policyGuard,
-        private SupportAdapter $supportAdapter,
-        private EventDispatcherInterface $eventDispatcher
+        private readonly ValidatorFactoryInterface $validatorFactory,
+        private readonly CommentRepository $commentRepository,
+        private readonly ?CorePolicyGuard $policyGuard,
+        private readonly SupportAdapter $supportAdapter,
+        private readonly EventDispatcherInterface $eventDispatcher
     ) {}
 
     /**
@@ -61,7 +53,7 @@ readonly class UpdateCommentService
         return $comment;
     }
 
-    public function validate(UpdateCommentDTO $updateCommentDTO): void
+    private function validate(UpdateCommentDTO $updateCommentDTO): void
     {
         $this->validatorFactory->make($updateCommentDTO->toArray(), [
             'content' => ['min:5', 'string'],
