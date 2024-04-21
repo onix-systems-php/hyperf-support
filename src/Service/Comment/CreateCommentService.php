@@ -11,6 +11,7 @@ namespace OnixSystemsPHP\HyperfSupport\Service\Comment;
 
 use Hyperf\Validation\Contract\ValidatorFactoryInterface;
 use OnixSystemsPHP\HyperfActionsLog\Event\Action;
+use OnixSystemsPHP\HyperfCore\Contract\CoreAuthenticatableProvider;
 use OnixSystemsPHP\HyperfCore\Contract\CorePolicyGuard;
 use OnixSystemsPHP\HyperfSupport\Adapter\SupportAdapter;
 use OnixSystemsPHP\HyperfSupport\Constant\Actions;
@@ -26,10 +27,11 @@ class CreateCommentService
 {
     public function __construct(
         private readonly ValidatorFactoryInterface $validatorFactory,
-        private readonly ?CorePolicyGuard $policyGuard,
         private readonly CommentRepository $commentRepository,
+        private readonly SupportAdapter $supportAdapter,
+        private readonly CoreAuthenticatableProvider $coreAuthenticatableProvider,
         private readonly EventDispatcherInterface $eventDispatcher,
-        private readonly SupportAdapter $supportAdapter
+        private readonly ?CorePolicyGuard $policyGuard,
     ) {
     }
 
@@ -58,7 +60,14 @@ class CreateCommentService
             }
         }
 
-        $comment = $this->commentRepository->create($createCommentDTO->toArray());
+        $commentData = array_merge(
+            $createCommentDTO->toArray(),
+            [
+                'created_by' => $this->coreAuthenticatableProvider->user()->getId()
+            ]
+        );
+
+        $comment = $this->commentRepository->create($commentData);
         $this->policyGuard?->check('create', $comment);
         $this->commentRepository->save($comment);
         $this->eventDispatcher->dispatch(new Action(Actions::CREATE_COMMENT, $comment, $createCommentDTO->toArray()));

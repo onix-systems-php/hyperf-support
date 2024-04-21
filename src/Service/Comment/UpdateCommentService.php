@@ -11,6 +11,7 @@ namespace OnixSystemsPHP\HyperfSupport\Service\Comment;
 
 use Hyperf\Validation\Contract\ValidatorFactoryInterface;
 use OnixSystemsPHP\HyperfActionsLog\Event\Action;
+use OnixSystemsPHP\HyperfCore\Contract\CoreAuthenticatableProvider;
 use OnixSystemsPHP\HyperfCore\Contract\CorePolicyGuard;
 use OnixSystemsPHP\HyperfSupport\Adapter\SupportAdapter;
 use OnixSystemsPHP\HyperfSupport\Constant\Actions;
@@ -24,9 +25,10 @@ class UpdateCommentService
     public function __construct(
         private readonly ValidatorFactoryInterface $validatorFactory,
         private readonly CommentRepository $commentRepository,
-        private readonly ?CorePolicyGuard $policyGuard,
         private readonly SupportAdapter $supportAdapter,
-        private readonly EventDispatcherInterface $eventDispatcher
+        private readonly CoreAuthenticatableProvider $coreAuthenticatableProvider,
+        private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly ?CorePolicyGuard $policyGuard,
     ) {}
 
     /**
@@ -42,8 +44,15 @@ class UpdateCommentService
         $comment = $this->commentRepository->findById($id);
         $this->validate($updateCommentDTO);
 
+        $commentData = array_merge(
+            $updateCommentDTO->toArray(),
+            [
+                'modified_by' => $this->coreAuthenticatableProvider->user()->getId()
+            ]
+        );
+
+        $this->commentRepository->update($comment, $commentData);
         $this->policyGuard?->check('update', $comment);
-        $this->commentRepository->update($comment, $updateCommentDTO->toArray());
         $this->commentRepository->save($comment);
         $this->eventDispatcher->dispatch(
             new Action(Actions::UPDATE_COMMENT, $comment, $updateCommentDTO->toArray())
