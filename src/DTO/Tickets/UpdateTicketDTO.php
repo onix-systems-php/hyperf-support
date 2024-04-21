@@ -18,8 +18,6 @@ class UpdateTicketDTO extends AbstractDTO
 
     public string $content;
 
-    public string $source;
-
     public array $custom_fields;
 
     public ?Carbon $completed_at;

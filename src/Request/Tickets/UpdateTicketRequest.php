@@ -12,7 +12,6 @@ use OpenApi\Attributes as OA;
     properties: [
         new OA\Property(property: 'title', type: 'string'),
         new OA\Property(property: 'content', type: 'string'),
-        new OA\Property(property: 'source', type: 'string'),
         new OA\Property(property: 'custom_fields', type: 'object', example: '{"type": "Feature Request"}'),
         new OA\Property(property: 'page_url', type: 'string'),
         new OA\Property(property: 'completed_at', type: 'string'),
@@ -43,7 +42,6 @@ class UpdateTicketRequest extends FormRequest
         return [
             'title' => 'required|min:5|max:255',
             'content' => 'required|min:20',
-            'source' => 'required|string',
             'custom_fields' => 'array',
             'completed_at' => 'nullable|date',
             'page_url' => 'nullable|url:https',
