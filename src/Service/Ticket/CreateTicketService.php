@@ -57,8 +57,8 @@ class CreateTicketService
     {
         $this->validate($createTicketDTO);
 
-        $this->policyGuard?->check('create', new Ticket());
         $ticket = $this->ticketRepository->create($createTicketDTO->toArray());
+        $this->policyGuard?->check('create', $ticket);
         $this->ticketRepository->save($ticket);
 
         $this->eventDispatcher->dispatch(new TicketCreated($ticket));

@@ -58,8 +58,8 @@ class CreateCommentService
             }
         }
 
-        $this->policyGuard?->check('create', new Comment());
         $comment = $this->commentRepository->create($createCommentDTO->toArray());
+        $this->policyGuard?->check('create', $comment);
         $this->commentRepository->save($comment);
         $this->eventDispatcher->dispatch(new Action(Actions::CREATE_COMMENT, $comment, $createCommentDTO->toArray()));
         $this->supportAdapter->run(Actions::CREATE_COMMENT, $comment, $shouldBeSkipped);
