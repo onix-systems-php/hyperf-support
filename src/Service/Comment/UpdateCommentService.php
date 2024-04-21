@@ -54,9 +54,7 @@ class UpdateCommentService
         $this->commentRepository->update($comment, $commentData);
         $this->policyGuard?->check('update', $comment);
         $this->commentRepository->save($comment);
-        $this->eventDispatcher->dispatch(
-            new Action(Actions::UPDATE_COMMENT, $comment, $updateCommentDTO->toArray())
-        );
+        $this->eventDispatcher->dispatch(new Action(Actions::UPDATE_COMMENT, $comment, $commentData));
         $this->supportAdapter->run(Actions::UPDATE_COMMENT, $comment, $shouldBeSkipped);
 
         return $comment;

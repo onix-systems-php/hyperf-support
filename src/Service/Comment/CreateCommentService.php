@@ -21,8 +21,6 @@ use OnixSystemsPHP\HyperfSupport\Model\Comment;
 use OnixSystemsPHP\HyperfSupport\Repository\CommentRepository;
 use Psr\EventDispatcher\EventDispatcherInterface;
 
-use function Hyperf\Support\make;
-
 class CreateCommentService
 {
     public function __construct(
@@ -30,6 +28,7 @@ class CreateCommentService
         private readonly CommentRepository $commentRepository,
         private readonly SupportAdapter $supportAdapter,
         private readonly CoreAuthenticatableProvider $coreAuthenticatableProvider,
+        private readonly SourceConfiguratorInterface $sourceConfigurator,
         private readonly EventDispatcherInterface $eventDispatcher,
         private readonly ?CorePolicyGuard $policyGuard,
     ) {
@@ -46,17 +45,14 @@ class CreateCommentService
     {
         $this->validate($createCommentDTO);
 
-        /** @var SourceConfiguratorInterface $sourceConfigurator */
-        $sourceConfigurator = make(SourceConfiguratorInterface::class);
-        $emptyComment = new Comment();
         if (!is_null($createCommentDTO->source) && !is_null($createCommentDTO->from)) {
-            if ($sourceConfigurator->getApiConfig(
+            if ($this->sourceConfigurator->getApiConfig(
                 $createCommentDTO->source,
                 'integrations',
                 $createCommentDTO->from,
                 'is_private_discussion'
             )) {
-                return $emptyComment;
+                return new Comment();
             }
         }
 
@@ -70,7 +66,7 @@ class CreateCommentService
         $comment = $this->commentRepository->create($commentData);
         $this->policyGuard?->check('create', $comment);
         $this->commentRepository->save($comment);
-        $this->eventDispatcher->dispatch(new Action(Actions::CREATE_COMMENT, $comment, $createCommentDTO->toArray()));
+        $this->eventDispatcher->dispatch(new Action(Actions::CREATE_COMMENT, $comment, $commentData));
         $this->supportAdapter->run(Actions::CREATE_COMMENT, $comment, $shouldBeSkipped);
 
         return $comment;

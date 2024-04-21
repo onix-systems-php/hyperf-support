@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace OnixSystemsPHP\HyperfSupport\Request;
+namespace OnixSystemsPHP\HyperfSupport\Request\Comments;
 
 use Hyperf\Validation\Request\FormRequest;
 use OpenApi\Attributes as OA;
