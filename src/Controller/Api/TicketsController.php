@@ -120,11 +120,9 @@ class TicketsController extends AbstractController
             new OA\Response(ref: '#/components/responses/500', response: 500),
         ],
     )]
-    public function show(int $id, GetTicketService $getTicketService): ?TicketResource
+    public function show(int $id, GetTicketService $getTicketService): TicketResource
     {
-        $ticket = $getTicketService->run($id);
-
-        return isset($ticket) ? TicketResource::make($ticket) : null;
+        return TicketResource::make($getTicketService->run($id));
     }
 
     #[OA\Put(
@@ -159,10 +157,8 @@ class TicketsController extends AbstractController
         int $id,
         UpdateTicketRequest $request,
         UpdateTicketService $updateTicketService
-    ): ?TicketResource {
-        $ticket = $updateTicketService->run($id, UpdateTicketDTO::make($request));
-
-        return isset($ticket) ? TicketResource::make($ticket) : null;
+    ): TicketResource {
+        return TicketResource::make($updateTicketService->run($id, UpdateTicketDTO::make($request)));
     }
 
     #[OA\Delete(

@@ -38,7 +38,7 @@ class DeleteTicketService
      */
     public function run(int $id, DeleteTicketDTO $deleteTicketDTO): bool
     {
-        $ticket = $this->ticketRepository->findById($id);
+        $ticket = $this->ticketRepository->getById($id, false, true);
         $this->validate($deleteTicketDTO);
 
         $this->policyGuard?->check('delete', $ticket);

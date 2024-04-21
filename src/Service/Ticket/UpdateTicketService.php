@@ -50,11 +50,11 @@ class UpdateTicketService
      *
      * @param int $id
      * @param UpdateTicketDTO $updateTicketDTO
-     * @return Ticket|null
+     * @return Ticket
      */
-    public function run(int $id, UpdateTicketDTO $updateTicketDTO): ?Ticket
+    public function run(int $id, UpdateTicketDTO $updateTicketDTO): Ticket
     {
-        $ticket = $this->ticketRepository->findById($id);
+        $ticket = $this->ticketRepository->getById($id, false, true);
         $this->validate($updateTicketDTO);
 
         $ticketData = array_merge(

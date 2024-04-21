@@ -34,7 +34,7 @@ class DeleteCommentService
      */
     public function run(int $id, array $shouldBeSkipped = []): bool
     {
-        $comment = $this->commentRepository->findById($id);
+        $comment = $this->commentRepository->getById($id, false, true);
         $this->policyGuard?->check('delete', $comment);
 
         $result = $this->commentRepository->delete($comment);

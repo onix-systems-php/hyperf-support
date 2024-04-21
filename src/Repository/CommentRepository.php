@@ -47,15 +47,6 @@ class CommentRepository extends AbstractRepository
 
     /**
      * @param int $id
-     * @return Collection|Model|Builder|array|Comment
-     */
-    public function findById(int $id): Collection|Model|Builder|array|Comment
-    {
-        return $this->query()->findOrFail($id);
-    }
-
-    /**
-     * @param int $id
      * @param bool $lock
      * @param bool $force
      * @return Comment|null

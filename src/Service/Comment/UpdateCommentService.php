@@ -37,11 +37,11 @@ class UpdateCommentService
      * @param int $id
      * @param UpdateCommentDTO $updateCommentDTO
      * @param array $shouldBeSkipped
-     * @return Comment|null
+     * @return Comment
      */
-    public function run(int $id, UpdateCommentDTO $updateCommentDTO, array $shouldBeSkipped = []): ?Comment
+    public function run(int $id, UpdateCommentDTO $updateCommentDTO, array $shouldBeSkipped = []): Comment
     {
-        $comment = $this->commentRepository->findById($id);
+        $comment = $this->commentRepository->getById($id, false, true);
         $this->validate($updateCommentDTO);
 
         $commentData = array_merge(

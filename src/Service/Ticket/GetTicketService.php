@@ -22,10 +22,10 @@ class GetTicketService
      * Get the ticket by id.
      *
      * @param int $id
-     * @return Ticket|null
+     * @return Ticket
      */
-    public function run(int $id): ?Ticket
+    public function run(int $id): Ticket
     {
-        return $this->ticketRepository->findById($id);
+        return $this->ticketRepository->getById($id, false, true);
     }
 }

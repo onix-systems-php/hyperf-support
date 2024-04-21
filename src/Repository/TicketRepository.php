@@ -51,15 +51,6 @@ class TicketRepository extends AbstractRepository
 
     /**
      * @param int $id
-     * @return Collection|Model|array|Builder|Ticket|null
-     */
-    public function findById(int $id): Collection|Model|array|Builder|null|Ticket
-    {
-        return $this->query()->findOrFail($id);
-    }
-
-    /**
-     * @param int $id
      * @param bool $lock
      * @param bool $force
      * @return Ticket|null

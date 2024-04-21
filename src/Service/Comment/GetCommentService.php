@@ -20,10 +20,10 @@ class GetCommentService
      * Get the comment by id.
      *
      * @param int $id
-     * @return Comment|null
+     * @return Comment
      */
-    public function run(int $id): ?Comment
+    public function run(int $id): Comment
     {
-        return $this->commentRepository->findById($id);
+        return $this->commentRepository->getById($id, false, true);
     }
 }
