@@ -20,6 +20,8 @@ class UpdateTicketDTO extends AbstractDTO
 
     public array $custom_fields;
 
+    public string $source;
+
     public ?Carbon $completed_at;
 
     public ?string $trello_id;

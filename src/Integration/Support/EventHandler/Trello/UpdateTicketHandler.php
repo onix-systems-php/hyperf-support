@@ -34,6 +34,7 @@ class UpdateTicketHandler implements EventHandlerInterface
         $sourceConfigurator = make(SourceConfiguratorInterface::class);
         if (!is_null($event->getTicketStatus())) {
             $this->updateTicketService->run($entity->id, UpdateTicketDTO::make([
+                'source' => $entity->source,
                 'custom_fields' => [
                     'status' => array_flip(
                         $sourceConfigurator->getApiConfig($entity->source, 'integrations', 'trello', 'lists')
