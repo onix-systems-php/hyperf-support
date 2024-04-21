@@ -11,6 +11,7 @@ namespace OnixSystemsPHP\HyperfSupport\Service\Ticket;
 
 use Hyperf\Validation\Contract\ValidatorFactoryInterface;
 use OnixSystemsPHP\HyperfActionsLog\Event\Action;
+use OnixSystemsPHP\HyperfCore\Contract\CoreAuthenticatableProvider;
 use OnixSystemsPHP\HyperfCore\Contract\CorePolicyGuard;
 use OnixSystemsPHP\HyperfSupport\Adapter\SupportAdapter;
 use OnixSystemsPHP\HyperfSupport\Constant\Actions;
@@ -26,33 +27,21 @@ use OnixSystemsPHP\HyperfSupport\Repository\TicketRepository;
 use OnixSystemsPHP\HyperfSupport\Service\Comment\CreateCommentService;
 use OnixSystemsPHP\HyperfSupport\Transport\Comment\CommentTrelloTransport;
 use Psr\EventDispatcher\EventDispatcherInterface;
-use OpenApi\Attributes as OA;
 
 use function Hyperf\Support\now;
 
-#[OA\Schema(
-    schema: 'UpdateTicketRequest',
-    properties: [
-        new OA\Property(property: 'title', type: 'string'),
-        new OA\Property(property: 'content', type: 'string'),
-        new OA\Property(property: 'source', type: 'string'),
-        new OA\Property(property: 'custom_fields', type: 'object', example: '{"type": "Feature Request"}'),
-        new OA\Property(property: 'page_url', type: 'string'),
-        new OA\Property(property: 'modified_by', type: 'integer'),
-    ],
-    type: 'object',
-)]
 class UpdateTicketService
 {
     public function __construct(
         private readonly ValidatorFactoryInterface $validatorFactory,
         private readonly TicketRepository $ticketRepository,
-        private readonly ?CorePolicyGuard $policyGuard,
         private readonly SupportAdapter $supportAdapter,
-        private readonly EventDispatcherInterface $eventDispatcher,
         private readonly CreateCommentService $createCommentService,
         private readonly TicketDescriptionGeneratorContract $descriptionGenerator,
         private readonly SourceConfiguratorInterface $sourceConfigurator,
+        private readonly CoreAuthenticatableProvider $coreAuthenticatableProvider,
+        private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly ?CorePolicyGuard $policyGuard,
     ) {
     }
 
@@ -68,8 +57,15 @@ class UpdateTicketService
         $ticket = $this->ticketRepository->findById($id);
         $this->validate($updateTicketDTO);
 
+        $ticketData = array_merge(
+            $updateTicketDTO->toArray(),
+            [
+                'modified_by' => $this->coreAuthenticatableProvider->user()->getId()
+            ]
+        );
+
+        $this->ticketRepository->update($ticket, $ticketData);
         $this->policyGuard?->check('update', $ticket);
-        $this->ticketRepository->update($ticket, $updateTicketDTO->toArray());
         $this->ticketRepository->save($ticket);
 
         if ($this->shouldTicketBeCompleted($ticket)) {
@@ -81,7 +77,7 @@ class UpdateTicketService
         }
 
         $this->eventDispatcher->dispatch(new TicketUpdated($ticket));
-        $this->eventDispatcher->dispatch(new Action(Actions::UPDATE_TICKET, $ticket, $updateTicketDTO->toArray()));
+        $this->eventDispatcher->dispatch(new Action(Actions::UPDATE_TICKET, $ticket, $ticketData));
         $this->supportAdapter->run(Actions::UPDATE_TICKET, $ticket);
 
         return $ticket;

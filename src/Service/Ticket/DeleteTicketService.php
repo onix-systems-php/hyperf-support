@@ -58,7 +58,7 @@ class DeleteTicketService
      * @param DeleteTicketDTO $deleteTicketDTO
      * @return void
      */
-    public function validate(DeleteTicketDTO $deleteTicketDTO): void
+    private function validate(DeleteTicketDTO $deleteTicketDTO): void
     {
         $this->validatorFactory->make($deleteTicketDTO->toArray(), [
             'deleted_by' => ['required'],
