@@ -12,9 +12,11 @@ namespace OnixSystemsPHP\HyperfSupport\Configurator;
 use Hyperf\Contract\ConfigInterface;
 use OnixSystemsPHP\HyperfSupport\Contract\SourceConfiguratorInterface;
 
-readonly class DefaultConfigurator implements SourceConfiguratorInterface
+class DefaultConfigurator implements SourceConfiguratorInterface
 {
-    public function __construct(private ConfigInterface $config) {}
+    public function __construct(private readonly ConfigInterface $config)
+    {
+    }
 
     /**
      * @inheritDoc
@@ -33,7 +35,7 @@ readonly class DefaultConfigurator implements SourceConfiguratorInterface
      */
     public function getConfigValueByIntegrationAndKey(string $integration, string $key): ?string
     {
-        return match($integration) {
+        return match ($integration) {
             'trello' => $this->config->get('support.integrations.trello.keys_to_source.' . $key),
             'slack' => $this->config->get('support.integrations.slack.keys_to_source.' . $key),
             default => null,
@@ -45,7 +47,7 @@ readonly class DefaultConfigurator implements SourceConfiguratorInterface
      */
     public function isValidApiKey(string $integration, string $key): bool
     {
-        $source = match($integration) {
+        $source = match ($integration) {
             'trello' => $this->config->get('support.integrations.trello.keys_to_source.' . $key),
             'slack' => $this->config->get('support.integrations.slack.keys_to_source.' . $key),
             default => null,

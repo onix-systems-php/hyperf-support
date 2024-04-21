@@ -16,11 +16,13 @@ use OnixSystemsPHP\HyperfSupport\Integration\Slack\SlackMessage;
 use OnixSystemsPHP\HyperfSupport\Model\Comment;
 use OnixSystemsPHP\HyperfSupport\Service\Integration\Traits\FormatHelper;
 
-readonly class UpdateSlackCommentService
+class UpdateSlackCommentService
 {
     use FormatHelper;
 
-    public function __construct(private SlackApiService $slack) {}
+    public function __construct(private readonly SlackApiService $slack)
+    {
+    }
 
     /**
      * Update comment on Slack.

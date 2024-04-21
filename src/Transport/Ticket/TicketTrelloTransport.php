@@ -18,13 +18,14 @@ use OnixSystemsPHP\HyperfSupport\Service\Integration\Ticket\Trello\CreateTrelloT
 use OnixSystemsPHP\HyperfSupport\Service\Integration\Ticket\Trello\DeleteTrelloTicketService;
 use OnixSystemsPHP\HyperfSupport\Service\Integration\Ticket\Trello\UpdateTrelloTicketService;
 
-readonly class TicketTrelloTransport implements TransportInterface
+class TicketTrelloTransport implements TransportInterface
 {
     public function __construct(
-        private CreateTrelloTicketService $createTicketTrelloService,
-        private UpdateTrelloTicketService $updateTicketTrelloService,
-        private DeleteTrelloTicketService $deleteTicketTrelloService
-    ) {}
+        private readonly CreateTrelloTicketService $createTicketTrelloService,
+        private readonly UpdateTrelloTicketService $updateTicketTrelloService,
+        private readonly DeleteTrelloTicketService $deleteTicketTrelloService
+    ) {
+    }
 
     /**
      * @inheritDoc

@@ -13,9 +13,11 @@ use OnixSystemsPHP\HyperfSupport\Contract\SourceConfiguratorInterface;
 use OnixSystemsPHP\HyperfSupport\Contract\TicketDescriptionGeneratorContract;
 use OnixSystemsPHP\HyperfSupport\Model\Ticket;
 
-readonly class DefaultTicketDescriptionGenerator implements TicketDescriptionGeneratorContract
+class DefaultTicketDescriptionGenerator implements TicketDescriptionGeneratorContract
 {
-    public function __construct(private SourceConfiguratorInterface $sourceConfigurator) {}
+    public function __construct(private readonly SourceConfiguratorInterface $sourceConfigurator)
+    {
+    }
 
     /**
      * @inheritDoc
@@ -92,7 +94,12 @@ readonly class DefaultTicketDescriptionGenerator implements TicketDescriptionGen
      */
     public function getMentionsByIntegration(string $integration, Ticket $ticket): array
     {
-        $members = $this->sourceConfigurator->getApiConfig($ticket->source, 'integrations', strtolower($integration), 'members') ?? [];
+        $members = $this->sourceConfigurator->getApiConfig(
+            $ticket->source,
+            'integrations',
+            strtolower($integration),
+            'members'
+        ) ?? [];
 
         if (strtolower($integration) === 'trello') {
             return $members[$ticket->custom_fields['status']] ?? $members['default'] ?? [];
@@ -122,7 +129,10 @@ readonly class DefaultTicketDescriptionGenerator implements TicketDescriptionGen
     {
         $list = $this->sourceConfigurator->getApiConfig($source, 'integrations', 'trello', 'lists')[$status];
 
-        return in_array($list, $this->sourceConfigurator->getApiConfig($source, 'integrations', 'trello', 'trigger_lists'));
+        return in_array(
+            $list,
+            $this->sourceConfigurator->getApiConfig($source, 'integrations', 'trello', 'trigger_lists')
+        );
     }
 
     /**

@@ -25,12 +25,13 @@ use OnixSystemsPHP\HyperfSupport\Repository\TicketRepository;
 use function Hyperf\Collection\collect;
 use function Hyperf\Support\make;
 
-readonly class SlackService
+class SlackService
 {
     public function __construct(
-        private TicketRepository $ticketRepository,
-        private CommentRepository $commentRepository
-    ) {}
+        private readonly TicketRepository $ticketRepository,
+        private readonly CommentRepository $commentRepository
+    ) {
+    }
 
     /**
      * Handle the webhook.

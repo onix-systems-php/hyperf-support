@@ -15,9 +15,11 @@ use OnixSystemsPHP\HyperfSupport\Integration\Exceptions\Trello\TrelloException;
 use OnixSystemsPHP\HyperfSupport\Integration\Trello\TrelloCommentApiService;
 use OnixSystemsPHP\HyperfSupport\Model\Comment;
 
-readonly class DeleteTrelloCommentService
+class DeleteTrelloCommentService
 {
-    public function __construct(private TrelloCommentApiService $trelloComment) {}
+    public function __construct(private readonly TrelloCommentApiService $trelloComment)
+    {
+    }
 
     /**
      * Delete a comment on Trello.

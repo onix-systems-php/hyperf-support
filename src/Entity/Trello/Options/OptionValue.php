@@ -2,7 +2,9 @@
 
 namespace OnixSystemsPHP\HyperfSupport\Entity\Trello\Options;
 
-readonly class OptionValue
+class OptionValue
 {
-    public function __construct(public string $text) {}
+    public function __construct(public readonly string $text)
+    {
+    }
 }

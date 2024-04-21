@@ -9,14 +9,15 @@ declare(strict_types=1);
 
 namespace OnixSystemsPHP\HyperfSupport\Controller\Api;
 
-use Hyperf\HttpServer\Annotation\Controller;
+use Hyperf\HttpServer\Contract\RequestInterface;
 use OnixSystemsPHP\HyperfCore\Controller\AbstractController;
 use OnixSystemsPHP\HyperfCore\DTO\Common\PaginationRequestDTO;
 use OnixSystemsPHP\HyperfCore\Resource\ResourceSuccess;
 use OnixSystemsPHP\HyperfSupport\DTO\Tickets\CreateTicketDTO;
 use OnixSystemsPHP\HyperfSupport\DTO\Tickets\DeleteTicketDTO;
 use OnixSystemsPHP\HyperfSupport\DTO\Tickets\UpdateTicketDTO;
-use OnixSystemsPHP\HyperfSupport\Model\Ticket;
+use OnixSystemsPHP\HyperfSupport\Request\Tickets\CreateTicketRequest;
+use OnixSystemsPHP\HyperfSupport\Request\Tickets\UpdateTicketRequest;
 use OnixSystemsPHP\HyperfSupport\Resource\Ticket\TicketResource;
 use OnixSystemsPHP\HyperfSupport\Resource\Ticket\TicketsPaginatedResource;
 use OnixSystemsPHP\HyperfSupport\Service\Ticket\CreateTicketService;
@@ -26,16 +27,11 @@ use OnixSystemsPHP\HyperfSupport\Service\Ticket\GetTicketsService;
 use OnixSystemsPHP\HyperfSupport\Service\Ticket\UpdateTicketService;
 use OpenApi\Attributes as OA;
 
-#[Controller]
 class TicketsController extends AbstractController
 {
-    public function __construct(
-        private readonly GetTicketsService $getTicketsService,
-        private readonly GetTicketService $getTicketService,
-        private readonly CreateTicketService $createTicketService,
-        private readonly UpdateTicketService $updateTicketService,
-        private readonly DeleteTicketService $deleteTicketService,
-    ) {}
+    public function __construct()
+    {
+    }
 
     #[OA\Get(
         path: '/v1/support/tickets',
@@ -60,10 +56,10 @@ class TicketsController extends AbstractController
             new OA\Response(ref: '#/components/responses/500', response: 500),
         ],
     )]
-    public function index(): TicketsPaginatedResource
+    public function index(RequestInterface $request, GetTicketsService $getTicketsService): TicketsPaginatedResource
     {
-        $paginationDTO = PaginationRequestDTO::make($this->request);
-        $ticketsPaginationResult = $this->getTicketsService->run(
+        $paginationDTO = PaginationRequestDTO::make($request);
+        $ticketsPaginationResult = $getTicketsService->run(
             $this->request->getQueryParams(),
             $paginationDTO,
         );
@@ -92,9 +88,11 @@ class TicketsController extends AbstractController
             new OA\Response(ref: '#/components/responses/500', response: 500),
         ],
     )]
-    public function store(): Ticket
+    public function store(CreateTicketRequest $request, CreateTicketService $createTicketService): TicketResource
     {
-        return $this->createTicketService->run(CreateTicketDTO::make($this->request->all()));
+        $ticket = $createTicketService->run(CreateTicketDTO::make($request));
+
+        return TicketResource::make($ticket);
     }
 
     #[OA\Get(
@@ -122,9 +120,9 @@ class TicketsController extends AbstractController
             new OA\Response(ref: '#/components/responses/500', response: 500),
         ],
     )]
-    public function show(int $id): TicketResource
+    public function show(int $id, GetTicketService $getTicketService): TicketResource
     {
-        return TicketResource::make($this->getTicketService->run($id));
+        return TicketResource::make($getTicketService->run($id));
     }
 
     #[OA\Put(
@@ -155,9 +153,12 @@ class TicketsController extends AbstractController
             new OA\Response(ref: '#/components/responses/500', response: 500),
         ],
     )]
-    public function update(int $id): ?Ticket
-    {
-        return $this->updateTicketService->run($id, UpdateTicketDTO::make($this->request->all()));
+    public function update(
+        int $id,
+        UpdateTicketRequest $request,
+        UpdateTicketService $updateTicketService
+    ): TicketResource {
+        return TicketResource::make($updateTicketService->run($id, UpdateTicketDTO::make($request)));
     }
 
     #[OA\Delete(
@@ -186,9 +187,12 @@ class TicketsController extends AbstractController
             new OA\Response(ref: '#/components/responses/500', response: 500),
         ],
     )]
-    public function destroy(int $id): ResourceSuccess
-    {
-        $this->deleteTicketService->run($id, DeleteTicketDTO::make($this->request->all()));
+    public function destroy(
+        int $id,
+        RequestInterface $request,
+        DeleteTicketService $deleteTicketService
+    ): ResourceSuccess {
+        $deleteTicketService->run($id, DeleteTicketDTO::make($request));
 
         return new ResourceSuccess([]);
     }

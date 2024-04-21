@@ -12,6 +12,7 @@ namespace OnixSystemsPHP\HyperfSupport\Service\Ticket;
 use Hyperf\Validation\Contract\ValidatorFactoryInterface;
 use Hyperf\Validation\Rule;
 use OnixSystemsPHP\HyperfActionsLog\Event\Action;
+use OnixSystemsPHP\HyperfCore\Contract\CoreAuthenticatableProvider;
 use OnixSystemsPHP\HyperfCore\Contract\CorePolicyGuard;
 use OnixSystemsPHP\HyperfSupport\Adapter\SupportAdapter;
 use OnixSystemsPHP\HyperfSupport\Constant\Actions;
@@ -21,30 +22,19 @@ use OnixSystemsPHP\HyperfSupport\Events\TicketCreated;
 use OnixSystemsPHP\HyperfSupport\Model\Ticket;
 use OnixSystemsPHP\HyperfSupport\Repository\TicketRepository;
 use Psr\EventDispatcher\EventDispatcherInterface;
-use OpenApi\Attributes as OA;
 
-#[OA\Schema(
-    schema: 'CreateTicketRequest',
-    properties: [
-        new OA\Property(property: 'title', type: 'string'),
-        new OA\Property(property: 'content', type: 'string'),
-        new OA\Property(property: 'source', type: 'string'),
-        new OA\Property(property: 'custom_fields', type: 'object', example: '{"type": "Feature Request"}'),
-        new OA\Property(property: 'page_url', type: 'string'),
-        new OA\Property(property: 'created_by', type: 'integer'),
-    ],
-    type: 'object',
-)]
-readonly class CreateTicketService
+class CreateTicketService
 {
     public function __construct(
-        private TicketRepository $ticketRepository,
-        private ValidatorFactoryInterface $validatorFactory,
-        private EventDispatcherInterface $eventDispatcher,
-        private ?CorePolicyGuard $policyGuard,
-        private SupportAdapter $supportAdapter,
-        private SourceConfiguratorInterface $sourceConfigurator,
-    ) {}
+        private readonly TicketRepository $ticketRepository,
+        private readonly ValidatorFactoryInterface $validatorFactory,
+        private readonly SupportAdapter $supportAdapter,
+        private readonly CoreAuthenticatableProvider $coreAuthenticatableProvider,
+        private readonly SourceConfiguratorInterface $sourceConfigurator,
+        private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly ?CorePolicyGuard $policyGuard,
+    ) {
+    }
 
     /**
      * Create a ticket.
@@ -56,12 +46,19 @@ readonly class CreateTicketService
     {
         $this->validate($createTicketDTO);
 
-        $this->policyGuard?->check('create', new Ticket());
-        $ticket = $this->ticketRepository->create($createTicketDTO->toArray());
+        $ticketData = array_merge(
+            $createTicketDTO->toArray(),
+            [
+                'created_by' => $this->coreAuthenticatableProvider->user()?->getId(),
+            ]
+        );
+
+        $ticket = $this->ticketRepository->create($ticketData);
+        $this->policyGuard?->check('create', $ticket);
         $this->ticketRepository->save($ticket);
 
         $this->eventDispatcher->dispatch(new TicketCreated($ticket));
-        $this->eventDispatcher->dispatch(new Action(Actions::CREATE_TICKET, $ticket, $createTicketDTO->toArray()));
+        $this->eventDispatcher->dispatch(new Action(Actions::CREATE_TICKET, $ticket, $ticketData));
 
         $this->supportAdapter->run(Actions::CREATE_TICKET, $ticket);
 
@@ -72,7 +69,7 @@ readonly class CreateTicketService
      * @param CreateTicketDTO $createTicketDTO
      * @return void
      */
-    public function validate(CreateTicketDTO $createTicketDTO): void
+    private function validate(CreateTicketDTO $createTicketDTO): void
     {
         $this->validatorFactory->make($createTicketDTO->toArray(), ['source' => 'required'])->validate();
 

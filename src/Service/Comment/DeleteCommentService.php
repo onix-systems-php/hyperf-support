@@ -16,13 +16,13 @@ use OnixSystemsPHP\HyperfSupport\Constant\Actions;
 use OnixSystemsPHP\HyperfSupport\Repository\CommentRepository;
 use Psr\EventDispatcher\EventDispatcherInterface;
 
-readonly class DeleteCommentService
+class DeleteCommentService
 {
     public function __construct(
-        private CommentRepository $commentRepository,
-        private ?CorePolicyGuard $policyGuard,
-        private EventDispatcherInterface $eventDispatcher,
-        private SupportAdapter $supportAdapter
+        private readonly CommentRepository $commentRepository,
+        private readonly ?CorePolicyGuard $policyGuard,
+        private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly SupportAdapter $supportAdapter
     ) {}
 
     /**
@@ -34,7 +34,7 @@ readonly class DeleteCommentService
      */
     public function run(int $id, array $shouldBeSkipped = []): bool
     {
-        $comment = $this->commentRepository->findById($id);
+        $comment = $this->commentRepository->getById($id, false, true);
         $this->policyGuard?->check('delete', $comment);
 
         $result = $this->commentRepository->delete($comment);

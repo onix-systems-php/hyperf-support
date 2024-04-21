@@ -12,18 +12,20 @@ namespace OnixSystemsPHP\HyperfSupport\Service\Ticket;
 use OnixSystemsPHP\HyperfSupport\Model\Ticket;
 use OnixSystemsPHP\HyperfSupport\Repository\TicketRepository;
 
-readonly class GetTicketService
+class GetTicketService
 {
-    public function __construct(private TicketRepository $ticketRepository) {}
+    public function __construct(private readonly TicketRepository $ticketRepository)
+    {
+    }
 
     /**
      * Get the ticket by id.
      *
      * @param int $id
-     * @return Ticket|null
+     * @return Ticket
      */
-    public function run(int $id): ?Ticket
+    public function run(int $id): Ticket
     {
-        return $this->ticketRepository->findById($id);
+        return $this->ticketRepository->getById($id, false, true);
     }
 }

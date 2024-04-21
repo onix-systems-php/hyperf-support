@@ -20,15 +20,16 @@ use OnixSystemsPHP\HyperfSupport\Events\TicketDeleted;
 use OnixSystemsPHP\HyperfSupport\Repository\TicketRepository;
 use Psr\EventDispatcher\EventDispatcherInterface;
 
-readonly class DeleteTicketService
+class DeleteTicketService
 {
     public function __construct(
-        private TicketRepository $ticketRepository,
-        private ?CorePolicyGuard $policyGuard,
-        private EventDispatcherInterface $eventDispatcher,
-        private SupportAdapter $supportAdapter,
-        private ValidatorFactoryInterface $validatorFactory
-    ) {}
+        private readonly TicketRepository $ticketRepository,
+        private readonly ?CorePolicyGuard $policyGuard,
+        private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly SupportAdapter $supportAdapter,
+        private readonly ValidatorFactoryInterface $validatorFactory
+    ) {
+    }
 
     /**
      * Delete the given ticket.
@@ -37,7 +38,7 @@ readonly class DeleteTicketService
      */
     public function run(int $id, DeleteTicketDTO $deleteTicketDTO): bool
     {
-        $ticket = $this->ticketRepository->findById($id);
+        $ticket = $this->ticketRepository->getById($id, false, true);
         $this->validate($deleteTicketDTO);
 
         $this->policyGuard?->check('delete', $ticket);
@@ -57,7 +58,7 @@ readonly class DeleteTicketService
      * @param DeleteTicketDTO $deleteTicketDTO
      * @return void
      */
-    public function validate(DeleteTicketDTO $deleteTicketDTO): void
+    private function validate(DeleteTicketDTO $deleteTicketDTO): void
     {
         $this->validatorFactory->make($deleteTicketDTO->toArray(), [
             'deleted_by' => ['required'],
