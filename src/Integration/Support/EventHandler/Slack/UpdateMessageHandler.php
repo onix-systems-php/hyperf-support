@@ -31,6 +31,6 @@ class UpdateMessageHandler implements EventHandlerInterface
         $this->updateCommentService->run($entity->id, UpdateCommentDTO::make([
             'content' => $event->getText(),
             'slack_id' => $event->getEventIdentifier(),
-        ]), [CommentSlackTransport::class]);
+        ]), [CommentSlackTransport::class], true);
     }
 }

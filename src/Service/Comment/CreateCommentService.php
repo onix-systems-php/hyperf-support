@@ -39,10 +39,15 @@ class CreateCommentService
      *
      * @param CreateCommentDTO $createCommentDTO
      * @param array $shouldBeSkipped
+     * @param bool $internalCall
+     *
      * @return Comment
      */
-    public function run(CreateCommentDTO $createCommentDTO, array $shouldBeSkipped = []): Comment
-    {
+    public function run(
+        CreateCommentDTO $createCommentDTO,
+        array $shouldBeSkipped = [],
+        bool $internalCall = false
+    ): Comment {
         $this->validate($createCommentDTO);
 
         if (!is_null($createCommentDTO->source) && !is_null($createCommentDTO->from)) {
@@ -59,12 +64,12 @@ class CreateCommentService
         $commentData = array_merge(
             $createCommentDTO->toArray(),
             [
-                'created_by' => $this->coreAuthenticatableProvider->user()?->getId()
+                'created_by' => $this->coreAuthenticatableProvider->user()?->getId(),
             ]
         );
 
         $comment = $this->commentRepository->create($commentData);
-        $this->policyGuard?->check('create', $comment);
+        $this->policyGuard?->check('create', $comment, ['internalCall' => $internalCall]);
         $this->commentRepository->save($comment);
         $this->eventDispatcher->dispatch(new Action(Actions::CREATE_COMMENT, $comment, $commentData));
         $this->supportAdapter->run(Actions::CREATE_COMMENT, $comment, $shouldBeSkipped);

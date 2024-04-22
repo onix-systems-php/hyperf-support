@@ -57,6 +57,6 @@ class NewMessageHandler implements EventHandlerInterface
             'creator_name' => $event->getUsername(),
             'trello_comment_id' => $event->getEventIdentifier(),
             'files' => $files->map(fn($file) => ['id' => $file->id])->all(),
-        ]), [CommentTrelloTransport::class]);
+        ]), [CommentTrelloTransport::class], true);
     }
 }

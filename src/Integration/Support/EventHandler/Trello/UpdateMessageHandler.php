@@ -52,6 +52,6 @@ class UpdateMessageHandler implements EventHandlerInterface
         $this->updateCommentService->run($entity->id, UpdateCommentDTO::make([
             'content' => $event->getText(),
             'files' => $files->map(fn($file) => ['id' => $file->id])->all(),
-        ]), [CommentTrelloTransport::class]);
+        ]), [CommentTrelloTransport::class], true);
     }
 }

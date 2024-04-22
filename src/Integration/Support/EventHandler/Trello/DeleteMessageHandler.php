@@ -27,6 +27,6 @@ class DeleteMessageHandler implements EventHandlerInterface
      */
     public function handle(Event $event, Ticket|Comment $entity): void
     {
-        $this->deleteCommentService->run($entity->id, [CommentTrelloTransport::class]);
+        $this->deleteCommentService->run($entity->id, [CommentTrelloTransport::class], true);
     }
 }
