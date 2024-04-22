@@ -23,19 +23,22 @@ class DeleteCommentService
         private readonly ?CorePolicyGuard $policyGuard,
         private readonly EventDispatcherInterface $eventDispatcher,
         private readonly SupportAdapter $supportAdapter
-    ) {}
+    ) {
+    }
 
     /**
      * Delete a comment.
      *
      * @param int $id
      * @param array $shouldBeSkipped
+     * @param bool $internalCall
+     *
      * @return bool
      */
-    public function run(int $id, array $shouldBeSkipped = []): bool
+    public function run(int $id, array $shouldBeSkipped = [], bool $internalCall = false): bool
     {
         $comment = $this->commentRepository->getById($id, false, true);
-        $this->policyGuard?->check('delete', $comment);
+        $this->policyGuard?->check('delete', $comment, ['internalCall' => $internalCall]);
 
         $result = $this->commentRepository->delete($comment);
         $this->eventDispatcher->dispatch(new Action(Actions::DELETE_COMMENT, $comment, $comment->toArray()));
