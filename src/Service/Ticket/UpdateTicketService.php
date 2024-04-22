@@ -50,9 +50,11 @@ class UpdateTicketService
      *
      * @param int $id
      * @param UpdateTicketDTO $updateTicketDTO
+     * @param bool $internalCall
+     *
      * @return Ticket
      */
-    public function run(int $id, UpdateTicketDTO $updateTicketDTO): Ticket
+    public function run(int $id, UpdateTicketDTO $updateTicketDTO, bool $internalCall = false): Ticket
     {
         $ticket = $this->ticketRepository->getById($id, false, true);
         $this->validate($updateTicketDTO);
@@ -60,12 +62,12 @@ class UpdateTicketService
         $ticketData = array_merge(
             $updateTicketDTO->toArray(),
             [
-                'modified_by' => $this->coreAuthenticatableProvider->user()?->getId()
+                'modified_by' => $this->coreAuthenticatableProvider->user()?->getId(),
             ]
         );
 
         $this->ticketRepository->update($ticket, $ticketData);
-        $this->policyGuard?->check('update', $ticket);
+        $this->policyGuard?->check('update', $ticket, ['internalCall' => $internalCall]);
         $this->ticketRepository->save($ticket);
 
         if ($this->shouldTicketBeCompleted($ticket)) {
@@ -85,6 +87,7 @@ class UpdateTicketService
 
     /**
      * @param UpdateTicketDTO $updateTicketDTO
+     *
      * @return void
      */
     private function validate(UpdateTicketDTO $updateTicketDTO): void
@@ -106,6 +109,7 @@ class UpdateTicketService
      * Create new comment on new ticket status.
      *
      * @param Ticket $ticket
+     *
      * @return void
      */
     private function createNewCommentOnNewTicketStatus(Ticket $ticket): void
@@ -121,6 +125,7 @@ class UpdateTicketService
      * Complete a ticket.
      *
      * @param Ticket $ticket
+     *
      * @return void
      */
     private function completeTicket(Ticket $ticket): void
@@ -133,6 +138,7 @@ class UpdateTicketService
      * Check whether the ticket is completed or not.
      *
      * @param Ticket $ticket
+     *
      * @return bool
      */
     private function shouldTicketBeCompleted(Ticket $ticket): bool

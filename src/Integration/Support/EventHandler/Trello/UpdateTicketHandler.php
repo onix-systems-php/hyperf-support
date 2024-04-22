@@ -40,7 +40,7 @@ class UpdateTicketHandler implements EventHandlerInterface
                         $sourceConfigurator->getApiConfig($entity->source, 'integrations', 'trello', 'lists')
                     )[$event->getTicketStatus()],
                 ],
-            ]));
+            ]), true);
         }
     }
 }

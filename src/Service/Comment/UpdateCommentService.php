@@ -29,7 +29,8 @@ class UpdateCommentService
         private readonly CoreAuthenticatableProvider $coreAuthenticatableProvider,
         private readonly EventDispatcherInterface $eventDispatcher,
         private readonly ?CorePolicyGuard $policyGuard,
-    ) {}
+    ) {
+    }
 
     /**
      * Update a comment.
@@ -37,10 +38,16 @@ class UpdateCommentService
      * @param int $id
      * @param UpdateCommentDTO $updateCommentDTO
      * @param array $shouldBeSkipped
+     * @param bool $internalCall
+     *
      * @return Comment
      */
-    public function run(int $id, UpdateCommentDTO $updateCommentDTO, array $shouldBeSkipped = []): Comment
-    {
+    public function run(
+        int $id,
+        UpdateCommentDTO $updateCommentDTO,
+        array $shouldBeSkipped = [],
+        bool $internalCall = false
+    ): Comment {
         $comment = $this->commentRepository->getById($id, false, true);
         $this->validate($updateCommentDTO);
 
@@ -52,7 +59,7 @@ class UpdateCommentService
         );
 
         $this->commentRepository->update($comment, $commentData);
-        $this->policyGuard?->check('update', $comment);
+        $this->policyGuard?->check('update', $comment, ['internalCall' => $internalCall]);
         $this->commentRepository->save($comment);
         $this->eventDispatcher->dispatch(new Action(Actions::UPDATE_COMMENT, $comment, $commentData));
         $this->supportAdapter->run(Actions::UPDATE_COMMENT, $comment, $shouldBeSkipped);
