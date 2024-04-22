@@ -53,6 +53,6 @@ class NewMessageHandler implements EventHandlerInterface
             'creator_name' => $event->getUsername(),
             'slack_comment_id' => $event->getEventIdentifier(),
             'files' => $files->map(fn($file) => ['id' => $file->id])->all(),
-        ]), [CommentSlackTransport::class]);
+        ]), [CommentSlackTransport::class], true);
     }
 }

@@ -118,7 +118,7 @@ class UpdateTicketService
             'ticket_id' => $ticket->id,
             'content' => "Ticket status has been changed to {$ticket->custom_fields['status']}",
             'creator_name' => TicketCreator::System->value,
-        ]), [CommentTrelloTransport::class]);
+        ]), [CommentTrelloTransport::class], true);
     }
 
     /**
