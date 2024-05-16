@@ -78,7 +78,6 @@ class CreateTicketService
             'content' => ['required', 'min:20'],
             'custom_fields' => ['array'],
             'page_url' => ['url:https'],
-            'created_by' => ['required', 'integer'],
         ];
 
         $configValues = $this->sourceConfigurator->getApiConfig($createTicketDTO->source, 'ticket', 'custom_fields');

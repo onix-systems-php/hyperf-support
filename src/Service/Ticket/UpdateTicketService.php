@@ -99,7 +99,6 @@ class UpdateTicketService
             'content' => ['string', 'min:20'],
             'custom_fields' => ['array'],
             'page_url' => ['url:https'],
-            'modified_by' => ['integer'],
         ];
 
         $this->validatorFactory->make($updateTicketDTO->toArray(), $validationRules)->validate();
