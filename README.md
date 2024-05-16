@@ -59,7 +59,6 @@ Try to send this `JSON` to `/v1/support/tickets` via `POST` method.
     "priority": "Medium",
     "status": "New"
   },
-  "created_by": 1,
   "page_url": "https://google.com"
 }
 ```
