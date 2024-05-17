@@ -187,12 +187,9 @@ class TicketsController extends AbstractController
             new OA\Response(ref: '#/components/responses/500', response: 500),
         ],
     )]
-    public function destroy(
-        int $id,
-        RequestInterface $request,
-        DeleteTicketService $deleteTicketService
-    ): ResourceSuccess {
-        $deleteTicketService->run($id, DeleteTicketDTO::make($request));
+    public function destroy(int $id, DeleteTicketService $deleteTicketService): ResourceSuccess
+    {
+        $deleteTicketService->run($id);
 
         return new ResourceSuccess([]);
     }
