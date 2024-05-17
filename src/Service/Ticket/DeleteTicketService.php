@@ -10,12 +10,11 @@ declare(strict_types=1);
 namespace OnixSystemsPHP\HyperfSupport\Service\Ticket;
 
 use Exception;
-use Hyperf\Validation\Contract\ValidatorFactoryInterface;
 use OnixSystemsPHP\HyperfActionsLog\Event\Action;
+use OnixSystemsPHP\HyperfCore\Contract\CoreAuthenticatableProvider;
 use OnixSystemsPHP\HyperfCore\Contract\CorePolicyGuard;
 use OnixSystemsPHP\HyperfSupport\Adapter\SupportAdapter;
 use OnixSystemsPHP\HyperfSupport\Constant\Actions;
-use OnixSystemsPHP\HyperfSupport\DTO\Tickets\DeleteTicketDTO;
 use OnixSystemsPHP\HyperfSupport\Events\TicketDeleted;
 use OnixSystemsPHP\HyperfSupport\Repository\TicketRepository;
 use Psr\EventDispatcher\EventDispatcherInterface;
@@ -27,7 +26,7 @@ class DeleteTicketService
         private readonly ?CorePolicyGuard $policyGuard,
         private readonly EventDispatcherInterface $eventDispatcher,
         private readonly SupportAdapter $supportAdapter,
-        private readonly ValidatorFactoryInterface $validatorFactory
+        private readonly CoreAuthenticatableProvider $coreAuthenticatableProvider,
     ) {
     }
 
@@ -36,13 +35,12 @@ class DeleteTicketService
      *
      * @throws Exception
      */
-    public function run(int $id, DeleteTicketDTO $deleteTicketDTO): bool
+    public function run(int $id): bool
     {
         $ticket = $this->ticketRepository->getById($id, false, true);
-        $this->validate($deleteTicketDTO);
 
         $this->policyGuard?->check('delete', $ticket);
-        $this->ticketRepository->update($ticket, $deleteTicketDTO->toArray());
+        $this->ticketRepository->update($ticket, ['deleted_by' => $this->coreAuthenticatableProvider->user()?->getId()]);
         $this->ticketRepository->save($ticket);
 
         $result = $this->ticketRepository->delete($ticket);
@@ -52,16 +50,5 @@ class DeleteTicketService
         $this->supportAdapter->run(Actions::DELETE_TICKET, $ticket);
 
         return $result;
-    }
-
-    /**
-     * @param DeleteTicketDTO $deleteTicketDTO
-     * @return void
-     */
-    private function validate(DeleteTicketDTO $deleteTicketDTO): void
-    {
-        $this->validatorFactory->make($deleteTicketDTO->toArray(), [
-            'deleted_by' => ['required'],
-        ])->validate();
     }
 }
