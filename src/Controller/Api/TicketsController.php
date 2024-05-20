@@ -14,12 +14,13 @@ use OnixSystemsPHP\HyperfCore\Controller\AbstractController;
 use OnixSystemsPHP\HyperfCore\DTO\Common\PaginationRequestDTO;
 use OnixSystemsPHP\HyperfCore\Resource\ResourceSuccess;
 use OnixSystemsPHP\HyperfSupport\DTO\Tickets\CreateTicketDTO;
-use OnixSystemsPHP\HyperfSupport\DTO\Tickets\DeleteTicketDTO;
 use OnixSystemsPHP\HyperfSupport\DTO\Tickets\UpdateTicketDTO;
 use OnixSystemsPHP\HyperfSupport\Request\Tickets\CreateTicketRequest;
 use OnixSystemsPHP\HyperfSupport\Request\Tickets\UpdateTicketRequest;
+use OnixSystemsPHP\HyperfSupport\Resource\Comment\CommentsPaginatedResource;
 use OnixSystemsPHP\HyperfSupport\Resource\Ticket\TicketResource;
 use OnixSystemsPHP\HyperfSupport\Resource\Ticket\TicketsPaginatedResource;
+use OnixSystemsPHP\HyperfSupport\Service\Comment\GetCommentsByTicketIdService;
 use OnixSystemsPHP\HyperfSupport\Service\Ticket\CreateTicketService;
 use OnixSystemsPHP\HyperfSupport\Service\Ticket\DeleteTicketService;
 use OnixSystemsPHP\HyperfSupport\Service\Ticket\GetTicketService;
@@ -58,10 +59,10 @@ class TicketsController extends AbstractController
     )]
     public function index(RequestInterface $request, GetTicketsService $getTicketsService): TicketsPaginatedResource
     {
-        $paginationDTO = PaginationRequestDTO::make($request);
+        $requestDTO = PaginationRequestDTO::make($request);
         $ticketsPaginationResult = $getTicketsService->run(
             $this->request->getQueryParams(),
-            $paginationDTO,
+            $requestDTO,
         );
 
         return TicketsPaginatedResource::make($ticketsPaginationResult);
@@ -123,6 +124,38 @@ class TicketsController extends AbstractController
     public function show(int $id, GetTicketService $getTicketService): TicketResource
     {
         return TicketResource::make($getTicketService->run($id));
+    }
+
+    #[OA\Get(
+        path: '/v1/support/tickets/{id}/comments',
+        operationId: 'getCommentsByTicketId',
+        summary: 'Get the comments by ticket id',
+        tags: ['tickets', 'comments'],
+        parameters: [
+            new OA\Parameter(
+                name: 'id',
+                description: 'Ticket id',
+                in: 'path',
+                required: true,
+                schema: new OA\Schema(type: 'integer')
+            ),
+        ],
+        responses: [
+            new OA\Response(response: 200, description: '', content: new OA\JsonContent(properties: [
+                new OA\Property(ref: '#/components/schemas/CommentsPaginatedResource'),
+            ])),
+            new OA\Response(ref: '#/components/responses/400', response: 400),
+            new OA\Response(ref: '#/components/responses/401', response: 401),
+            new OA\Response(ref: '#/components/responses/403', response: 403),
+            new OA\Response(ref: '#/components/responses/422', response: 404),
+            new OA\Response(ref: '#/components/responses/500', response: 500),
+        ],
+    )]
+    public function getCommentsByTicketId(int $id, GetCommentsByTicketIdService $getCommentsByTicketIdService, RequestInterface $request): CommentsPaginatedResource
+    {
+        $requestDTO = PaginationRequestDTO::make($request);
+
+        return CommentsPaginatedResource::make($getCommentsByTicketIdService->run($requestDTO, $id));
     }
 
     #[OA\Put(
