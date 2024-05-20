@@ -107,4 +107,24 @@ class CommentRepository extends AbstractRepository
     {
         $query->where('trello_comment_id', $trelloCommentId);
     }
+
+    /**
+     * @param PaginationRequestDTO $paginationRequestDTO
+     * @param int $ticketId
+     * @return PaginationResultDTO
+     */
+    public function getCommentsByTicketIdPaginated(PaginationRequestDTO $paginationRequestDTO, int $ticketId): PaginationResultDTO
+    {
+        return $this->finder('ticketId', $ticketId)->paginateDTO($paginationRequestDTO);
+    }
+
+    /**
+     * @param Builder $query
+     * @param int $ticketId
+     * @return void
+     */
+    public function scopeTicketId(Builder $query, int $ticketId): void
+    {
+        $query->where('ticket_id', $ticketId);
+    }
 }
