@@ -115,7 +115,7 @@ class CommentRepository extends AbstractRepository
      */
     public function getCommentsByTicketIdPaginated(PaginationRequestDTO $paginationRequestDTO, int $ticketId): PaginationResultDTO
     {
-        return $this->finder('ticketId', $ticketId)->paginateDTO($paginationRequestDTO);
+        return $this->finder('ticketId', $ticketId)->orderByDesc('created_at')->paginateDTO($paginationRequestDTO);
     }
 
     /**
