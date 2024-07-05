@@ -17,6 +17,7 @@ class UpdateCardDTO extends AbstractDTO
     public string $name;
     public string $desc;
     public string $pos;
+    public string $idList;
     public bool $closed;
     public CreateCardCoverDTO $cover;
 }
