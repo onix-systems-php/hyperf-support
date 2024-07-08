@@ -45,7 +45,8 @@ class CreateSlackCommentService
             $message->addFile($externalId);
         }
         $response = $this->slack->postMessage($comment->ticket->source, $message);
-        $this->commentRepository->update($comment, ['slack_comment_id' => $response->ts])->save();
+        $comment = $this->commentRepository->update($comment, ['slack_comment_id' => $response->ts]);
+        $this->commentRepository->save($comment);
 
         return $comment;
     }

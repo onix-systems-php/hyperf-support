@@ -9,8 +9,6 @@ declare(strict_types=1);
 
 namespace OnixSystemsPHP\HyperfSupport\Repository;
 
-use Hyperf\Database\Model\Collection;
-use Hyperf\Database\Model\Model;
 use OnixSystemsPHP\HyperfCore\DTO\Common\PaginationRequestDTO;
 use OnixSystemsPHP\HyperfCore\DTO\Common\PaginationResultDTO;
 use OnixSystemsPHP\HyperfCore\Model\Builder;
@@ -20,12 +18,11 @@ use OnixSystemsPHP\HyperfSupport\Model\Comment;
 /**
  * @method Comment create(array $data)
  * @method Comment update(Comment $model, array $data)
- * @method Comment save(Comment $model)
+ * @method bool save(Comment $model)
  * @method bool delete(Comment $model)
  * @method Builder|CommentRepository finder(string $type, ...$parameters)
  * @method null|Comment fetchOne(bool $lock, bool $force)
  */
-
 class CommentRepository extends AbstractRepository
 {
     protected string $modelClass = Comment::class;

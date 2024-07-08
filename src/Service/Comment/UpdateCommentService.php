@@ -18,10 +18,13 @@ use OnixSystemsPHP\HyperfSupport\Constant\Actions;
 use OnixSystemsPHP\HyperfSupport\DTO\Comments\UpdateCommentDTO;
 use OnixSystemsPHP\HyperfSupport\Model\Comment;
 use OnixSystemsPHP\HyperfSupport\Repository\CommentRepository;
+use OnixSystemsPHP\HyperfSupport\Service\Integration\Traits\FormatHelper;
 use Psr\EventDispatcher\EventDispatcherInterface;
 
 class UpdateCommentService
 {
+    use FormatHelper;
+
     public function __construct(
         private readonly ValidatorFactoryInterface $validatorFactory,
         private readonly CommentRepository $commentRepository,
@@ -59,6 +62,8 @@ class UpdateCommentService
         );
 
         $this->commentRepository->update($comment, $commentData);
+        $comment->content = $this->getOriginalMessage($comment);
+
         $this->policyGuard?->check('update', $comment, ['internalCall' => $internalCall]);
         $this->commentRepository->save($comment);
         $this->eventDispatcher->dispatch(new Action(Actions::UPDATE_COMMENT, $comment, $commentData));
