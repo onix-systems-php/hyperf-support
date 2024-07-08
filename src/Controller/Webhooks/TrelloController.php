@@ -10,8 +10,6 @@ declare(strict_types=1);
 namespace OnixSystemsPHP\HyperfSupport\Controller\Webhooks;
 
 use Hyperf\HttpServer\Annotation\Controller;
-use Hyperf\HttpServer\Annotation\GetMapping;
-use Hyperf\HttpServer\Annotation\PostMapping;
 use OnixSystemsPHP\HyperfCore\Controller\AbstractController;
 use OnixSystemsPHP\HyperfSupport\Contract\SourceConfiguratorInterface;
 use OnixSystemsPHP\HyperfSupport\Service\Integration\TrelloService;
@@ -23,7 +21,8 @@ class TrelloController extends AbstractController
     public function __construct(
         private readonly TrelloService $trelloService,
         private readonly SourceConfiguratorInterface $sourceConfigurator,
-    ) {}
+    ) {
+    }
 
     public function init(): Response
     {
