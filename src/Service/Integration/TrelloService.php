@@ -73,12 +73,15 @@ class TrelloService
     private function getEntity(TrelloEvent $trelloEvent): Ticket|Comment|null
     {
         return match ($trelloEvent->type) {
-            TrelloActionType::CommentCard, TrelloActionType::UpdateCard => $this->ticketRepository->getByTrelloId(
-                $trelloEvent->cardId
-            ),
-            TrelloActionType::UpdateComment, TrelloActionType::DeleteComment => $this->commentRepository->getByTrelloId(
+            TrelloActionType::CommentCard,
+            TrelloActionType::UpdateCard => $this->ticketRepository->getByTrelloId($trelloEvent->cardId),
+
+            TrelloActionType::UpdateComment,
+            TrelloActionType::DeleteComment => $this->commentRepository->getByTrelloId(
                 $trelloEvent->getEventIdentifier()
             ),
+
+            default => null,
         };
     }
 
