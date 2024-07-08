@@ -9,8 +9,6 @@ declare(strict_types=1);
 
 namespace OnixSystemsPHP\HyperfSupport\Repository;
 
-use Hyperf\Database\Model\Collection;
-use Hyperf\Database\Model\Model;
 use OnixSystemsPHP\HyperfCore\DTO\Common\PaginationRequestDTO;
 use OnixSystemsPHP\HyperfCore\DTO\Common\PaginationResultDTO;
 use OnixSystemsPHP\HyperfCore\Model\Builder;
@@ -21,7 +19,7 @@ use OnixSystemsPHP\HyperfSupport\Model\Ticket;
 /**
  * @method Ticket create(array $data)
  * @method Ticket update(Ticket $model, array $data)
- * @method Ticket save(Ticket $model)
+ * @method bool save(Ticket $model)
  * @method bool delete(Ticket $model)
  * @method Builder|TicketRepository finder(string $type, ...$parameters)
  * @method Ticket|null fetchOne(bool $lock, bool $force)
