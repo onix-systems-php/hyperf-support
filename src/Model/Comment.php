@@ -30,7 +30,7 @@ use OnixSystemsPHP\HyperfFileUpload\Model\Behaviour\FileRelations;
  * @property int|null $deleted_by
  * @property Carbon|null $deleted_at
  * @property Carbon|null $created_at
- * @property Carbon|null $modified_at
+ * @property Carbon|null $updated_at
  * @property-read Ticket $ticket
  * @property-read MorphMany $files
  */

@@ -44,7 +44,7 @@ class TicketResource extends AbstractResource
             'trello_url' => $this->resource->trello_url,
             'page_url' => $this->resource->page_url,
             'created_at' => $this->resource->created_at,
-            'updated_at' => $this->resource->modified_at,
+            'updated_at' => $this->resource->updated_at,
             'deleted_at' => $this->resource->deleted_at,
         ];
     }

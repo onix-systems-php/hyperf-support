@@ -38,7 +38,7 @@ use function Hyperf\Support\make;
  * @property string|null $slack_id
  * @property Carbon|null $deleted_at
  * @property Carbon|null $created_at
- * @property Carbon|null $modified_at
+ * @property Carbon|null $updated_at
  * @property string $ticket_title
  * @property string|null $trello_url
  * @property string|null $page_url

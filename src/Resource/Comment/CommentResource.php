@@ -17,7 +17,7 @@ use OpenApi\Attributes as OA;
     new OA\Property(property: 'modified_by', type: 'integer'),
     new OA\Property(property: 'deleted_by', type: 'integer'),
     new OA\Property(property: 'created_at', type: 'string'),
-    new OA\Property(property: 'modified_at', type: 'string'),
+    new OA\Property(property: 'updated_at', type: 'string'),
     new OA\Property(property: 'deleted_at', type: 'string'),
 ], type: 'object')]
 /**
@@ -39,7 +39,7 @@ class CommentResource extends AbstractResource
             'modified_by' => $this->resource->modified_by,
             'deleted_by' => $this->resource->deleted_by,
             'created_at' => $this->resource->created_at,
-            'modified_at' => $this->resource->modified_at,
+            'updated_at' => $this->resource->updated_at,
             'deleted_at' => $this->resource->deleted_at,
         ];
     }
