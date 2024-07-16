@@ -55,7 +55,10 @@ class CommentsController extends AbstractController
     public function index(RequestInterface $request, GetCommentsService $getCommentsService): CommentsPaginatedResource
     {
         $paginationDTO = PaginationRequestDTO::make($request);
-        $commentsPaginationResult = $getCommentsService->run($paginationDTO);
+        $commentsPaginationResult = $getCommentsService->run(
+            $request->getQueryParams(),
+            $paginationDTO
+        );
 
         return CommentsPaginatedResource::make($commentsPaginationResult);
     }

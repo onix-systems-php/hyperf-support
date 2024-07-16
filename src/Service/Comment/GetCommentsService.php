@@ -22,11 +22,12 @@ class GetCommentsService
     /**
      * Get paginated comments.
      *
+     * @param array<string, mixed> $filters
      * @param PaginationRequestDTO $paginationRequestDTO
      * @return PaginationResultDTO
      */
-    public function run(PaginationRequestDTO $paginationRequestDTO): PaginationResultDTO
+    public function run(array $filters, PaginationRequestDTO $paginationRequestDTO): PaginationResultDTO
     {
-        return $this->commentRepository->getPaginated($paginationRequestDTO);
+        return $this->commentRepository->getPaginated($filters, $paginationRequestDTO);
     }
 }
