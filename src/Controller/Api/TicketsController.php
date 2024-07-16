@@ -59,10 +59,10 @@ class TicketsController extends AbstractController
     )]
     public function index(RequestInterface $request, GetTicketsService $getTicketsService): TicketsPaginatedResource
     {
-        $requestDTO = PaginationRequestDTO::make($request);
+        $paginationDTO = PaginationRequestDTO::make($request);
         $ticketsPaginationResult = $getTicketsService->run(
             $this->request->getQueryParams(),
-            $requestDTO,
+            $paginationDTO,
         );
 
         return TicketsPaginatedResource::make($ticketsPaginationResult);

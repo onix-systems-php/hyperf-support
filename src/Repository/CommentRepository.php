@@ -14,6 +14,7 @@ use OnixSystemsPHP\HyperfCore\DTO\Common\PaginationResultDTO;
 use OnixSystemsPHP\HyperfCore\Model\Builder;
 use OnixSystemsPHP\HyperfCore\Repository\AbstractRepository;
 use OnixSystemsPHP\HyperfSupport\Model\Comment;
+use OnixSystemsPHP\HyperfSupport\Model\Filter\CommentFilter;
 
 /**
  * @method Comment create(array $data)
@@ -28,13 +29,17 @@ class CommentRepository extends AbstractRepository
     protected string $modelClass = Comment::class;
 
     /**
+     * @param array<string, mixed> $filters
      * @param PaginationRequestDTO $paginationRequestDTO
      * @param array $contain
      * @return PaginationResultDTO
      */
-    public function getPaginated(PaginationRequestDTO $paginationRequestDTO, array $contain = []): PaginationResultDTO
-    {
-        $query = $this->query();
+    public function getPaginated(
+        array $filters,
+        PaginationRequestDTO $paginationRequestDTO,
+        array $contain = []
+    ): PaginationResultDTO {
+        $query = $this->query()->filter(new CommentFilter($filters));
         if (!empty($contain)) {
             $query->with($contain);
         }
@@ -110,8 +115,10 @@ class CommentRepository extends AbstractRepository
      * @param int $ticketId
      * @return PaginationResultDTO
      */
-    public function getCommentsByTicketIdPaginated(PaginationRequestDTO $paginationRequestDTO, int $ticketId): PaginationResultDTO
-    {
+    public function getCommentsByTicketIdPaginated(
+        PaginationRequestDTO $paginationRequestDTO,
+        int $ticketId
+    ): PaginationResultDTO {
         return $this->finder('ticketId', $ticketId)->orderByDesc('created_at')->paginateDTO($paginationRequestDTO);
     }
 
