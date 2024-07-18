@@ -111,18 +111,6 @@ class CommentRepository extends AbstractRepository
     }
 
     /**
-     * @param PaginationRequestDTO $paginationRequestDTO
-     * @param int $ticketId
-     * @return PaginationResultDTO
-     */
-    public function getCommentsByTicketIdPaginated(
-        PaginationRequestDTO $paginationRequestDTO,
-        int $ticketId
-    ): PaginationResultDTO {
-        return $this->finder('ticketId', $ticketId)->orderByDesc('created_at')->paginateDTO($paginationRequestDTO);
-    }
-
-    /**
      * @param Builder $query
      * @param int $ticketId
      * @return void

@@ -20,7 +20,6 @@ Router::addGroup('/v1/support/', function () {
         Router::get('', [TicketsController::class, 'index']);
         Router::post('', [TicketsController::class, 'store']);
         Router::get('/{id}', [TicketsController::class, 'show']);
-        Router::get('/{id}/comments', [TicketsController::class, 'getCommentsByTicketId']);
         Router::put('/{id}', [TicketsController::class, 'update']);
         Router::delete('/{id}', [TicketsController::class, 'destroy']);
     });
