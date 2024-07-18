@@ -12,11 +12,6 @@ use OpenApi\Attributes as OA;
     properties: [
         new OA\Property(property: 'ticket_id', type: 'integer'),
         new OA\Property(property: 'content', type: 'string'),
-        new OA\Property(property: 'from', type: 'string'),
-        new OA\Property(property: 'source', type: 'string'),
-        new OA\Property(property: 'creator_name', type: 'string'),
-        new OA\Property(property: 'trello_comment_id', type: 'string'),
-        new OA\Property(property: 'slack_comment_id', type: 'string'),
         new OA\Property(property: 'files', type: 'array', items: new OA\Items(
             ref: '#/components/schemas/RequestFileAssign'
         )),
@@ -41,11 +36,6 @@ class CreateCommentRequest extends FormRequest
         return [
             'ticket_id' => 'required|integer|exists:tickets,id',
             'content' => 'required|string',
-            'from' => 'nullable|string',
-            'source' => 'nullable|string',
-            'creator_name' => 'required|string',
-            'trello_comment_id' => 'nullable|string',
-            'slack_comment_id' => 'nullable|string',
             'files' => 'array'
         ];
     }

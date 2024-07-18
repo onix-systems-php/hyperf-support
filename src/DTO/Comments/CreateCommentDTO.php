@@ -21,7 +21,7 @@ class CreateCommentDTO extends AbstractDTO
 
     public ?string $source = null;
 
-    public string $creator_name;
+    public ?string $creator_name;
 
     public ?string $trello_comment_id;
 

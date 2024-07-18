@@ -10,14 +10,11 @@ use OpenApi\Attributes as OA;
 #[OA\Schema(
     schema: 'CreateTicketRequest',
     properties: [
+        new OA\Property(property: 'source', type: 'string'),
         new OA\Property(property: 'title', type: 'string'),
         new OA\Property(property: 'content', type: 'string'),
-        new OA\Property(property: 'source', type: 'string'),
         new OA\Property(property: 'custom_fields', type: 'object', example: '{"type": "Feature Request"}'),
         new OA\Property(property: 'page_url', type: 'string'),
-        new OA\Property(property: 'trello_short_link', type: 'string'),
-        new OA\Property(property: 'trello_id', type: 'string'),
-        new OA\Property(property: 'slack_id', type: 'string'),
         new OA\Property(property: 'files', type: 'array', items: new OA\Items(
             ref: '#/components/schemas/RequestFileAssign'
         )),
@@ -40,14 +37,11 @@ class CreateTicketRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'source' => 'required|string',
             'title' => 'required|min:5|max:255',
             'content' => 'required|min:20',
-            'source' => 'required|string',
-            'custom_fields' => 'array',
-            'page_url' => 'nullable|url:https',
-            'slack_id' => 'nullable|string',
-            'trello_id' => 'nullable|string',
-            'trello_short_link' => 'nullable|string',
+            'custom_fields' => 'present|array',
+            'page_url' => 'required|url:https',
             'files' => 'array'
         ];
     }
