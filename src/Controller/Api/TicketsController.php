@@ -28,6 +28,8 @@ use OpenApi\Attributes as OA;
 
 class TicketsController extends AbstractController
 {
+    private const OA_TAGS = ['tickets'];
+
     public function __construct()
     {
     }
@@ -36,7 +38,7 @@ class TicketsController extends AbstractController
         path: '/v1/support/tickets',
         operationId: 'getTickets',
         summary: 'Get list of tickets',
-        tags: ['tickets'],
+        tags: self::OA_TAGS,
         parameters: [
             new OA\Parameter(ref: '#/components/parameters/Pagination_page'),
             new OA\Parameter(ref: '#/components/parameters/Pagination_per_page'),
@@ -74,7 +76,7 @@ class TicketsController extends AbstractController
             required: true,
             content: new OA\JsonContent(ref: '#/components/schemas/CreateTicketRequest')
         ),
-        tags: ['tickets'],
+        tags: self::OA_TAGS,
         responses: [
             new OA\Response(response: 200, description: '', content: new OA\JsonContent(properties: [
                 new OA\Property(property: 'status', type: 'string'),
@@ -98,7 +100,7 @@ class TicketsController extends AbstractController
         path: '/v1/support/tickets/{id}',
         operationId: 'getTicketById',
         summary: 'Get a ticket by id',
-        tags: ['tickets'],
+        tags: self::OA_TAGS,
         parameters: [
             new OA\Parameter(
                 name: 'id',
@@ -132,6 +134,7 @@ class TicketsController extends AbstractController
             required: true,
             content: new OA\JsonContent(ref: '#/components/schemas/UpdateTicketRequest')
         ),
+        tags: self::OA_TAGS,
         parameters: [
             new OA\Parameter(
                 name: 'id',
@@ -164,7 +167,7 @@ class TicketsController extends AbstractController
         path: '/v1/support/tickets/{id}',
         operationId: 'deleteTicket',
         summary: 'Delete the ticket',
-        tags: ['tickets'],
+        tags: self::OA_TAGS,
         parameters: [
             new OA\Parameter(
                 name: 'id',
