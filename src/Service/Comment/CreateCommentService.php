@@ -16,6 +16,7 @@ use OnixSystemsPHP\HyperfCore\Contract\CorePolicyGuard;
 use OnixSystemsPHP\HyperfSupport\Adapter\SupportAdapter;
 use OnixSystemsPHP\HyperfSupport\Constant\Actions;
 use OnixSystemsPHP\HyperfSupport\Contract\SourceConfiguratorInterface;
+use OnixSystemsPHP\HyperfSupport\Contract\SupportUserInterface;
 use OnixSystemsPHP\HyperfSupport\DTO\Comments\CreateCommentDTO;
 use OnixSystemsPHP\HyperfSupport\Model\Comment;
 use OnixSystemsPHP\HyperfSupport\Repository\CommentRepository;
@@ -48,6 +49,13 @@ class CreateCommentService
         array $shouldBeSkipped = [],
         bool $internalCall = false
     ): Comment {
+        /** @var SupportUserInterface|null $user */
+        $user = $this->coreAuthenticatableProvider->user();
+
+        if (!empty($user)) {
+            $createCommentDTO->creator_name = $user->getUsername();
+        }
+
         $this->validate($createCommentDTO);
 
         if (!is_null($createCommentDTO->source) && !is_null($createCommentDTO->from)) {

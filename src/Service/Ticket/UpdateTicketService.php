@@ -92,16 +92,19 @@ class UpdateTicketService
      */
     private function validate(UpdateTicketDTO $updateTicketDTO): void
     {
-        $this->validatorFactory->make($updateTicketDTO->toArray(), ['source' => 'required'])->validate();
-
-        $validationRules = [
-            'title' => ['string', 'min:5', 'max:255'],
-            'content' => ['string', 'min:20'],
-            'custom_fields' => ['array'],
-            'page_url' => ['url:https'],
-        ];
-
-        $this->validatorFactory->make($updateTicketDTO->toArray(), $validationRules)->validate();
+        $this->validatorFactory
+            ->make(
+                $updateTicketDTO->toArray(),
+                [
+                    'source' => 'required|string',
+                    'title' => 'sometimes|required|min:5|max:255',
+                    'content' => 'sometimes|required|min:20',
+                    'custom_fields' => 'sometimes|array',
+                    'page_url' => 'sometimes|required|url:https',
+                    'files' => 'sometimes|array'
+                ]
+            )
+            ->validate();
     }
 
     /**
