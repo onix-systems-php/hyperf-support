@@ -28,6 +28,8 @@ use OpenApi\Attributes as OA;
 
 class CommentsController extends AbstractController
 {
+    private const OA_TAGS = ['comments'];
+
     public function __construct()
     {
     }
@@ -36,7 +38,7 @@ class CommentsController extends AbstractController
         path: '/v1/support/comments',
         operationId: 'getComments',
         summary: 'Get list of comments',
-        tags: ['comments'],
+        tags: self::OA_TAGS,
         parameters: [
             new OA\Parameter(ref: '#/components/parameters/Pagination_page'),
             new OA\Parameter(ref: '#/components/parameters/Pagination_per_page'),
@@ -78,7 +80,7 @@ class CommentsController extends AbstractController
             required: true,
             content: new OA\JsonContent(ref: '#/components/schemas/CreateCommentRequest')
         ),
-        tags: ['comments'],
+        tags: self::OA_TAGS,
         responses: [
             new OA\Response(response: 200, description: '', content: new OA\JsonContent(properties: [
                 new OA\Property(property: 'status', type: 'string'),
@@ -102,7 +104,7 @@ class CommentsController extends AbstractController
         path: '/v1/support/comments/{id}',
         operationId: 'getCommentById',
         summary: 'Get a comment by id',
-        tags: ['comments'],
+        tags: self::OA_TAGS,
         parameters: [
             new OA\Parameter(
                 name: 'id',
@@ -136,6 +138,7 @@ class CommentsController extends AbstractController
             required: true,
             content: new OA\JsonContent(ref: '#/components/schemas/UpdateCommentRequest')
         ),
+        tags: self::OA_TAGS,
         parameters: [
             new OA\Parameter(
                 name: 'id',
@@ -168,7 +171,7 @@ class CommentsController extends AbstractController
         path: '/v1/support/comments/{id}',
         operationId: 'deleteComment',
         summary: 'Delete the comment',
-        tags: ['tickets'],
+        tags: self::OA_TAGS,
         parameters: [
             new OA\Parameter(
                 name: 'id',
