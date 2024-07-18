@@ -165,7 +165,7 @@ class CommentsController extends AbstractController
     }
 
     #[OA\Delete(
-        path: '/v1/support/tickets/{id}',
+        path: '/v1/support/comments/{id}',
         operationId: 'deleteComment',
         summary: 'Delete the comment',
         tags: ['tickets'],
