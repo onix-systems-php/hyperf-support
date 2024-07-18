@@ -41,6 +41,13 @@ class CommentsController extends AbstractController
             new OA\Parameter(ref: '#/components/parameters/Pagination_page'),
             new OA\Parameter(ref: '#/components/parameters/Pagination_per_page'),
             new OA\Parameter(ref: '#/components/parameters/Pagination_order'),
+            new OA\Parameter(ref: '#/components/parameters/CommentFilter__ticket_id'),
+            new OA\Parameter(ref: '#/components/parameters/CommentFilter__creator_name'),
+            new OA\Parameter(ref: '#/components/parameters/CommentFilter__trello_comment_id'),
+            new OA\Parameter(ref: '#/components/parameters/CommentFilter__slack_comment_id'),
+            new OA\Parameter(ref: '#/components/parameters/CommentFilter__created_by'),
+            new OA\Parameter(ref: '#/components/parameters/CommentFilter__modified_by'),
+            new OA\Parameter(ref: '#/components/parameters/CommentFilter__deleted_by'),
         ],
         responses: [
             new OA\Response(response: 200, description: '', content: new OA\JsonContent(properties: [
