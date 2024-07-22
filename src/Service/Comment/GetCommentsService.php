@@ -24,10 +24,11 @@ class GetCommentsService
      *
      * @param array<string, mixed> $filters
      * @param PaginationRequestDTO $paginationRequestDTO
+     * @param string[] $contain
      * @return PaginationResultDTO
      */
-    public function run(array $filters, PaginationRequestDTO $paginationRequestDTO): PaginationResultDTO
+    public function run(array $filters, PaginationRequestDTO $paginationRequestDTO, array $contain = []): PaginationResultDTO
     {
-        return $this->commentRepository->getPaginated($filters, $paginationRequestDTO);
+        return $this->commentRepository->getPaginated($filters, $paginationRequestDTO, $contain);
     }
 }
