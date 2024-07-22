@@ -34,12 +34,6 @@ class CommentsController extends AbstractController
     {
     }
 
-    /**
-     * @param RequestInterface $request
-     * @param GetCommentsService $getCommentsService
-     * @param string[] $contain
-     * @return CommentsPaginatedResource
-     */
     #[OA\Get(
         path: '/v1/support/comments',
         operationId: 'getComments',
@@ -67,13 +61,12 @@ class CommentsController extends AbstractController
             new OA\Response(ref: '#/components/responses/500', response: 500),
         ],
     )]
-    public function index(RequestInterface $request, GetCommentsService $getCommentsService, array $contain = []): CommentsPaginatedResource
+    public function index(RequestInterface $request, GetCommentsService $getCommentsService): CommentsPaginatedResource
     {
         $paginationDTO = PaginationRequestDTO::make($request);
         $commentsPaginationResult = $getCommentsService->run(
             $request->getQueryParams(),
-            $paginationDTO,
-            $contain,
+            $paginationDTO
         );
 
         return CommentsPaginatedResource::make($commentsPaginationResult);
