@@ -10,16 +10,16 @@ declare(strict_types=1);
 namespace OnixSystemsPHP\HyperfSupport\Model;
 
 use Carbon\Carbon;
+use Hyperf\Contract\ConfigInterface;
 use Hyperf\Database\Model\Relations\BelongsTo;
 use Hyperf\Database\Model\Relations\MorphMany;
 use Hyperf\Database\Model\SoftDeletes;
 use OnixSystemsPHP\HyperfCore\Model\AbstractModel;
 use OnixSystemsPHP\HyperfFileUpload\Model\Behaviour\FileRelations;
 use OnixSystemsPHP\HyperfSupport\Cast\CustomFieldCast;
-use OnixSystemsPHP\HyperfSupport\Contract\SourceConfiguratorInterface;
 use OnixSystemsPHP\HyperfSupport\Contract\SupportUserInterface;
-
-use function Hyperf\Support\make;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 
 /**
  * Ticket
@@ -95,14 +95,13 @@ class Ticket extends AbstractModel
 
     /**
      * @return BelongsTo
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function creator(): BelongsTo
     {
-        /** @var SourceConfiguratorInterface $sourceConfigurator */
-        $sourceConfigurator = make(SourceConfiguratorInterface::class);
-
         return $this->belongsTo(
-            $sourceConfigurator->getApiConfig($this->source, 'app', 'user_model_class'),
+            $this->getContainer()->get(ConfigInterface::class)->get('support.app.user_model_class'),
             'created_by',
             'id',
         );
@@ -110,14 +109,13 @@ class Ticket extends AbstractModel
 
     /**
      * @return BelongsTo
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function editor(): BelongsTo
     {
-        /** @var SourceConfiguratorInterface $sourceConfigurator */
-        $sourceConfigurator = make(SourceConfiguratorInterface::class);
-
         return $this->belongsTo(
-            $sourceConfigurator->getApiConfig($this->source, 'app', 'user_model_class'),
+            $this->getContainer()->get(ConfigInterface::class)->get('support.app.user_model_class'),
             'modified_by',
             'id',
         );
@@ -125,14 +123,13 @@ class Ticket extends AbstractModel
 
     /**
      * @return BelongsTo
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function archiver(): BelongsTo
     {
-        /** @var SourceConfiguratorInterface $sourceConfigurator */
-        $sourceConfigurator = make(SourceConfiguratorInterface::class);
-
         return $this->belongsTo(
-            $sourceConfigurator->getApiConfig($this->source, 'app', 'user_model_class'),
+            $this->getContainer()->get(ConfigInterface::class)->get('support.app.user_model_class'),
             'deleted_by',
             'id',
         );

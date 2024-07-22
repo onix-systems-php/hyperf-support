@@ -10,11 +10,14 @@ declare(strict_types=1);
 namespace OnixSystemsPHP\HyperfSupport\Model;
 
 use Carbon\Carbon;
+use Hyperf\Contract\ConfigInterface;
 use Hyperf\Database\Model\Relations\BelongsTo;
 use Hyperf\Database\Model\Relations\MorphMany;
 use Hyperf\Database\Model\SoftDeletes;
 use OnixSystemsPHP\HyperfCore\Model\AbstractModel;
 use OnixSystemsPHP\HyperfFileUpload\Model\Behaviour\FileRelations;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 
 /**
  * Comment
@@ -74,5 +77,47 @@ class Comment extends AbstractModel
     public function ticket(): BelongsTo
     {
         return $this->belongsTo(Ticket::class);
+    }
+
+    /**
+     * @return BelongsTo
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function creator(): BelongsTo
+    {
+        return $this->belongsTo(
+            $this->getContainer()->get(ConfigInterface::class)->get('support.app.user_model_class'),
+            'created_by',
+            'id',
+        );
+    }
+
+    /**
+     * @return BelongsTo
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function editor(): BelongsTo
+    {
+        return $this->belongsTo(
+            $this->getContainer()->get(ConfigInterface::class)->get('support.app.user_model_class'),
+            'modified_by',
+            'id',
+        );
+    }
+
+    /**
+     * @return BelongsTo
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function archiver(): BelongsTo
+    {
+        return $this->belongsTo(
+            $this->getContainer()->get(ConfigInterface::class)->get('support.app.user_model_class'),
+            'deleted_by',
+            'id',
+        );
     }
 }
