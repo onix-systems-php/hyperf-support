@@ -71,23 +71,47 @@ class CreateTicketService
      */
     private function validate(CreateTicketDTO $createTicketDTO): void
     {
-        $this->validatorFactory->make($createTicketDTO->toArray(), ['source' => 'required'])->validate();
+        $this->validatorFactory->make(
+            $createTicketDTO->toArray(),
+            [
+                'source' => ['required'],
+                'custom_fields' => ['present', 'array'],
+                'custom_fields.type' => ['required', 'string'],
+            ]
+        )->validate();
 
         $validationRules = [
             'title' => ['required', 'min:5', 'max:255'],
             'content' => ['required', 'min:20'],
-            'custom_fields' => ['array'],
             'page_url' => ['url:https'],
         ];
 
-        $configValues = $this->sourceConfigurator->getApiConfig($createTicketDTO->source, 'ticket', 'custom_fields');
-        foreach ($configValues as $key => $value) {
-            $validationRules['custom_fields.' . $key] = [
+        $ticketType = (string)$createTicketDTO->custom_fields['type'];
+
+        /** @var string[]|null $requiredFields */
+        $requiredFields = $this->sourceConfigurator->getApiConfig(
+            $createTicketDTO->source,
+            'ticket',
+            'required_fields',
+        )[$ticketType];
+
+        /** @var array<string, string[]> $acceptedValues */
+        $acceptedValues = $this->sourceConfigurator->getApiConfig(
+            $createTicketDTO->source,
+            'ticket',
+            'custom_fields',
+        );
+
+        foreach ($requiredFields ?? [] as $requiredField) {
+            $acceptedFieldValues = $acceptedValues[$requiredField];
+
+            $validationRules['custom_fields.' . $requiredField] = [
                 'required',
                 'max:255',
-                Rule::in($value)
+                Rule::in($acceptedFieldValues)
             ];
         }
+
         $this->validatorFactory->make($createTicketDTO->toArray(), $validationRules)->validate();
     }
 }

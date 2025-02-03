@@ -38,6 +38,12 @@ return [
             'level' => [1, 2, 3, 4],
             'priority' => ['Low', 'Medium', 'High', 'Highest'],
         ],
+        'required_fields' => [
+            /* Types used as keys, other fields as values */
+            'Bug' => ['status', 'level', 'priority'],
+            'Tweak' => ['status', 'priority'],
+            'Feature Request' => ['status', 'priority'],
+        ],
     ],
     'integrations' => [
         'trello' => [
