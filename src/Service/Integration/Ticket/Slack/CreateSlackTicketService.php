@@ -12,7 +12,7 @@ namespace OnixSystemsPHP\HyperfSupport\Service\Integration\Ticket\Slack;
 use GuzzleHttp\Exception\GuzzleException;
 use Hyperf\Stringable\Str;
 use OnixSystemsPHP\HyperfSupport\Contract\SourceConfiguratorInterface;
-use OnixSystemsPHP\HyperfSupport\Contract\TicketDescriptionGeneratorContract;
+use OnixSystemsPHP\HyperfSupport\Integration\Contract\Slack\SlackDescriptionConfigContract;
 use OnixSystemsPHP\HyperfSupport\Integration\Exceptions\Slack\SlackException;
 use OnixSystemsPHP\HyperfSupport\Integration\Slack\SlackApiService;
 use OnixSystemsPHP\HyperfSupport\Integration\Slack\SlackMessage;
@@ -25,7 +25,7 @@ class CreateSlackTicketService
     public function __construct(
         private readonly SlackApiService $slack,
         private readonly SourceConfiguratorInterface $sourceConfigurator,
-        private readonly TicketDescriptionGeneratorContract $descriptionGenerator
+        private readonly SlackDescriptionConfigContract $slackDescriptionConfig,
     ) {
     }
 
@@ -93,11 +93,11 @@ class CreateSlackTicketService
         $message->addBlock($context);
 
         $message->addNotice(
-            $this->descriptionGenerator->color($ticket),
-            $this->descriptionGenerator->label($ticket),
-            $this->descriptionGenerator->description($ticket),
+            $this->slackDescriptionConfig->color($ticket),
+            $this->slackDescriptionConfig->label($ticket),
+            $this->slackDescriptionConfig->description($ticket),
         );
-        $message->addMentions($this->descriptionGenerator->getMentionsByIntegration('slack', $ticket));
+        $message->addMentions($this->slackDescriptionConfig->getMentions($ticket));
 
         if ($ticket->slack_id) {
             $message->setTs($ticket->slack_id);
