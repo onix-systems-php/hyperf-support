@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace OnixSystemsPHP\HyperfSupport\Transport\Ticket;
 
+use OnixSystemsPHP\HyperfCore\Exception\BusinessException;
 use OnixSystemsPHP\HyperfSupport\Contract\TransportInterface;
 use OnixSystemsPHP\HyperfSupport\Model\Comment;
 use OnixSystemsPHP\HyperfSupport\Model\Ticket;
@@ -34,6 +35,7 @@ class TicketSlackTransport implements TransportInterface
             'create' => $this->createTicketSlackService->run($entity),
             'update' => $this->updateTicketSlackService->run($entity),
             'delete' => $this->deleteTicketSlackService->run($entity),
+            default => throw new BusinessException(500, 'Unknown action type'),
         };
     }
 }
