@@ -49,11 +49,11 @@ class TrelloCustomFieldApiService extends TrelloApiService
     /**
      * Update a custom field on a board. https://developer.atlassian.com/cloud/trello/rest/api-group-customfields/#api-customfields-id-put
      *
-     * @param string $cardId
-     * @param string|null $fieldId
-     * @param string|null $optionId
+     * @param string $source
+     * @param UpdateCustomFieldDTO $updateCustomFieldDTO
      * @return array|null
      * @throws GuzzleException
+     * @throws TrelloCardNotFoundException
      * @throws TrelloException
      */
     public function update(string $source, UpdateCustomFieldDTO $updateCustomFieldDTO): ?array
