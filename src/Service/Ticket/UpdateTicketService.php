@@ -16,12 +16,12 @@ use OnixSystemsPHP\HyperfCore\Contract\CorePolicyGuard;
 use OnixSystemsPHP\HyperfSupport\Adapter\SupportAdapter;
 use OnixSystemsPHP\HyperfSupport\Constant\Actions;
 use OnixSystemsPHP\HyperfSupport\Contract\SourceConfiguratorInterface;
-use OnixSystemsPHP\HyperfSupport\Contract\TicketDescriptionGeneratorContract;
 use OnixSystemsPHP\HyperfSupport\DTO\Comments\CreateCommentDTO;
 use OnixSystemsPHP\HyperfSupport\DTO\Tickets\UpdateTicketDTO;
 use OnixSystemsPHP\HyperfSupport\Enum\TicketCreator;
 use OnixSystemsPHP\HyperfSupport\Events\TicketStatusHasChanged;
 use OnixSystemsPHP\HyperfSupport\Events\TicketUpdated;
+use OnixSystemsPHP\HyperfSupport\Integration\Contract\Trello\TrelloDescriptionConfigContract;
 use OnixSystemsPHP\HyperfSupport\Model\Ticket;
 use OnixSystemsPHP\HyperfSupport\Repository\TicketRepository;
 use OnixSystemsPHP\HyperfSupport\Service\Comment\CreateCommentService;
@@ -37,7 +37,7 @@ class UpdateTicketService
         private readonly TicketRepository $ticketRepository,
         private readonly SupportAdapter $supportAdapter,
         private readonly CreateCommentService $createCommentService,
-        private readonly TicketDescriptionGeneratorContract $descriptionGenerator,
+        private readonly TrelloDescriptionConfigContract $trelloDescriptionConfig,
         private readonly SourceConfiguratorInterface $sourceConfigurator,
         private readonly CoreAuthenticatableProvider $coreAuthenticatableProvider,
         private readonly EventDispatcherInterface $eventDispatcher,
@@ -73,7 +73,7 @@ class UpdateTicketService
         if ($this->shouldTicketBeCompleted($ticket)) {
             $this->completeTicket($ticket);
         }
-        if ($this->descriptionGenerator->inTriggerLists($ticket->source, $ticket->custom_fields['status'])) {
+        if ($this->trelloDescriptionConfig->inTriggerLists($ticket->source, $ticket->custom_fields['status'])) {
             $this->createNewCommentOnNewTicketStatus($ticket);
             $this->eventDispatcher->dispatch(new TicketStatusHasChanged($ticket));
         }

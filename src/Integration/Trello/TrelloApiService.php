@@ -14,9 +14,9 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use OnixSystemsPHP\HyperfCore\Exception\BusinessException;
 use OnixSystemsPHP\HyperfSupport\Contract\SourceConfiguratorInterface;
-use OnixSystemsPHP\HyperfSupport\Contract\TicketDescriptionGeneratorContract;
 use OnixSystemsPHP\HyperfSupport\Entity\Trello\Board;
 use OnixSystemsPHP\HyperfSupport\Entity\Trello\Member\Members;
+use OnixSystemsPHP\HyperfSupport\Integration\Contract\Trello\TrelloDescriptionConfigContract;
 use OnixSystemsPHP\HyperfSupport\Integration\Exceptions\Trello\TrelloException;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -31,7 +31,7 @@ class TrelloApiService
      */
     public function __construct(
         protected readonly SourceConfiguratorInterface $sourceConfigurator,
-        protected readonly TicketDescriptionGeneratorContract $descriptionGenerator
+        protected readonly TrelloDescriptionConfigContract $trelloDescriptionConfig,
     ) {
         $this->client = new Client(['base_uri' => self::API_URL, 'headers' => ['Accept' => 'application/json']]);
     }
