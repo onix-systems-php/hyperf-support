@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace OnixSystemsPHP\HyperfSupport\Transport\Ticket;
 
 use GuzzleHttp\Exception\GuzzleException;
+use OnixSystemsPHP\HyperfCore\Exception\BusinessException;
 use OnixSystemsPHP\HyperfSupport\Contract\TransportInterface;
 use OnixSystemsPHP\HyperfSupport\Integration\Exceptions\Trello\TrelloException;
 use OnixSystemsPHP\HyperfSupport\Model\Comment;
@@ -38,6 +39,7 @@ class TicketTrelloTransport implements TransportInterface
             'create' => $this->createTicketTrelloService->run($entity),
             'update' => $this->updateTicketTrelloService->run($entity),
             'delete' => $this->deleteTicketTrelloService->run($entity),
+            default => throw new BusinessException(500, 'Unknown action type'),
         };
     }
 }

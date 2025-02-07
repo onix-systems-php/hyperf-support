@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace OnixSystemsPHP\HyperfSupport\Transport\Comment;
 
+use OnixSystemsPHP\HyperfCore\Exception\BusinessException;
 use OnixSystemsPHP\HyperfSupport\Contract\TransportInterface;
 use OnixSystemsPHP\HyperfSupport\Model\Comment;
 use OnixSystemsPHP\HyperfSupport\Model\Ticket;
@@ -34,6 +35,7 @@ class CommentSlackTransport implements TransportInterface
             'create' => $this->createCommentSlackService->run($entity),
             'update' => $this->updateCommentSlackService->run($entity),
             'delete' => $this->deleteCommentSlackService->run($entity),
+            default => throw new BusinessException(500, 'Unknown action type'),
         };
     }
 }

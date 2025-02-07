@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace OnixSystemsPHP\HyperfSupport\Transport\Comment;
 
 use GuzzleHttp\Exception\GuzzleException;
+use OnixSystemsPHP\HyperfCore\Exception\BusinessException;
 use OnixSystemsPHP\HyperfSupport\Contract\TransportInterface;
 use OnixSystemsPHP\HyperfSupport\Integration\Exceptions\Trello\TrelloException;
 use OnixSystemsPHP\HyperfSupport\Model\Comment;
@@ -38,6 +39,7 @@ class CommentTrelloTransport implements TransportInterface
             'create' => $this->createCommentTrelloService->run($entity),
             'update' => $this->updateCommentTrelloService->run($entity),
             'delete' => $this->deleteCommentTrelloService->run($entity),
+            default => throw new BusinessException(500, 'Unknown action type'),
         };
     }
 }
