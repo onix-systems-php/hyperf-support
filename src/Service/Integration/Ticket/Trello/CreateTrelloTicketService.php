@@ -12,11 +12,11 @@ namespace OnixSystemsPHP\HyperfSupport\Service\Integration\Ticket\Trello;
 use GuzzleHttp\Exception\GuzzleException;
 use OnixSystemsPHP\HyperfSupport\Builder\TrelloCardBuilder;
 use OnixSystemsPHP\HyperfSupport\Contract\SourceConfiguratorInterface;
-use OnixSystemsPHP\HyperfSupport\Contract\TicketDescriptionGeneratorContract;
 use OnixSystemsPHP\HyperfSupport\DTO\Trello\Card\CreateCardDTO;
 use OnixSystemsPHP\HyperfSupport\DTO\Trello\Cover\CreateCardCoverDTO;
 use OnixSystemsPHP\HyperfSupport\DTO\Trello\CustomField\CreateCustomFieldDTO;
 use OnixSystemsPHP\HyperfSupport\Entity\Trello\Attachment;
+use OnixSystemsPHP\HyperfSupport\Integration\Contract\Trello\TrelloDescriptionConfigContract;
 use OnixSystemsPHP\HyperfSupport\Integration\Exceptions\Trello\TrelloException;
 use OnixSystemsPHP\HyperfSupport\Integration\Trello\ProcessFiles;
 use OnixSystemsPHP\HyperfSupport\Integration\Trello\TrelloApiService;
@@ -30,7 +30,7 @@ class CreateTrelloTicketService
     public function __construct(
         private readonly TrelloApiService $trello,
         private readonly TrelloCardApiService $trelloCardService,
-        private readonly TicketDescriptionGeneratorContract $descriptionGenerator,
+        private readonly TrelloDescriptionConfigContract $trelloDescriptionConfig,
         private readonly SourceConfiguratorInterface $sourceConfigurator,
     ) {
     }
@@ -49,9 +49,9 @@ class CreateTrelloTicketService
             'name' => $ticket->ticket_title,
             'desc' => $ticket->content,
             'pos' => 'top',
-            'listName' => $this->descriptionGenerator->getTrelloList($ticket),
+            'listName' => $this->trelloDescriptionConfig->getTrelloList($ticket),
         ]);
-        if (!empty($members = $this->descriptionGenerator->getMentionsByIntegration('trello', $ticket))) {
+        if (!empty($members = $this->trelloDescriptionConfig->getMentions($ticket))) {
             if ($idMembers = $this->trello->getMembers($ticket->source)->getIdMembers($members)) {
                 $createCardDTO->idMembers = $idMembers;
             }
@@ -85,7 +85,7 @@ class CreateTrelloTicketService
                 );
             }
             $trelloCardBuilder->addCover(
-                CreateCardCoverDTO::make(['color' => $this->descriptionGenerator->cover($ticket)])
+                CreateCardCoverDTO::make(['color' => $this->trelloDescriptionConfig->cover($ticket)])
             );
             if (!empty($ticket->user)) {
                 $ticketUrl = $this->sourceConfigurator->getApiConfig($ticket->source, 'app', 'domain');

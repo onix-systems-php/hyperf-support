@@ -11,8 +11,6 @@ namespace OnixSystemsPHP\HyperfSupport;
 
 use OnixSystemsPHP\HyperfSupport\Configurator\DefaultConfigurator;
 use OnixSystemsPHP\HyperfSupport\Contract\SourceConfiguratorInterface;
-use OnixSystemsPHP\HyperfSupport\Contract\TicketDescriptionGeneratorContract;
-use OnixSystemsPHP\HyperfSupport\Generator\DefaultTicketDescriptionGenerator;
 use OnixSystemsPHP\HyperfSupport\Integration\Contract\Slack\SlackDescriptionConfigContract;
 use OnixSystemsPHP\HyperfSupport\Integration\Contract\Trello\TrelloDescriptionConfigContract;
 use OnixSystemsPHP\HyperfSupport\Integration\Slack\DefaultSlackDescriptionConfig;
@@ -25,7 +23,6 @@ class ConfigProvider
         return [
             'dependencies' => [
                 SourceConfiguratorInterface::class => DefaultConfigurator::class,
-                TicketDescriptionGeneratorContract::class => DefaultTicketDescriptionGenerator::class,
                 SlackDescriptionConfigContract::class => DefaultSlackDescriptionConfig::class,
                 TrelloDescriptionConfigContract::class => DefaultTrelloDescriptionConfig::class,
             ],
