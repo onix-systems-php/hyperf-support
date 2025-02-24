@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace OnixSystemsPHP\HyperfSupport\Model\Filter;
 
+use Hyperf\DbConnection\Db;
 use OnixSystemsPHP\HyperfCore\Model\Filter\AbstractFilter;
 use OpenApi\Attributes as OA;
 
@@ -21,6 +22,13 @@ use OpenApi\Attributes as OA;
 #[OA\Parameter(parameter: 'TicketFilter__user', name: 'user', in: 'query', schema: new OA\Schema(
     type: 'integer'
 ), example: 1)]
+#[OA\Parameter(
+    parameter: 'TicketFilter__team_id',
+    name: 'team_id',
+    in: 'query',
+    schema: new OA\Schema(type: 'integer'),
+    example: 1,
+)]
 class TicketFilter extends AbstractFilter
 {
     public function title(string $param): void
@@ -39,5 +47,15 @@ class TicketFilter extends AbstractFilter
             ->where('created_by', $param)
             ->orWhere('modified_by', $param)
             ->orWhere('deleted_by', $param);
+    }
+
+    public function teamId(int $param): void
+    {
+        $projectIds = DB::table('projects')
+            ->where('team_id', $param)
+            ->pluck('id')
+            ->map(fn($id) => (string)$id)
+            ->toArray();
+        $this->builder->whereIn('source', $projectIds);
     }
 }
