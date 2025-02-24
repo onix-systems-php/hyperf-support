@@ -22,13 +22,9 @@ use OpenApi\Attributes as OA;
 #[OA\Parameter(parameter: 'TicketFilter__user', name: 'user', in: 'query', schema: new OA\Schema(
     type: 'integer'
 ), example: 1)]
-#[OA\Parameter(
-    parameter: 'TicketFilter__team_id',
-    name: 'team_id',
-    in: 'query',
-    schema: new OA\Schema(type: 'integer'),
-    example: 1,
-)]
+#[OA\Parameter(parameter: 'TicketFilter__team_id', name: 'team_id', in: 'query', schema: new OA\Schema(
+    type: 'integer'
+), example: 1)]
 class TicketFilter extends AbstractFilter
 {
     public function title(string $param): void
