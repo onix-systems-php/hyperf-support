@@ -30,20 +30,20 @@
     }
   ],
   "require-dev": {
-    "phpunit/phpunit": "^10.0",
-    "symfony/var-dumper": "^7.0",
-    "phpstan/phpstan": "^2.1",
-    "friendsofphp/php-cs-fixer": "^3.68"
+    "phpunit/phpunit": "^10.5.45",
+    "symfony/var-dumper": "^7.2.3",
+    "phpstan/phpstan": "^2.1.8",
+    "friendsofphp/php-cs-fixer": "^3.71"
   },
   "require": {
     "php": ">=8.1",
-    "hyperf/framework": "^3.1",
-    "onix-systems-php/hyperf-core": "*",
-    "hyperf/di": "*",
-    "onix-systems-php/hyperf-actions-log": "^1.2",
-    "hyperf/guzzle": "^3.1",
-    "friendsofhyperf/helpers": "^3.1",
-    "onix-systems-php/hyperf-file-upload": "^1.2",
-    "zircote/swagger-php": "^4.9"
+    "hyperf/framework": "^3.1.42",
+    "onix-systems-php/hyperf-core": ">=1.2.3",
+    "hyperf/di": ">=3.1.52",
+    "onix-systems-php/hyperf-actions-log": "^1.2.1",
+    "hyperf/guzzle": "^3.1.42",
+    "friendsofhyperf/helpers": "^3.1.57",
+    "onix-systems-php/hyperf-file-upload": "^1.3",
+    "zircote/swagger-php": "^4.11.1"
   }
 }
