@@ -44,7 +44,15 @@ class TicketRepository extends AbstractRepository
             $query->with($contain);
         }
 
-        return $query->paginateDTO($paginationRequestDTO);
+        return $query->paginateDTO($paginationRequestDTO, [
+            'id',
+            'title',
+            'content',
+            'created_at',
+            'creator.username',
+            'editor.username',
+            'archiver.username',
+        ]);
     }
 
     /**

@@ -63,6 +63,7 @@ class TicketsController extends AbstractController
         $ticketsPaginationResult = $getTicketsService->run(
             $this->request->getQueryParams(),
             $paginationDTO,
+            ['creator', 'editor', 'archiver'],
         );
 
         return TicketsPaginatedResource::make($ticketsPaginationResult);
