@@ -49,9 +49,6 @@ class TicketRepository extends AbstractRepository
             'title',
             'content',
             'created_at',
-            'creator.username',
-            'editor.username',
-            'archiver.username',
         ]);
     }
 
