@@ -33,6 +33,7 @@ use Psr\Container\NotFoundExceptionInterface;
  * @property int|null $modified_by
  * @property int|null $deleted_by
  * @property Carbon|null $completed_at
+ * @property Carbon|null $seen_at
  * @property string|null $trello_id
  * @property string|null $trello_short_link
  * @property string|null $slack_id
@@ -79,6 +80,7 @@ class Ticket extends AbstractModel
         'modified_by',
         'deleted_by',
         'completed_at',
+        'seen_at',
         'trello_id',
         'trello_short_link',
         'page_url',
