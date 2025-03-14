@@ -11,7 +11,6 @@ namespace OnixSystemsPHP\HyperfSupport\Service\Ticket;
 
 use OnixSystemsPHP\HyperfSupport\Model\Ticket;
 use OnixSystemsPHP\HyperfSupport\Repository\TicketRepository;
-use function Hyperf\Support\now;
 
 class GetTicketService
 {
@@ -27,11 +26,6 @@ class GetTicketService
      */
     public function run(int $id): Ticket
     {
-        $ticket = $this->ticketRepository->getById($id, false, true);
-        if($ticket !== null && $ticket->seen_at === null) {
-            $ticket->seen_at = now();
-            $ticket->save();
-        }
-        return $ticket;
+        return $this->ticketRepository->getById($id, false, true);
     }
 }
