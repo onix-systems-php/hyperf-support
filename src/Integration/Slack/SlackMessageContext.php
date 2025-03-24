@@ -25,7 +25,7 @@ class SlackMessageContext extends SlackScope
     /**
      * Add image to message context.
      *
-     * @param string $url
+     * @param string|null $url
      * @param string $alt
      * @return void
      */
