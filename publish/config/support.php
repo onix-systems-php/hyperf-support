@@ -86,7 +86,6 @@ return [
             ],
             // 'token' => '',
             // 'channel_id' => '',
-            // 'trello_icon' => '',
             // 'app_icon' => '',
             'members' => [
                 // 'Tweak' => [],

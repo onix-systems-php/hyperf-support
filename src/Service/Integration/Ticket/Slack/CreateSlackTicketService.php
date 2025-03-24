@@ -44,10 +44,6 @@ class CreateSlackTicketService
 
         if (!empty($ticket->trello_url)) {
             $context = new SlackMessageContext();
-            $context->addImage(
-                $this->sourceConfigurator->getApiConfig($ticket->source, 'integrations', 'slack', 'trello_icon'),
-                'Trello'
-            );
             $context->addText(sprintf("<%s|*Open Trello card*>", $ticket->trello_url));
             $message->addBlock($context);
         }

@@ -35,11 +35,10 @@ php bin/hyperf.php vendor:publish onix-systems-php/hyperf-support
 2. `channel_id` - Slack channel id.
 3. Don't forget to enable subscriptions for your Slack bot and specify request URL: `app.domain` + `/v1/support/webhooks/trello`.
 4. `app_icon` - Your application's icon url. e.g.
-5. `trello_icon` - Trello icon url. (optional)
-6. `members` - For each type of ticket specify members which should be mentioned on Slack ticket. **Without '@'.**
-7. `custom_fields` - Determine which custom fields should be showed on Slack ticket.
-8. `is_private_discussion` - This option must be `true` or `false`. If `true`, discussion under the ticket on Slack will be private and anyone can see it except on Slack.
-9. `keys_to_source` - Specify `your_slack_channel_id` => `your_source`.
+5. `members` - For each type of ticket specify members which should be mentioned on Slack ticket. **Without '@'.**
+6. `custom_fields` - Determine which custom fields should be showed on Slack ticket.
+7. `is_private_discussion` - This option must be `true` or `false`. If `true`, discussion under the ticket on Slack will be private and anyone can see it except on Slack.
+8. `keys_to_source` - Specify `your_slack_channel_id` => `your_source`.
 
 ### Configure `routes`
 `require_once './vendor/onix-systems-php/hyperf-support/publish/routes.php';`
